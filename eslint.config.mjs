@@ -53,6 +53,8 @@ const eslintConfig = [
       "tailwindcss/no-custom-classname": "warn",
       "tailwindcss/no-contradicting-classname": "error",
       "no-trailing-spaces": "off",
+      "react/no-unescaped-entities": "off",
+      "tailwindcss/no-custom-classname": "off",
     },
   }),
 ];
