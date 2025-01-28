@@ -29,9 +29,7 @@ const SignIn = ({ searchParams }: SignInProps) => {
       className={`${styles.signInContainer} ${isRightPanelActive ? styles.rightPanelActive : ""}`}
       id="container"
     >
-      <div
-        className={`${styles.signInFormContainer} ${styles.signInLoginContainer}`}
-      >
+      <div className={`${styles.signInFormContainer} ${styles.signInLoginContainer}`}>
         <form className={styles.signInForm} action={signInAction}>
           <h1 className={styles.signInTitle}>Iniciar Sesión</h1>
           <div className={styles.signInContent}>
@@ -52,9 +50,7 @@ const SignIn = ({ searchParams }: SignInProps) => {
               placeholder="Your password"
               required
             />
-            <SubmitButton pendingText="Signing In...">
-              Iniciar Sesión
-            </SubmitButton>
+            <SubmitButton pendingText="Signing In...">Iniciar Sesión</SubmitButton>
             <FormMessage message={searchParams} />
           </div>
           <span className={styles.signInText}>
@@ -71,16 +67,13 @@ const SignIn = ({ searchParams }: SignInProps) => {
 
       <div className={styles.signInOverlayContainer}>
         <div className={styles.signInOverlay}>
-          <div
-            className={`${styles.signInOverlayPanel} ${styles.signInOverlayLeft}`}
-          >
+          <div className={`${styles.signInOverlayPanel} ${styles.signInOverlayLeft}`}>
             <h1 className={styles.signInSubtitle}>
               Nada es imposible, <br /> cree en ti!
             </h1>
             <p className={styles.signInText}>
-              Te ofrecemos un ambiente donde la diversión y el esfuerzo se
-              combinan para que puedas desarrollar tus habilidades al máximo ¡Te
-              esperamos en la cancha!
+              Te ofrecemos un ambiente donde la diversión y el esfuerzo se combinan para que puedas
+              desarrollar tus habilidades al máximo ¡Te esperamos en la cancha!
             </p>
             <button
               className={`${styles.signInButton} ${styles.signInGhost}`}
@@ -91,16 +84,13 @@ const SignIn = ({ searchParams }: SignInProps) => {
               <i className={`lni lni-arrow-left ${styles.login}`}></i>
             </button>
           </div>
-          <div
-            className={`${styles.signInOverlayPanel} ${styles.signInOverlayRight}`}
-          >
+          <div className={`${styles.signInOverlayPanel} ${styles.signInOverlayRight}`}>
             <h1 className={styles.signInSubtitle}>
               Diviértete, <br /> disfruta el juego!
             </h1>
             <p className={styles.signInText}>
-              En la Academia Rosario, creemos que el vóley es más que un
-              deporte, es una oportunidad para crecer, aprender y hacer nuevos
-              amigos.
+              En la Academia Rosario, creemos que el vóley es más que un deporte, es una oportunidad
+              para crecer, aprender y hacer nuevos amigos.
             </p>
             <button
               className={`${styles.signInButton} ${styles.signInGhost}`}
