@@ -70,7 +70,7 @@ export default function HomeMain() {
       <section id="eventos" className="max-w-12xl w-full bg-blue-800/5 py-16 text-foreground">
         <h2 className="mb-8 text-center text-3xl font-bold">PROXIMOS EVENTOS</h2>
         <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
-          <div className="flex flex-col overflow-hidden rounded-lg border border-primary/20 bg-card p-6 text-card-foreground text-primary shadow-md transition-transform hover:scale-105">
+          <div className="flex flex-col overflow-hidden rounded-lg border border-primary/20 bg-card p-6 text-card-foreground shadow-md transition-transform hover:scale-105">
             <img
               src="https://imgmedia.elpopular.pe/640x358/elpopular/original/2025/01/26/6796bd01df574c43915b96d0.webp"
               alt="Torneo de Fútbol"
@@ -83,7 +83,7 @@ export default function HomeMain() {
               Más información
             </button>
           </div>
-          <div className="flex flex-col overflow-hidden rounded-lg border border-primary/20 bg-card p-6 text-card-foreground text-primary shadow-md transition-transform hover:scale-105">
+          <div className="flex flex-col overflow-hidden rounded-lg border border-primary/20 bg-card p-6 text-card-foreground shadow-md transition-transform hover:scale-105">
             <img
               src="https://peru21-pe.b-cdn.net/sites/default/efsfiles/styles/wide/public/2025-01/rafael-lopez-aliaga-le-da-la-bienvenida-a-ishow-speed-en-lima.png?itok=Sh3ccR61"
               alt="Competencia de Natación"

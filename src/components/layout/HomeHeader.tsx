@@ -5,23 +5,32 @@ import { ThemeSwitcher } from "../theme-switcher";
 
 export default function HomeHeader() {
   return (
-    <nav className="sticky top-0 z-10 w-full bg-background/80 backdrop-blur-sm border-b border-b-foreground/10">
-      <div className="mx-auto max-w-7xl flex h-16 items-center justify-between p-3 px-5">
+    <nav className="sticky top-0 z-10 w-full border-b border-b-foreground/10 bg-background/80 backdrop-blur-sm">
+      <div className="mx-auto flex h-16 max-w-7xl items-center justify-between p-3 px-5">
         <div className="flex items-center gap-8">
-          <Link href={"/"} className="text-xl font-bold text-primary hover:text-primary/80 transition-colors">
+          <Link
+            href={"/"}
+            className="text-xl font-bold text-primary transition-colors hover:text-primary/80"
+          >
             Academia Rosario
           </Link>
-          <div className="hidden md:flex space-x-4">
-            <a href="#noticias" className="text-sm font-medium hover:text-primary transition-colors">
+          <div className="hidden space-x-4 md:flex">
+            <a
+              href="#noticias"
+              className="text-sm font-medium transition-colors hover:text-primary"
+            >
               Noticias
             </a>
-            <a href="#eventos" className="text-sm font-medium hover:text-primary transition-colors">
+            <a href="#eventos" className="text-sm font-medium transition-colors hover:text-primary">
               Eventos
             </a>
-            <a href="#galeria" className="text-sm font-medium hover:text-primary transition-colors">
+            <a href="#galeria" className="text-sm font-medium transition-colors hover:text-primary">
               Galería
             </a>
-            <a href="#contacto" className="text-sm font-medium hover:text-primary transition-colors">
+            <a
+              href="#contacto"
+              className="text-sm font-medium transition-colors hover:text-primary"
+            >
               Contacto
             </a>
           </div>
