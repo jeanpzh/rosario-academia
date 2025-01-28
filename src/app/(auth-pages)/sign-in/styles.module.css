@@ -1,0 +1,241 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Delius&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Delius&family=DynaPuff:wght@400..700&display=swap');
+
+.signInTitle {
+    font-family: 'Delius', sans-serif;
+    font-weight: 800; /* Bold */
+    font-size: 2rem;
+    margin-bottom: 2rem;
+}
+
+.signInContainer {
+    font-family: 'Poppins', sans-serif;
+    font-size: 35px;
+    font-weight: bold;
+    color: black;
+    background-color: #fff;
+    border-radius: 25px;
+    box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
+    position: relative;
+    overflow: hidden;
+    width: 768px;
+    max-width: 100%;
+    min-height: 500px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.signInFormContainer {
+    position: absolute;
+    top: 0;
+    height: 100%;
+    transition: all 0.6s ease-in-out;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.signInLoginContainer {
+    left: 0;
+    width: 50%;
+    z-index: 2;
+}
+
+.signInForm {
+    background-color: #fff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 0 50px;
+    height: 100%;
+    text-align: center;
+    width: 100%;
+}
+
+.signInContent {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    width: 100%;
+    gap: 12px; /* Espacio entre elementos */
+}
+
+.signInContent .signInTitle {
+    align-self: flex-start; /* Alinea 'Email' a la izquierda */
+}
+
+.signInContent .signInButton {
+    align-self: center; /* Alinea 'Iniciar sesión' al centro */
+}
+
+.signInInput {
+    background-color: #eee;
+    border-radius: 10px;
+    border: none;
+    padding: 12px 15px;
+    margin: 8px 0;
+    width: 100%;
+    max-width: 300px;
+    font-weight: normal; /* Elimina la negrita */
+}
+
+.signInButton {
+    position: relative;
+    border-radius: 20px;
+    border: 2.5px solid #6d6e74;
+    background-color: transparent;
+    font-size: 18px;
+    margin: 10px;
+    padding: 12px 80px;
+    letter-spacing: 1px;
+    text-transform: capitalize;
+    transition: 0.3s ease-in-out;
+    width: 100%;
+    max-width: 300px; 
+    margin-top: 18px;
+}
+
+.signInButton:hover {
+    letter-spacing: 3px;
+}
+
+.signInText {
+    font-family: 'Poppins', sans-serif;
+    font-size: 15px;
+    font-weight: 400;
+    margin-top: 25px;
+    text-align: center;
+}
+
+.signInLink {
+    color: #333;
+    font-size: 14px;
+    text-decoration: none;
+    transition: 0.3s ease-in-out;
+}
+
+.signInLink:hover {
+    color: #4bb6b7;
+}
+
+.signInCheckbox {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    max-width: 300px; /* Ancho máximo para el checkbox y el enlace */
+}
+
+.passLink {
+    color: #333;
+    font-size: 14px;
+    text-decoration: none;
+    transition: 0.3s ease-in-out;
+    margin-top: 12px; /* Ajusta el valor según lo que necesites */
+}
+
+.passLink:hover {
+    color: #4bb6b7;
+}
+
+.signInOverlayContainer {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: 50%;
+    height: 100%;
+    overflow: hidden;
+    transition: transform 0.6s ease-in-out;
+    z-index: 100;
+}
+
+.signInOverlay {
+    background-image: url(https://res.cloudinary.com/dqi7xcwhj/image/upload/v1738020726/knt8lnlb1xta4txeglyp.gif);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: 0 0;
+    color: #fff;
+    position: relative;
+    left: -100%;
+    height: 100%;
+    width: 200%;
+    transform: translateX(0);
+    transition: transform 0.6s ease-in-out;
+}
+
+
+.signInOverlayPanel {
+    font-family: 'Delius', sans-serif;
+    font-size: 50px;
+    line-height: 1.2;
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 0 40px;
+    text-align: center;
+    top: 0;
+    height: 100%;
+    width: 50%;
+    transform: translateX(0);
+    transition: transform 0.6s ease-in-out;
+    /* Fondo con transparencia y sombreado */
+    background-color: rgba(51, 51, 51, 0.32); /* Color similar a #333 con 60% de opacidad */
+    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5); /* Sombra interna */
+    will-change: transform; /* Optimiza la animación */
+}
+
+.signInOverlayLeft {
+    transform: translateX(-20%);
+}
+
+.signInOverlayRight {
+    right: 0;
+    transform: translateX(0);
+}
+
+.signInContainer.rightPanelActive .signInLoginContainer {
+    transform: translateX(100%);
+}
+
+.signInContainer.rightPanelActive .signInRegisterContainer {
+    transform: translateX(100%);
+    opacity: 1;
+    z-index: 5;
+    animation: show 0.6s;
+}
+
+@keyframes show {
+    0%,
+    49.99% {
+        opacity: 0;
+        z-index: 1;
+    }
+
+    50%,
+    100% {
+        opacity: 1;
+        z-index: 5;
+    }
+}
+
+.signInContainer.rightPanelActive .signInOverlayContainer {
+    transform: translate(-100%);
+}
+
+.signInContainer.rightPanelActive .signInOverlay {
+    transform: translateX(50%);
+}
+
+.signInContainer.rightPanelActive .signInOverlayLeft {
+    transform: translateX(0);
+}
+
+.signInContainer.rightPanelActive .signInOverlayRight {
+    transform: translateX(20%);
+}
