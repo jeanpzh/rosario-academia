@@ -1,14 +1,18 @@
+import Image from "next/image";
+
 export default function HomeMain() {
   return (
     <div className="flex flex-col items-center gap-16">
       {/* Hero Section */}
       <section className="relative flex h-[60vh] w-full items-center justify-center">
-        <img
+        <Image
           src="https://images8.alphacoders.com/575/575648.jpg"
           alt="Hero"
-          className="absolute inset-0 size-full object-cover"
+          fill
+          className="object-cover"
+          priority
         />
-        <div className="relative z-10 rounded-lg bg-black bg-opacity-0 p-8 text-center text-white">
+        <div className="relative z-10 rounded-lg bg-black/0 p-8 text-center text-white">
           <h1 className="mb-4 text-4xl font-bold md:text-6xl">Academia Rosario</h1>
           <p className="mb-8 text-xl md:text-2xl">Formando campeones desde la cuna</p>
           <a
