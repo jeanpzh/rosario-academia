@@ -8,7 +8,6 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import Link from "next/link";
 import { signInAction } from "../actions";
-
 interface SignInProps {
   searchParams: Message;
 }
@@ -23,6 +22,15 @@ const SignIn = ({ searchParams }: SignInProps) => {
   const handleLoginClick = () => {
     setIsRightPanelActive(false);
   };
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const formData = new FormData(e.currentTarget);
+    try {
+      await signInAction(formData);
+    } catch (error) {
+      console.error("signInAction failed", error);
+    }
+  };
 
   return (
     <div
@@ -30,14 +38,14 @@ const SignIn = ({ searchParams }: SignInProps) => {
       id="container"
     >
       <div className={`${styles.signInFormContainer} ${styles.signInLoginContainer}`}>
-        <form className={styles.signInForm} action={signInAction}>
+        <form className={styles.signInForm} onSubmit={handleSubmit}>
           <h1 className={styles.signInTitle}>Iniciar Sesión</h1>
           <div className={styles.signInContent}>
             <Label htmlFor="email">Email</Label>
             <Input
               className={styles.signInInput}
               name="email"
-              placeholder="you@example.com"
+              placeholder="zavaleta@gmail.com"
               required
             />
             <div className={styles.signInCheckbox}>
@@ -47,10 +55,10 @@ const SignIn = ({ searchParams }: SignInProps) => {
               className={styles.signInInput}
               type="password"
               name="password"
-              placeholder="Your password"
+              placeholder="Tu contraseña"
               required
             />
-            <SubmitButton pendingText="Signing In...">Iniciar Sesión</SubmitButton>
+            <SubmitButton pendingText="Loggeando...">Iniciar Sesión</SubmitButton>
             <FormMessage message={searchParams} />
           </div>
           <span className={styles.signInText}>

@@ -8,13 +8,15 @@ export default async function ResetPassword(props: { searchParams: Promise<Messa
   const searchParams = await props.searchParams;
   return (
     <form className="flex w-full max-w-md flex-col gap-2 p-4 [&>input]:mb-4">
-      <h1 className="text-2xl font-medium">Reset password</h1>
-      <p className="text-sm text-foreground/60">Please enter your new password below.</p>
-      <Label htmlFor="password">New password</Label>
-      <Input type="password" name="password" placeholder="New password" required />
-      <Label htmlFor="confirmPassword">Confirm password</Label>
-      <Input type="password" name="confirmPassword" placeholder="Confirm password" required />
-      <SubmitButton formAction={resetPasswordAction}>Reset password</SubmitButton>
+      <h1 className="text-2xl font-medium">Resetear contraseña</h1>
+      <p className="text-sm text-foreground/60">
+        Por favor ingrese su nueva contraseña a continuación.
+      </p>
+      <Label htmlFor="password">Nueva contraseña</Label>
+      <Input type="password" name="password" placeholder="Nueva contraseña" required />
+      <Label htmlFor="confirmPassword">Confirmar contraseña</Label>
+      <Input type="password" name="confirmPassword" placeholder="Confirmar contraseña" required />
+      <SubmitButton formAction={resetPasswordAction}>Resetear contraseña</SubmitButton>
       <FormMessage message={searchParams} />
     </form>
   );

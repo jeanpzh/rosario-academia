@@ -1,0 +1,111 @@
+import { createClient } from "@/utils/supabase/client";
+import { create } from "zustand";
+import { persist } from "zustand/middleware";
+
+interface Profile {
+  id: string;
+  dni: string;
+  avatar_url: string | null;
+  birth_date: string;
+  first_name: string;
+  paternal_last_name: string;
+  maternal_last_name: string;
+}
+
+interface Payment {
+  amount: number;
+  payment_date: string;
+  method_name: string;
+}
+
+interface Schedule {
+  weekday: string;
+  schedule_id: number | null;
+  schedule_name: string | null;
+  start_time: string | null;
+  end_time: string | null;
+  level: string | null;
+}
+
+interface EnrollmentRequest {
+  request_id: number;
+  request_date: string;
+  status: "pending" | "approved" | "rejected";
+  requested_schedule: Schedule;
+  assigned_schedule: Schedule;
+}
+
+interface AthleteState {
+  email: string;
+  athlete_id: string;
+  level: "beginner" | "intermediate" | "advanced";
+  height: string | null;
+  weight: string | null;
+  profile: Profile;
+  payments: Payment[] | null;
+  enrollment_requests: EnrollmentRequest[];
+}
+export interface AthleteStore {
+  athlete: AthleteState | null;
+  loading: boolean;
+  fetchAthleteData: () => Promise<void>;
+  clearAthleteData: () => void;
+  setAthleteData: (data: AthleteState) => void;
+}
+const supabase = createClient();
+
+export const useAthleteStore = create<AthleteStore>()(
+  persist(
+    (set) => ({
+      athlete: null,
+      loading: false,
+      setAthleteData: (data) => {
+        set({ athlete: data });
+      },
+
+      fetchAthleteData: async () => {
+        set({ loading: true });
+        const { data: user, error: err } = await supabase.auth.getUser();
+
+        if (err || !user) {
+          console.error("Error fetching user data:", err);
+          set({ loading: false });
+          return;
+        }
+        const athleteId = user.user.id;
+        const email = user.user.email ?? "";
+
+        const { data, error } = await supabase.rpc("get_athlete_data", {
+          athlete_uuid: athleteId,
+        });
+
+        if (error) {
+          console.error("Error fetching athlete data:", error);
+          set({ loading: false });
+          return;
+        }
+        set({
+          athlete: {
+            athlete_id: data.athlete_id,
+            level: data.level,
+            height: data.height,
+            weight: data.weight,
+            profile: data.profile,
+            payments: data.payments ?? [],
+            enrollment_requests: data.enrollment_requests ?? [],
+            email: email,
+          },
+          loading: false,
+        });
+      },
+
+      clearAthleteData: () => {
+        set({ athlete: null });
+        localStorage.removeItem("athlete-store");
+      },
+    }),
+    {
+      name: "athlete-store",
+    },
+  ),
+);

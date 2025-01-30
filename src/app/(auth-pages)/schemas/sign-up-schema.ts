@@ -41,7 +41,6 @@ export const signUpSchema = object({
     }),
   confirmPassword: z.string().min(1, { message: "La confirmación de contraseña es requerida" }),
   level: z.enum(["beginner", "intermediate", "advanced"]),
-  shift: z.enum(["morning", "afternoon", "night"]),
 }).superRefine(({ password, confirmPassword }, ctx) => {
   if (password && password.length >= 8 && password !== confirmPassword) {
     ctx.addIssue({

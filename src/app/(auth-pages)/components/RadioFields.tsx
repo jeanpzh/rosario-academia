@@ -6,35 +6,42 @@ import { Label } from "@/components/ui/label";
 interface RadioFieldProps {
   control: Control<any>;
   name: string;
-  items: { id: string; name: string; description: string }[];
   labelText?: string;
 }
 
-export default function RadioFields({ control, name, items, labelText }: RadioFieldProps) {
+const LEVELS = [
+  { id: "beginner", name: "Básico", description: "14:00 - 15:30 (Lunes, Miércoles, Viernes)" },
+  {
+    id: "intermediate",
+    name: "Intermedio",
+    description: "15:30 - 17:00 (Lunes, Miércoles, Viernes)",
+  },
+  { id: "advanced", name: "Avanzado", description: "17:00 - 18:30 (Lunes, Miércoles, Viernes)" },
+];
+
+export default function RadioFields({ control, name, labelText }: RadioFieldProps) {
   return (
     <div>
       {labelText && <Label className="text-sm text-gray-700 dark:text-gray-300">{labelText}</Label>}
       <Controller
         name={name}
         control={control}
-        defaultValue=""
+        defaultValue="beginner"
         render={({ field }) => (
-          <RadioGroup value={field.value} onValueChange={(value) => field.onChange(value)}>
-            {items.map((item) => (
+          <RadioGroup value={field.value} onValueChange={field.onChange}>
+            {LEVELS.map((level) => (
               <div
-                key={item.id}
-                className="dark:hover:bg-dark-100 flex items-center space-x-2 rounded-lg border border-gray-200 p-4 transition-colors hover:bg-gray-50 dark:border-gray-700 dark:hover:bg-black/50"
+                key={level.id}
+                className="flex items-center space-x-2 rounded-lg border border-gray-200 p-4 transition-colors hover:bg-gray-50 dark:border-gray-700 dark:hover:bg-black/50"
               >
                 <RadioGroupItem
-                  value={item.id}
-                  id={item.id}
+                  value={level.id}
+                  id={level.id}
                   className="border-gray-300 text-green-500 focus:ring-green-500"
                 />
-                <Label htmlFor={item.id} className="flex cursor-pointer flex-col">
-                  <span className="font-medium text-gray-900 dark:text-gray-100">{item.name}</span>
-                  <span className="text-sm text-gray-500 dark:text-gray-400">
-                    {item.description}
-                  </span>
+                <Label htmlFor={level.id} className="flex cursor-pointer flex-col gap-2">
+                  <span className="font-medium text-gray-900 dark:text-gray-100">{level.name}</span>
+                  <span className="text-white">{level.description}</span>
                 </Label>
               </div>
             ))}

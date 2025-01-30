@@ -15,7 +15,7 @@ export async function middleware(request: NextRequest) {
     // If there is an error or no user, redirect to the sign-in page
     const user = data.user;
     if (error || !user) {
-      return NextResponse.redirect(new URL("/auth/sign-in", request.url));
+      return NextResponse.redirect(new URL("/sign-in", request.url));
     }
     // Check the user role
     const { data: userProfile } = await supabase

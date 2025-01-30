@@ -15,7 +15,7 @@ export default async function ProtectedPage() {
   }
   async function redirectToDashboard() {
     "use server";
-    redirect("/dashboard");
+    redirect("/loading-data");
   }
 
   return (
