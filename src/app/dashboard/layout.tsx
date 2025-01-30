@@ -16,7 +16,7 @@ export default async function DashboardLayout({ children }: DashboardLayoutProps
   if (!user) return redirect("/sign-in");
 
   return (
-    <div className="flex min-h-screen w-full">
+    <div className="flex min-h-screen w-full max-md:flex max-md:flex-col">
       <DashboardSidebar />
       <main className="h-full flex-1 overflow-y-auto">{children}</main>
     </div>

@@ -45,11 +45,11 @@ export function DashboardSidebar() {
   return (
     <div
       className={cn(
-        "sticky left-0 top-0 flex h-screen w-64 flex-col overflow-hidden rounded-md border border-neutral-200 bg-gray-100 dark:border-none dark:bg-[#121212]",
+        "sticky left-0 top-0 flex h-screen w-64 flex-col overflow-hidden rounded-md border border-neutral-200 bg-gray-100 dark:border-none dark:bg-[#121212] max-md:w-full max-md:h-auto max-md:z-10 ",
       )}
     >
       <Sidebar open={open} setOpen={setOpen} animate={false}>
-        <SidebarBody className="justify-between gap-10">
+        <SidebarBody className="justify-between gap-10 ">
           <div className="flex flex-1 flex-col overflow-y-auto overflow-x-hidden">
             <header className="flex items-center gap-4">
               <Logo />

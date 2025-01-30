@@ -176,13 +176,14 @@ export default function ProfilePage() {
             </div>
           </div>
 
-          <div className="grid h-full gap-8 md:grid-cols-3">
+          <div className="grid h-full gap-8 md:grid-cols-3 ">
             <motion.div
+              className="max-md:col-span-2"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5 }}
             >
-              <Card className="col-span-1">
+              <Card className="col-span-1 w-full">
                 <CardHeader className="pb-0">
                   <div className="flex flex-col items-center space-y-4">
                     <div className="relative">
