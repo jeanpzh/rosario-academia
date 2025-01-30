@@ -1,12 +1,8 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { useAthleteStore } from "@/lib/stores/useUserStore";
 
 export function ScheduleCard({ className }: { className?: string }) {
-  const schedule = [
-    { day: "Lunes", time: "18:00 - 19:30" },
-    { day: "Miércoles", time: "18:00 - 19:30" },
-    { day: "Viernes", time: "17:30 - 19:00" },
-  ];
-
+  const { athlete } = useAthleteStore();
   return (
     <Card className={className}>
       <CardHeader>
@@ -14,10 +10,12 @@ export function ScheduleCard({ className }: { className?: string }) {
       </CardHeader>
       <CardContent>
         <ul className="space-y-2">
-          {schedule.map((session, index) => (
-            <li key={index} className="flex items-center justify-between">
-              <span className="font-medium">{session.day}</span>
-              <span className="text-sm text-muted-foreground">{session.time}</span>
+          {athlete?.enrollment_requests.map((request: any, index: number) => (
+            <li key={index}>
+              <p className="text-sm text-muted-foreground">
+                {request.requested_schedule.weekday} de {request.requested_schedule.start_time} a{" "}
+                {request.requested_schedule.end_time}
+              </p>
             </li>
           ))}
         </ul>

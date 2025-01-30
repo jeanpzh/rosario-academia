@@ -1,45 +1,47 @@
 "use client";
 import React, { useState } from "react";
 import { Sidebar, SidebarBody, SidebarLink } from "@/components/ui/sidebar";
-import { IconArrowLeft, IconBrandTabler, IconSettings, IconUserBolt } from "@tabler/icons-react";
-import Link from "next/link";
+import { IconArrowLeft, IconBrandTabler, IconId, IconUserBolt } from "@tabler/icons-react";
 import { cn } from "@/lib/utils";
 import { Logo } from "@/components/ui/logo";
 import Image from "next/image";
 import { signOutAction } from "@/app/(auth-pages)/actions";
 import { Button } from "@/components/ui/button";
 import { ThemeSwitcher } from "@/components/theme-switcher";
-
-export const LogoIcon = () => {
-  return (
-    <Link
-      href="#"
-      className="relative z-20 flex items-center space-x-2 py-1 text-sm font-normal text-black"
-    >
-      <div className="h-5 w-6 shrink-0 rounded-bl-sm rounded-br-lg rounded-tl-lg rounded-tr-sm bg-black dark:bg-white" />
-    </Link>
-  );
-};
-export function DashboardSidebar({ user }: { user?: any }) {
+import { Calendar, DollarSignIcon } from "lucide-react";
+import { useAthleteStore } from "@/lib/stores/useUserStore";
+export function DashboardSidebar() {
   const links = [
     {
       label: "Dashboard",
-      href: "#",
+      href: "/dashboard/athlete",
       icon: <IconBrandTabler className="size-5 shrink-0 text-neutral-700 dark:text-neutral-200" />,
     },
     {
-      label: "Profile",
-      href: "#",
+      label: "Perfil",
+      href: "/dashboard/athlete/profile",
       icon: <IconUserBolt className="size-5 shrink-0 text-neutral-700 dark:text-neutral-200" />,
     },
     {
-      label: "Settings",
-      href: "#",
-      icon: <IconSettings className="size-5 shrink-0 text-neutral-700 dark:text-neutral-200" />,
+      label: "Horario",
+      href: "/dashboard/athlete/schedule",
+      icon: <Calendar className="size-5 shrink-0 text-neutral-700 dark:text-neutral-200" />,
+    },
+    {
+      label: "Pagos",
+      href: "/dashboard/athlete/payments",
+      icon: <DollarSignIcon className="size-5 shrink-0 text-neutral-700 dark:text-neutral-200" />,
+    },
+    {
+      label: "Carnet",
+      href: "/dashboard/athlete/carnet",
+      icon: <IconId className="size-5 shrink-0 text-neutral-700 dark:text-neutral-200" />,
     },
   ];
   const [open, setOpen] = useState(false);
-  if (!user) return null;
+
+  const { athlete } = useAthleteStore();
+
   return (
     <div
       className={cn(
@@ -68,12 +70,12 @@ export function DashboardSidebar({ user }: { user?: any }) {
           <div>
             <SidebarLink
               link={{
-                label: `${user?.first_name} ${user?.paternal_last_name} ${user?.maternal_last_name}`,
+                label: `${athlete?.profile.first_name} `,
                 href: "#",
                 icon: (
                   <Image
                     src={
-                      user?.image ||
+                      athlete?.profile.avatar_url ||
                       "https://png.pngtree.com/element_our/20200610/ourmid/pngtree-character-default-avatar-image_2237203.jpg"
                     }
                     className="size-8 shrink-0 rounded-full object-cover"
