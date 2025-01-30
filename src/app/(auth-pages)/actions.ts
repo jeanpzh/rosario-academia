@@ -16,11 +16,9 @@ export const signUpAction = async (formData: unknown) => {
     console.log(validatedData.error);
     return encodedRedirect("error", "/sign-up", "Datos ingresados incorrectos");
   }
-
   const { error } = await supabase.auth.signUp({
     email: validatedData.data.email,
     password: validatedData.data.password,
-    phone: validatedData.data.phone,
     options: {
       emailRedirectTo: `${origin}/auth/callback`,
       data: {
@@ -30,9 +28,9 @@ export const signUpAction = async (formData: unknown) => {
         birth_date: validatedData.data.birthDate,
         dni: validatedData.data.dni,
         level: validatedData.data.level,
-        shift: validatedData.data.shift,
         role: "deportista",
         avatar_url: null,
+        phone: validatedData.data.phone,
       },
     },
   });
@@ -63,8 +61,7 @@ export const signInAction = async (formData: FormData) => {
   if (error) {
     return encodedRedirect("error", "/sign-in", error.message);
   }
-
-  return redirect("/protected");
+  return redirect("/loading-data");
 };
 
 export const forgotPasswordAction = async (formData: FormData) => {
@@ -121,7 +118,7 @@ export async function resetPasswordAction(formData: FormData) {
 export const signOutAction = async () => {
   const supabase = await createClient();
   await supabase.auth.signOut();
-  return redirect("/sign-in");
+  return redirect("/logout-cleanup");
 };
 
 export const getProfile = async (userId: string) => {

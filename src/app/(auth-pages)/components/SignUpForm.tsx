@@ -5,7 +5,7 @@ import { FormMessage, Message } from "@/components/form-message";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { motion } from "framer-motion";
-import { FORM_FIELDS_STEP_ONE, LEVELS, SHIFTS } from "../fields";
+import { FORM_FIELDS_STEP_ONE } from "../fields";
 import { Button } from "@/components/ui/button";
 import { SubmitButton } from "@/components/submit-button";
 import { signUpAction } from "../actions";
@@ -31,6 +31,7 @@ export default function SignUpForm({ message }: SignUpFormProps) {
   });
   const onSubmit = async (data: SignUpSchema) => {
     try {
+      console.log({ data });
       setPending(true);
       await signUpAction(data);
     } catch (err: any) {
@@ -42,8 +43,8 @@ export default function SignUpForm({ message }: SignUpFormProps) {
   console.log({ errors });
 
   return (
-    <div className="w-full">
-      <Card className="w-full max-w-md">
+    <div className="w-full p-0">
+      <Card className="max-w-md">
         <CardHeader>
           <h1 className="text-center text-2xl font-bold">Registrar</h1>
           <p className="text-center text-sm text-gray-500 dark:text-gray-400">
@@ -82,9 +83,7 @@ export default function SignUpForm({ message }: SignUpFormProps) {
                 </div>
               ) : (
                 <>
-                  <RadioFields control={control} name="shift" items={SHIFTS} labelText="Turno" />
-                  <RadioFields control={control} name="level" items={LEVELS} labelText="Nivel" />
-
+                  <RadioFields control={control} name="level" labelText="Niveles" />
                   <div className="mt-4 flex justify-between">
                     <Button type="button" onClick={() => setStep(1)} variant="outline">
                       Atrás
