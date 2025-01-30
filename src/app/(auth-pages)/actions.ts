@@ -59,6 +59,7 @@ export const signInAction = async (formData: FormData) => {
   });
 
   if (error) {
+    console.log(error);
     return encodedRedirect("error", "/sign-in", error.message);
   }
   return redirect("/loading-data");

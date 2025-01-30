@@ -25,7 +25,7 @@ export async function middleware(request: NextRequest) {
       .single();
     const userRole = userProfile?.role;
     // Redirect to respective dashboard if the user presses "/dashboard" in the URL
-    if (error || !userRole) return NextResponse.redirect(new URL("/auth/sign-in", request.url));
+    if (error || !userRole) return NextResponse.redirect(new URL("/sign-in", request.url));
     if (request.nextUrl.pathname === "/dashboard") {
       if (userRole === "admin") {
         return NextResponse.redirect(new URL("/dashboard/admin", request.url));
