@@ -75,6 +75,7 @@ export const useAthleteStore = create<AthleteStore>()(
         const athleteId = user.user.id;
         const email = user.user.email ?? "";
 
+        // 🚀 Cargar datos básicos del atleta
         const { data, error } = await supabase.rpc("get_athlete_data", {
           athlete_uuid: athleteId,
         });
@@ -84,6 +85,8 @@ export const useAthleteStore = create<AthleteStore>()(
           set({ loading: false });
           return;
         }
+
+        // Guardamos la estructura básica sin `payments` ni `enrollment_requests`
         set({
           athlete: {
             athlete_id: data.athlete_id,
@@ -91,12 +94,35 @@ export const useAthleteStore = create<AthleteStore>()(
             height: data.height,
             weight: data.weight,
             profile: data.profile,
-            payments: data.payments ?? [],
-            enrollment_requests: data.enrollment_requests ?? [],
             email: email,
+            payments: [],
+            enrollment_requests: [],
           },
           loading: false,
         });
+
+        set({ loading: true });
+
+        const [paymentsResult, enrollmentResult] = await Promise.all([
+          supabase.rpc("get_payments", { athlete_uuid: athleteId }),
+          supabase.rpc("get_enrollment_requests", { athlete_uuid: athleteId }),
+        ]);
+
+        if (paymentsResult.error || enrollmentResult.error) {
+          console.error(
+            "Error fetching additional data:",
+            paymentsResult.error || enrollmentResult.error,
+          );
+        } else {
+          set((state) => ({
+            athlete: {
+              ...state.athlete!,
+              payments: paymentsResult.data ?? [],
+              enrollment_requests: enrollmentResult.data ?? [],
+            } as AthleteState,
+            loading: false,
+          }));
+        }
       },
 
       clearAthleteData: () => {
