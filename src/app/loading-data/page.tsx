@@ -6,13 +6,14 @@ import LoadingPage from "../dashboard/athlete/components/LoadingPage";
 
 export default function LoadingDataPage() {
   const router = useRouter();
+  const fetchAthleteData = useAthleteStore((state) => state.fetchAthleteData);
 
   useEffect(() => {
     (async () => {
-      await useAthleteStore.getState().fetchAthleteData();
-      router.replace("/dashboard");
+      await fetchAthleteData();
     })();
-  }, [router]);
+    router.replace("/dashboard");
+  }, [fetchAthleteData, router]);
 
   return <LoadingPage />;
 }

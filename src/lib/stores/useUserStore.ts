@@ -86,7 +86,6 @@ export const useAthleteStore = create<AthleteStore>()(
           return;
         }
 
-        // Guardamos la estructura básica sin `payments` ni `enrollment_requests`
         set({
           athlete: {
             athlete_id: data.athlete_id,
