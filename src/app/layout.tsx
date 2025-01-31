@@ -5,7 +5,6 @@ import { openGraphImage } from "./shared-metadata";
 
 const defaultUrl = process.env.VERCEL_URL ? `${process.env.VERCEL_URL}` : "http://localhost:3000";
 
-console.log("defaultUrl", defaultUrl);
 export const metadata = {
   openGraph: {
     ...openGraphImage,
