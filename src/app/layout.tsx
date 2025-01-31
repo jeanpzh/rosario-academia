@@ -3,7 +3,9 @@ import "./globals.css";
 import Providers from "./providers";
 import { openGraphImage } from "./shared-metadata";
 
-const defaultUrl = process.env.VERCEL_URL ? `${process.env.VERCEL_URL}` : "http://localhost:3000";
+const defaultUrl = process.env.VERCEL_URL
+  ? `https://${process.env.VERCEL_URL}`
+  : "http://localhost:3000";
 
 export const metadata = {
   openGraph: {
