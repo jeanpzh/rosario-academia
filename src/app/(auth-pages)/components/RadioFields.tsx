@@ -41,7 +41,7 @@ export default function RadioFields({ control, name, labelText }: RadioFieldProp
                 />
                 <Label htmlFor={level.id} className="flex cursor-pointer flex-col gap-2">
                   <span className="font-medium text-gray-900 dark:text-gray-100">{level.name}</span>
-                  <span className="text-white">{level.description}</span>
+                  <span className="dark:text-white">{level.description}</span>
                 </Label>
               </div>
             ))}
