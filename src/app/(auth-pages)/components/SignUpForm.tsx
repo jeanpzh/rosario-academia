@@ -14,6 +14,8 @@ import { signUpSchema, SignUpSchema } from "../schemas/sign-up-schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import TextField from "./TextField";
 import RadioFields from "./RadioFields";
+import VerifyPassword from "./VerifyPassword";
+import { PasswordVisualizer } from "./PasswordVisualizer";
 
 interface SignUpFormProps {
   message: Message;
@@ -28,6 +30,7 @@ export default function SignUpForm({ message }: SignUpFormProps) {
     setFocus,
     setError,
     clearErrors,
+    watch,
     formState: { errors },
   } = useForm<SignUpSchema>({
     resolver: zodResolver(signUpSchema),
@@ -82,9 +85,6 @@ export default function SignUpForm({ message }: SignUpFormProps) {
     } else {
       setFocus(firstErrorField);
     }
-
-    // (Casos especiales) Si el error del server es "DNI ya registrado", se debe cambiar el paso (encondedRedirect).
-    // http://localhost:3000/sign-up?error=El%20DNI%20ya%20se%20encuentra%20registrado
   };
 
   return (
@@ -122,6 +122,31 @@ export default function SignUpForm({ message }: SignUpFormProps) {
                       placeholder={field.placeholder}
                     />
                   ))}
+                  <div className="relative">
+                    <TextField
+                      htmlFor="password"
+                      control={control}
+                      name="password"
+                      label="Contraseña"
+                      type="password"
+                      placeholder="********"
+                      id="password-input"
+                    />
+                    <PasswordVisualizer inputId="password-input" />
+                  </div>
+                  <VerifyPassword password={watch("password", "")} />
+                  <div className="relative">
+                    <TextField
+                      htmlFor="confirmPassword"
+                      control={control}
+                      name="confirmPassword"
+                      label="Confirmar Contraseña"
+                      type="password"
+                      placeholder="********"
+                      id="confirm-password-input"
+                    />
+                    <PasswordVisualizer inputId="confirm-password-input" />
+                  </div>
                   <Button type="button" variant="default" onClick={() => setStep(2)}>
                     Siguiente
                   </Button>

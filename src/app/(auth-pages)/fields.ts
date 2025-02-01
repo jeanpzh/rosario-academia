@@ -48,20 +48,6 @@ export const FORM_FIELDS_STEP_ONE = [
     required: true,
     placeholder: "987654321",
   },
-  {
-    label: "Contraseña",
-    name: "password",
-    type: "password",
-    required: true,
-    placeholder: "********",
-  },
-  {
-    label: "Confirmar Contraseña",
-    name: "confirmPassword",
-    type: "password",
-    required: true,
-    placeholder: "********",
-  },
 ];
 export const LEVELS = [
   {

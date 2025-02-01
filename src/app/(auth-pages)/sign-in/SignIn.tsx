@@ -8,6 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import Link from "next/link";
 import { signInAction } from "../actions";
+import { PasswordVisualizer } from "../components/PasswordVisualizer";
 interface SignInProps {
   searchParams: Message;
 }
@@ -48,16 +49,18 @@ const SignIn = ({ searchParams }: SignInProps) => {
               placeholder="zavaleta@gmail.com"
               required
             />
-            <div className={styles.signInCheckbox}>
+            <div className={`${styles.signInContent} relative flex flex-col`}>
               <Label htmlFor="password">Contraseña</Label>
+              <Input
+                className={styles.signInInput}
+                type="password"
+                name="password"
+                placeholder="Tu contraseña"
+                id="password"
+                required
+              />
+              <PasswordVisualizer inputId="password" />
             </div>
-            <Input
-              className={styles.signInInput}
-              type="password"
-              name="password"
-              placeholder="Tu contraseña"
-              required
-            />
             <SubmitButton pendingText="Loggeando...">Iniciar Sesión</SubmitButton>
             <FormMessage message={searchParams} />
           </div>
