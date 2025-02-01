@@ -25,22 +25,67 @@ export default function SignUpForm({ message }: SignUpFormProps) {
   const {
     control,
     handleSubmit,
+    setFocus,
+    setError,
+    clearErrors,
     formState: { errors },
   } = useForm<SignUpSchema>({
     resolver: zodResolver(signUpSchema),
   });
+
   const onSubmit = async (data: SignUpSchema) => {
     try {
-      console.log({ data });
       setPending(true);
-      await signUpAction(data);
+      const res = await signUpAction(data);
+      // devuelvo un error si el DNI ya se encuentra registrado
+      if (res.status === 400) {
+        setError("dni", {
+          type: "manual",
+          message: res.message,
+        });
+        setStep(1);
+        setFocus("dni");
+      } else {
+        clearErrors("dni");
+      }
     } catch (err: any) {
       console.log({ err });
     } finally {
       setPending(false);
     }
   };
-  console.log({ errors });
+
+  /**
+   * Función onError que recibe los errores generados por react-hook-form.
+   * Se encarga de:
+   * 1. Detectar cuál es el primer campo con error.
+   * 2. Determinar a qué paso pertenece dicho campo.
+   * 3. Si el paso actual no coincide, cambiar el paso y luego hacer focus sobre el campo.
+   */
+  const onError = (formErrors: typeof errors) => {
+    // Obtiene la primera clave con error
+    const firstErrorField = Object.keys(formErrors)[0] as keyof SignUpSchema;
+    if (!firstErrorField) return;
+
+    // Determinar en qué paso se encuentra el campo con error.
+    // El error siempre provendrá del primer paso o del segundo.
+    const stepOneFieldNames = FORM_FIELDS_STEP_ONE.map((field) => field.name);
+    const errorStep = stepOneFieldNames.includes(firstErrorField) ? 1 : 2;
+
+    // Si el error pertenece a un paso distinto, actualizamos el estado y luego hacemos focus.
+    if (step !== errorStep) {
+      setStep(errorStep);
+      // Se utiliza un pequeño delay para esperar a que se renderice el nuevo step.
+      setTimeout(() => {
+        setFocus(firstErrorField);
+      }, 300);
+    } else {
+      setFocus(firstErrorField);
+    }
+
+    // (Casos especiales) Si el error del server es "DNI ya registrado", se debe cambiar el paso (encondedRedirect).
+    // http://localhost:3000/sign-up?error=El%20DNI%20ya%20se%20encuentra%20registrado
+  };
 
   return (
     <div className="w-full p-0">
@@ -56,7 +101,7 @@ export default function SignUpForm({ message }: SignUpFormProps) {
         </CardHeader>
         <CardContent>
           <Progress value={step === 1 ? 50 : 100} className="mb-4" />
-          <form onSubmit={handleSubmit(onSubmit)}>
+          <form onSubmit={handleSubmit(onSubmit, onError)}>
             <motion.div
               key={step}
               initial={{ opacity: 0, x: 50 }}
@@ -68,8 +113,8 @@ export default function SignUpForm({ message }: SignUpFormProps) {
                 <div>
                   {FORM_FIELDS_STEP_ONE.map((field, index) => (
                     <TextField
-                      htmlFor={field.name}
                       key={index}
+                      htmlFor={field.name}
                       control={control}
                       name={field.name}
                       label={field.label}
