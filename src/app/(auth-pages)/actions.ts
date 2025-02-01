@@ -13,9 +13,20 @@ export const signUpAction = async (formData: unknown) => {
   const origin = (await headers()).get("origin");
 
   if (!validatedData.success) {
-    console.log(validatedData.error);
     return encodedRedirect("error", "/sign-up", "Datos ingresados incorrectos");
   }
+  const { data: findedDNI } = await supabase
+    .from("profiles")
+    .select("dni")
+    .eq("dni", validatedData.data.dni);
+
+  if (findedDNI && findedDNI.length > 0) {
+    return {
+      status: 400,
+      message: "Ya existe un usuario con el DNI ingresado",
+    };
+  }
+
   const { error } = await supabase.auth.signUp({
     email: validatedData.data.email,
     password: validatedData.data.password,
