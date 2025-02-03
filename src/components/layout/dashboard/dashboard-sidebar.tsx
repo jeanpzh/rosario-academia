@@ -11,6 +11,18 @@ import { ThemeSwitcher } from "@/components/theme-switcher";
 import { Calendar, DollarSignIcon } from "lucide-react";
 import { useAthleteStore } from "@/lib/stores/useUserStore";
 export function DashboardSidebar() {
+  const unvalidatedEnrollmentLinks = [
+    {
+      label: "Dashboard",
+      href: "/dashboard/athlete",
+      icon: <IconBrandTabler className="size-5 shrink-0 text-neutral-700 dark:text-neutral-200" />,
+    },
+    {
+      label: "Pagos",
+      href: "/dashboard/athlete/payments",
+      icon: <DollarSignIcon className="size-5 shrink-0 text-neutral-700 dark:text-neutral-200" />,
+    },
+  ];
   const links = [
     {
       label: "Dashboard",
@@ -56,9 +68,11 @@ export function DashboardSidebar() {
               <ThemeSwitcher />
             </header>
             <div className="mt-8 flex flex-col gap-2">
-              {links.map((link, index) => (
-                <SidebarLink key={index} link={link} />
-              ))}
+              {athlete?.enrollment_requests?.[0]?.status === "approved"
+                ? links.map((link: any, index: number) => <SidebarLink key={index} link={link} />)
+                : unvalidatedEnrollmentLinks.map((link: any, index: number) => (
+                    <SidebarLink key={index} link={link} />
+                  ))}
               <form action={signOutAction}>
                 <Button type="submit" variant={"ghost"} className="flex items-center gap-2">
                   <IconArrowLeft className="size-5 shrink-0 text-neutral-700 dark:text-neutral-200" />{" "}
