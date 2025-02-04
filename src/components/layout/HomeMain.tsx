@@ -76,26 +76,30 @@ export default function HomeMain() {
         <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
           <div className="flex flex-col overflow-hidden rounded-lg border border-primary/20 bg-card p-6 text-card-foreground shadow-md transition-transform hover:scale-105">
             <img
-              src="https://imgmedia.elpopular.pe/640x358/elpopular/original/2025/01/26/6796bd01df574c43915b96d0.webp"
+              src="https://www.businessempresarial.com.pe/wp-content/uploads/2024/07/evento.jpg"
               alt="Torneo de Fútbol"
               className="mb-4 h-60 w-full rounded object-cover"
             />
-            <h3 className="mb-2 text-xl font-semibold">Makanaky se Calatea y Acaba Frio</h3>
-            <p className="mb-2 text-muted-foreground">Fecha: 28 de Enero, 2025</p>
-            <p className="mb-4 text-muted-foreground">Lugar: Estadio Principal</p>
+            <h3 className="mb-2 text-xl font-semibold">
+              Charla Informativa - Expositor Said William
+            </h3>
+            <p className="mb-2 text-muted-foreground">Fecha: 14 de Febrero, 2025</p>
+            <p className="mb-4 text-muted-foreground">Lugar: Sede Rosario</p>
             <button className="mt-auto rounded bg-primary px-4 py-2 text-primary-foreground transition-colors hover:bg-primary/80">
               Más información
             </button>
           </div>
           <div className="flex flex-col overflow-hidden rounded-lg border border-primary/20 bg-card p-6 text-card-foreground shadow-md transition-transform hover:scale-105">
             <img
-              src="https://peru21-pe.b-cdn.net/sites/default/efsfiles/styles/wide/public/2025-01/rafael-lopez-aliaga-le-da-la-bienvenida-a-ishow-speed-en-lima.png?itok=Sh3ccR61"
+              src="https://ogbu.unmsm.edu.pe/wp-content/uploads/2022/05/MG_9827-scaled.jpg"
               alt="Competencia de Natación"
               className="mb-4 h-60 w-full rounded object-cover"
             />
-            <h3 className="mb-2 text-xl font-semibold">Homenaje en Honor a Speed</h3>
-            <p className="mb-2 text-muted-foreground">Fecha: 29 de Enero, 2025</p>
-            <p className="mb-4 text-muted-foreground">Lugar: Piscina Olímpica</p>
+            <h3 className="mb-2 text-xl font-semibold">
+              Sesion de entrenamiento gratis para UNMSM
+            </h3>
+            <p className="mb-2 text-muted-foreground">Fecha: 10 de Febrero, 2025</p>
+            <p className="mb-4 text-muted-foreground">Lugar: Puerta 1</p>
             <button className="mt-auto rounded bg-primary px-4 py-2 text-primary-foreground transition-colors hover:bg-primary/80">
               Más información
             </button>
@@ -121,9 +125,8 @@ export default function HomeMain() {
             },
             {
               id: 3,
-              imageUrl:
-                "https://scontent-lim1-1.xx.fbcdn.net/v/t39.30808-6/461352674_10232906216055425_2417695151802184897_n.jpg?stp=cp6_dst-jpg_tt6&_nc_cat=110&ccb=1-7&_nc_sid=aa7b47&_nc_ohc=yi7CtTl9DB8Q7kNvgE9oDdH&_nc_oc=AdjWwm8FmioArOtBHV9JeD-VoEkUggRB1lA5DwpFB-fVndlfMA862bB34fAnNWONN_o&_nc_zt=23&_nc_ht=scontent-lim1-1.xx&_nc_gid=As9xD2sUxFO4xYNUKxQgrvl&oh=00_AYB19PWkEU0OPHneSbN44__SqL_zonKfBp9M3JIMOcrcNg&oe=679DEC2C",
-              alt: "Competencia de natación",
+              imageUrl: "https://ogbu.unmsm.edu.pe/wp-content/uploads/2022/05/MG_9913-scaled.jpg",
+              alt: "Competencia de voley",
             },
             {
               id: 4,
