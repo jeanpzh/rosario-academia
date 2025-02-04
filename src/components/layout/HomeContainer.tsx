@@ -5,7 +5,7 @@ import HomeFooter from "./HomeFooter";
 export default function HomeContainer({ children }: { children: React.ReactNode }) {
   return (
     <main className="flex min-h-screen flex-col items-center">
-      <div className="flex w-full flex-1 flex-col items-center gap-20">
+      <div className="flex w-full flex-1 flex-col items-center gap-5">
         <HomeHeader />
         <div className="flex flex-col gap-20 p-5"> {children}</div>
         <HomeFooter />

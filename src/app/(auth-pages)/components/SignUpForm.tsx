@@ -74,13 +74,13 @@ export default function SignUpForm({ message }: SignUpFormProps) {
   };
 
   return (
-    <div className="flex min-h-screen">
+    <div className="flex min-h-screen rounded-lg shadow-xl">
       {/* Left Section */}
       <div className="relative hidden flex-col items-center justify-center overflow-hidden bg-black p-8 text-white lg:flex lg:w-1/2">
         <div className="absolute inset-0 z-0">
           <video className="size-full object-cover opacity-50" autoPlay loop muted playsInline>
             <source
-              src="https://media.gettyimages.com/id/1481709850/es/v%C3%ADdeo/jugadora-de-voleibol-femenino-con-camiseta-azul-saltando-y-golpeando-la-pelota.mp4?s=mp4-640x640-gi&k=20&c=oT8DIsVOHbMVHFtmT0Y3GrwJWIeojt3xVqr8rQSb9X0="
+              src="https://videocdn.cdnpk.net/videos/7568bf8d-65e5-455b-a21c-5d5df0b4effd/horizontal/previews/clear/large.mp4?token=exp=1738694325~hmac=c4f1a1ac973ee28ad76a4aa0ed006afe85da51097f0f7412c514ee0c33965f68"
               type="video/mp4"
             />
           </video>
@@ -192,12 +192,7 @@ export default function SignUpForm({ message }: SignUpFormProps) {
                     >
                       Atrás
                     </HoverBorderGradient>
-                    <HoverBorderGradient
-                      type="submit"
-                      disabled={pending}
-                      className="w-full"
-                      containerClassName="w-full"
-                    >
+                    <HoverBorderGradient className="w-full" containerClassName="w-full">
                       {pending ? "Registrando..." : "Registrar"}
                     </HoverBorderGradient>
                   </div>
