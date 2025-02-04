@@ -1,16 +1,14 @@
 "use client";
-import React, { useState } from "react";
+
+import { useState } from "react";
 import Link from "next/link";
-import { FormMessage, Message } from "@/components/form-message";
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { Progress } from "@/components/ui/progress";
+import { FormMessage, type Message } from "@/components/form-message";
 import { motion } from "framer-motion";
 import { FORM_FIELDS_STEP_ONE } from "../fields";
-import { Button } from "@/components/ui/button";
-import { SubmitButton } from "@/components/submit-button";
+import { HoverBorderGradient } from "@/components/hover-border-gradient";
 import { signUpAction } from "../actions";
 import { useForm } from "react-hook-form";
-import { signUpSchema, SignUpSchema } from "../schemas/sign-up-schema";
+import { signUpSchema, type SignUpSchema } from "../schemas/sign-up-schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import TextField from "./TextField";
 import RadioFields from "./RadioFields";
@@ -24,6 +22,7 @@ interface SignUpFormProps {
 export default function SignUpForm({ message }: SignUpFormProps) {
   const [pending, setPending] = useState(false);
   const [step, setStep] = useState(1);
+
   const {
     control,
     handleSubmit,
@@ -40,7 +39,6 @@ export default function SignUpForm({ message }: SignUpFormProps) {
     try {
       setPending(true);
       const res = await signUpAction(data);
-      // devuelvo un error si el DNI ya se encuentra registrado
       if (res.status === 400) {
         setError("dni", {
           type: "manual",
@@ -58,27 +56,15 @@ export default function SignUpForm({ message }: SignUpFormProps) {
     }
   };
 
-  /**
-   * Función onError que recibe los errores generados por react-hook-form.
-   * Se encarga de:
-   * 1. Detectar cuál es el primer campo con error.
-   * 2. Determinar a qué paso pertenece dicho campo.
-   * 3. Si el paso actual no coincide, cambiar el paso y luego hacer focus sobre el campo.
-   */
   const onError = (formErrors: typeof errors) => {
-    // Obtiene la primera clave con error
     const firstErrorField = Object.keys(formErrors)[0] as keyof SignUpSchema;
     if (!firstErrorField) return;
 
-    // Determinar en qué paso se encuentra el campo con error.
-    // El error siempre provendrá del primer paso o del segundo.
     const stepOneFieldNames = FORM_FIELDS_STEP_ONE.map((field) => field.name);
     const errorStep = stepOneFieldNames.includes(firstErrorField) ? 1 : 2;
 
-    // Si el error pertenece a un paso distinto, actualizamos el estado y luego hacemos focus.
     if (step !== errorStep) {
       setStep(errorStep);
-      // Se utiliza un pequeño delay para esperar a que se renderice el nuevo step.
       setTimeout(() => {
         setFocus(firstErrorField);
       }, 300);
@@ -88,20 +74,32 @@ export default function SignUpForm({ message }: SignUpFormProps) {
   };
 
   return (
-    <div className="w-full p-0">
-      <Card className="max-w-md">
-        <CardHeader>
-          <h1 className="text-center text-2xl font-bold">Registrar</h1>
-          <p className="text-center text-sm text-gray-500 dark:text-gray-400">
-            ¿Ya tienes una cuenta deportista?{" "}
-            <Link href="/sign-in" className="font-medium text-primary hover:underline">
-              Loggeate
-            </Link>
+    <div className="flex min-h-screen">
+      {/* Left Section */}
+      <div className="relative hidden flex-col items-center justify-center overflow-hidden bg-black p-8 text-white lg:flex lg:w-1/2">
+        <div className="absolute inset-0 z-0">
+          <video className="size-full object-cover opacity-50" autoPlay loop muted playsInline>
+            <source
+              src="https://videocdn.cdnpk.net/videos/7568bf8d-65e5-455b-a21c-5d5df0b4effd/horizontal/previews/clear/large.mp4?token=exp=1738692582~hmac=e793b1313e45b39f17651bcb454f837d4a24ca12caf8d284d777d4f46233bf21"
+              type="video/mp4"
+            />
+          </video>
+        </div>
+        <div className="relative z-10 max-w-2xl text-center">
+          <h1 className="mb-4 text-4xl font-bold">Bienvenido Deportista</h1>
+          <p className="mb-8 text-gray-400">
+            Únete a nuestra comunidad deportiva y comienza tu viaje hacia el éxito
           </p>
-        </CardHeader>
-        <CardContent>
-          <Progress value={step === 1 ? 50 : 100} className="mb-4" />
-          <form onSubmit={handleSubmit(onSubmit, onError)}>
+        </div>
+      </div>
+
+      {/* Right Section */}
+      <div className="w-full p-4 lg:w-1/2 lg:p-8">
+        <div className="mx-auto max-w-xl">
+          <h2 className="mb-2 text-2xl font-semibold">Registrar</h2>
+          <p className="mb-6 text-gray-600">Ingresa tus datos para registrarte</p>
+
+          <form onSubmit={handleSubmit(onSubmit, onError)} className="space-y-6">
             <motion.div
               key={step}
               initial={{ opacity: 0, x: 50 }}
@@ -110,65 +108,106 @@ export default function SignUpForm({ message }: SignUpFormProps) {
               transition={{ duration: 0.3 }}
             >
               {step === 1 ? (
-                <div>
-                  {FORM_FIELDS_STEP_ONE.map((field, index) => (
-                    <TextField
-                      key={index}
-                      htmlFor={field.name}
-                      control={control}
-                      name={field.name}
-                      label={field.label}
-                      type={field.type}
-                      placeholder={field.placeholder}
-                    />
-                  ))}
-                  <div className="relative">
-                    <TextField
-                      htmlFor="password"
-                      control={control}
-                      name="password"
-                      label="Contraseña"
-                      type="password"
-                      placeholder="********"
-                      id="password-input"
-                    />
-                    <PasswordVisualizer inputId="password-input" />
+                <div className="space-y-6">
+                  <div className="grid grid-cols-2 gap-4">
+                    {FORM_FIELDS_STEP_ONE.filter(
+                      (field) => !["password", "confirmPassword", "email"].includes(field.name),
+                    ).map((field, index) => (
+                      <TextField
+                        key={index}
+                        htmlFor={field.name}
+                        control={control}
+                        name={field.name}
+                        label={field.label}
+                        type={field.type}
+                        placeholder={field.placeholder}
+                      />
+                    ))}
                   </div>
-                  <VerifyPassword password={watch("password", "")} />
-                  <div className="relative">
+
+                  <div className="w-full">
                     <TextField
-                      htmlFor="confirmPassword"
+                      htmlFor="email"
                       control={control}
-                      name="confirmPassword"
-                      label="Confirmar Contraseña"
-                      type="password"
-                      placeholder="********"
-                      id="confirm-password-input"
+                      name="email"
+                      label="Correo Electrónico"
+                      type="email"
+                      placeholder="correo@ejemplo.com"
                     />
-                    <PasswordVisualizer inputId="confirm-password-input" />
                   </div>
-                  <Button type="button" variant="default" onClick={() => setStep(2)}>
+
+                  <div className="space-y-4">
+                    <div className="relative">
+                      <TextField
+                        htmlFor="password"
+                        control={control}
+                        name="password"
+                        label="Contraseña"
+                        type="password"
+                        placeholder="********"
+                        id="password-input"
+                      />
+                      <PasswordVisualizer inputId="password-input" />
+                    </div>
+
+                    <VerifyPassword password={watch("password", "")} />
+
+                    <div className="relative">
+                      <TextField
+                        htmlFor="confirmPassword"
+                        control={control}
+                        name="confirmPassword"
+                        label="Confirmar Contraseña"
+                        type="password"
+                        placeholder="********"
+                        id="confirm-password-input"
+                      />
+                      <PasswordVisualizer inputId="confirm-password-input" />
+                    </div>
+                  </div>
+
+                  <HoverBorderGradient
+                    onClick={() => setStep(2)}
+                    className="w-full"
+                    containerClassName="w-full"
+                  >
                     Siguiente
-                  </Button>
+                  </HoverBorderGradient>
+
+                  <p className="text-center text-sm text-gray-600">
+                    ¿Ya tienes una cuenta?{" "}
+                    <Link href="/sign-in" className="text-blue-500 hover:underline">
+                      Inicia sesión
+                    </Link>
+                  </p>
                 </div>
               ) : (
-                <>
+                <div className="space-y-6">
                   <RadioFields control={control} name="level" labelText="Niveles" />
-                  <div className="mt-4 flex justify-between">
-                    <Button type="button" onClick={() => setStep(1)} variant="outline">
+                  <div className="flex justify-between gap-4">
+                    <HoverBorderGradient
+                      onClick={() => setStep(1)}
+                      className="w-full"
+                      containerClassName="w-full"
+                    >
                       Atrás
-                    </Button>
-                    <SubmitButton pending={pending} pendingText="Registrando...">
-                      Registrar
-                    </SubmitButton>
+                    </HoverBorderGradient>
+                    <HoverBorderGradient
+                      type="submit"
+                      disabled={pending}
+                      className="w-full"
+                      containerClassName="w-full"
+                    >
+                      {pending ? "Registrando..." : "Registrar"}
+                    </HoverBorderGradient>
                   </div>
-                </>
+                </div>
               )}
             </motion.div>
           </form>
-        </CardContent>
-      </Card>
-      <FormMessage message={message} />
+          <FormMessage message={message} />
+        </div>
+      </div>
     </div>
   );
 }

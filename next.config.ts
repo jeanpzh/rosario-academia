@@ -19,6 +19,10 @@ const nextConfig: NextConfig = {
         protocol: "https",
         hostname: "images8.alphacoders.com",
       },
+      {
+        protocol: "https",
+        hostname: "cdn.www.gob.pe",
+      },
     ],
   },
 };
