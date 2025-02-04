@@ -1,5 +1,6 @@
 "use client";
 
+import React from "react";
 import { useState } from "react";
 import Link from "next/link";
 import { FormMessage, type Message } from "@/components/form-message";
@@ -14,6 +15,7 @@ import TextField from "./TextField";
 import RadioFields from "./RadioFields";
 import VerifyPassword from "./VerifyPassword";
 import { PasswordVisualizer } from "./PasswordVisualizer";
+import { FlipWords } from "@/components/flip-words";
 
 interface SignUpFormProps {
   message: Message;
@@ -23,6 +25,7 @@ export default function SignUpForm({ message }: SignUpFormProps) {
   const [pending, setPending] = useState(false);
   const [step, setStep] = useState(1);
 
+  const words = ["aprender", "mejorar", "diviertirte", "practicar"];
   const {
     control,
     handleSubmit,
@@ -74,22 +77,16 @@ export default function SignUpForm({ message }: SignUpFormProps) {
   };
 
   return (
-    <div className="flex min-h-screen rounded-lg shadow-xl">
+    <div className="flex h-auto w-[80rem] rounded-lg shadow-xl">
       {/* Left Section */}
-      <div className="relative hidden flex-col items-center justify-center overflow-hidden bg-black p-8 text-white lg:flex lg:w-1/2">
-        <div className="absolute inset-0 z-0">
-          <video className="size-full object-cover opacity-50" autoPlay loop muted playsInline>
-            <source
-              src="https://videocdn.cdnpk.net/videos/7568bf8d-65e5-455b-a21c-5d5df0b4effd/horizontal/previews/clear/large.mp4?token=exp=1738694325~hmac=c4f1a1ac973ee28ad76a4aa0ed006afe85da51097f0f7412c514ee0c33965f68"
-              type="video/mp4"
-            />
-          </video>
-        </div>
-        <div className="relative z-10 max-w-2xl text-center">
-          <h1 className="mb-4 text-4xl font-bold">Bienvenido Deportista</h1>
-          <p className="mb-8 text-gray-400">
-            Únete a nuestra comunidad deportiva y comienza tu viaje hacia el éxito
-          </p>
+      <div className="relative hidden flex-col items-center justify-center overflow-hidden bg-black p-8 text-white lg:flex lg:w-1/2 ">
+        <div className="flex h-[40rem] items-center justify-center px-4">
+          <div className="mx-auto text-4xl font-normal text-neutral-600 dark:text-neutral-400">
+            <span className="text-5xl">Bienvenidos!</span>
+            <br /> <br />
+            Academia Rosario <br />
+            Ven a <FlipWords words={words} />
+          </div>
         </div>
       </div>
 
