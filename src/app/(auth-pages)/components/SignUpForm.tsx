@@ -25,7 +25,7 @@ export default function SignUpForm({ message }: SignUpFormProps) {
   const [pending, setPending] = useState(false);
   const [step, setStep] = useState(1);
 
-  const words = ["aprender", "mejorar", "diviertirte", "practicar"];
+  const words = ["aprender", "mejorar", "divertirte", "practicar"];
   const {
     control,
     handleSubmit,
