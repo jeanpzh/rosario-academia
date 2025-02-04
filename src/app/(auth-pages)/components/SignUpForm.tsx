@@ -80,7 +80,7 @@ export default function SignUpForm({ message }: SignUpFormProps) {
         <div className="absolute inset-0 z-0">
           <video className="size-full object-cover opacity-50" autoPlay loop muted playsInline>
             <source
-              src="https://videocdn.cdnpk.net/videos/7568bf8d-65e5-455b-a21c-5d5df0b4effd/horizontal/previews/clear/large.mp4?token=exp=1738692582~hmac=e793b1313e45b39f17651bcb454f837d4a24ca12caf8d284d777d4f46233bf21"
+              src="https://media.gettyimages.com/id/1481709850/es/v%C3%ADdeo/jugadora-de-voleibol-femenino-con-camiseta-azul-saltando-y-golpeando-la-pelota.mp4?s=mp4-640x640-gi&k=20&c=oT8DIsVOHbMVHFtmT0Y3GrwJWIeojt3xVqr8rQSb9X0="
               type="video/mp4"
             />
           </video>
