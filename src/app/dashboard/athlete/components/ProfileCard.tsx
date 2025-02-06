@@ -3,23 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import Link from "next/link";
-
-enum LevelToSpanish {
-  beginner = "Principiante",
-  intermediate = "Intermedio",
-  advanced = "Avanzado",
-}
-
-interface AthleteProfile {
-  first_name: string;
-  paternal_last_name: string;
-  maternal_last_name: string;
-}
-
-interface Athlete {
-  profile: AthleteProfile;
-  level: keyof typeof LevelToSpanish;
-}
+import { Athlete, LevelToSpanish } from "../profile/types";
 
 export function ProfileCard({ className, athlete }: { className?: string; athlete: Athlete }) {
   return (
