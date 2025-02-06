@@ -1,46 +1,21 @@
 "use client";
 import React, { useState } from "react";
 import { Sidebar, SidebarBody, SidebarLink } from "@/components/ui/sidebar";
-import { IconArrowLeft, IconBrandTabler, IconId, IconUserBolt } from "@tabler/icons-react";
+import { IconArrowLeft } from "@tabler/icons-react";
 import { cn } from "@/lib/utils";
 import { Logo } from "@/components/ui/logo";
 import Image from "next/image";
 import { signOutAction } from "@/app/(auth-pages)/actions";
 import { Button } from "@/components/ui/button";
 import { ThemeSwitcher } from "@/components/theme-switcher";
-import { Calendar, DollarSignIcon } from "lucide-react";
-import { useAthleteStore } from "@/lib/stores/useUserStore";
-export function DashboardSidebar() {
-  const links = [
-    {
-      label: "Dashboard",
-      href: "/dashboard/athlete",
-      icon: <IconBrandTabler className="size-5 shrink-0 text-neutral-700 dark:text-neutral-200" />,
-    },
-    {
-      label: "Perfil",
-      href: "/dashboard/athlete/profile",
-      icon: <IconUserBolt className="size-5 shrink-0 text-neutral-700 dark:text-neutral-200" />,
-    },
-    {
-      label: "Horario",
-      href: "/dashboard/athlete/schedule",
-      icon: <Calendar className="size-5 shrink-0 text-neutral-700 dark:text-neutral-200" />,
-    },
-    {
-      label: "Pagos",
-      href: "/dashboard/athlete/payments",
-      icon: <DollarSignIcon className="size-5 shrink-0 text-neutral-700 dark:text-neutral-200" />,
-    },
-    {
-      label: "Carnet",
-      href: "/dashboard/athlete/carnet",
-      icon: <IconId className="size-5 shrink-0 text-neutral-700 dark:text-neutral-200" />,
-    },
-  ];
-  const [open, setOpen] = useState(false);
 
-  const { athlete } = useAthleteStore();
+interface Links {
+  label: string;
+  href?: string;
+  icon: React.JSX.Element | React.ReactNode;
+}
+export function DashboardSidebar({ links, user }: { links: Links[]; user: any }) {
+  const [open, setOpen] = useState(false);
 
   return (
     <div
@@ -70,12 +45,12 @@ export function DashboardSidebar() {
           <div>
             <SidebarLink
               link={{
-                label: `${athlete?.profile.first_name} `,
+                label: `${user.first_name} `,
                 href: "#",
                 icon: (
                   <Image
                     src={
-                      athlete?.profile.avatar_url ||
+                      user.avatar_url ||
                       "https://png.pngtree.com/element_our/20200610/ourmid/pngtree-character-default-avatar-image_2237203.jpg"
                     }
                     className="size-8 shrink-0 rounded-full object-cover"
