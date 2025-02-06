@@ -13,18 +13,10 @@ export default function Login(props: { searchParams: Promise<Message> }) {
       const params = await props.searchParams;
       setSearchParams(params);
       setIsLoading(false);
-    }, 2000);
+    }, 1000);
 
     return () => clearTimeout(timer);
   }, [props.searchParams]);
 
-  return (
-    <div>
-      {isLoading ? (
-        <LoadingPage />
-      ) : (
-        <SignIn searchParams={searchParams!} /> // Mostrar el formulario de inicio de sesión
-      )}
-    </div>
-  );
+  return <div>{isLoading ? <LoadingPage /> : <SignIn searchParams={searchParams!} />}</div>;
 }
