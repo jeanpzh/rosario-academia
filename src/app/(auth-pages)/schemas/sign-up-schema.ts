@@ -53,5 +53,3 @@ export const signUpSchema = object({
 
 // Infer the type
 export type SignUpSchema = z.infer<typeof signUpSchema>;
-
-//
