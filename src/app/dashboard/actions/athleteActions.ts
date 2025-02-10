@@ -9,7 +9,7 @@ export const updateAthleteAction = async (formData: unknown, id: string) => {
     return {
       error: "Datos ingresados incorrectos",
     };
-  const supabase = getServiceClient();
+  const supabase = await getServiceClient();
   const { data, error } = await supabase
     .from("profiles")
     .update({
@@ -28,21 +28,21 @@ export const updateAthleteAction = async (formData: unknown, id: string) => {
 };
 
 export const deleteAthleteAction = async (id: string) => {
-  const supabase = getServiceClient();
+  const supabase = await getServiceClient();
   const { error } = await supabase.auth.admin.deleteUser(id);
   if (error) throw new Error("Error al eliminar deportista");
   return { status: 200, message: "Deportista eliminado correctamente" };
 };
 
 export const getAthletesAction = async () => {
-  const supabase = getServiceClient();
+  const supabase = await getServiceClient();
   const { data, error } = await supabase.rpc("get_deportistas");
   if (error) throw new Error("Error al obtener deportistas");
   console.log(data.length);
   return data;
 };
 export const updateStatusAthleteAction = async (id: string, status: string) => {
-  const supabase = getServiceClient();
+  const supabase = await getServiceClient();
   const { data, error } = await supabase
     .from("enrollment_requests")
     .update({ status })
@@ -55,7 +55,7 @@ export const updateStatusAthleteAction = async (id: string, status: string) => {
 };
 
 export const updateLevelAthleteAction = async (id: string, level: string) => {
-  const supabase = getServiceClient();
+  const supabase = await getServiceClient();
   const { data, error } = await supabase.from("athletes").update({ level }).eq("athlete_id", id);
   if (error) {
     console.log("Error updating level", error);
@@ -64,13 +64,13 @@ export const updateLevelAthleteAction = async (id: string, level: string) => {
   return data;
 };
 export const getAthletesCount = async () => {
-  const supabase = getServiceClient();
+  const supabase = await getServiceClient();
   const { data, error } = await supabase.from("profiles").select("id").eq("role", "deportista");
   if (error) throw new Error("Error al obtener el conteo de deportistas");
   return data.length;
 };
 export const getAthleteDistribution = async () => {
-  const supabase = getServiceClient();
+  const supabase = await getServiceClient();
   const { data, error } = await supabase.from("athletes").select("level");
   if (error) throw new Error("Error al obtener la distribución de deportistas");
   const levels = data.map((athlete: any) => athlete.level);

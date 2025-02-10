@@ -11,7 +11,7 @@ const generateRandomPassword = (bytes = 16) => {
 
 export const assistantSignUpAction = async (formData: unknown) => {
   const validatedData = assistantFormSchema.safeParse(formData);
-  const supabase = getServiceClient();
+  const supabase = await getServiceClient();
 
   if (!validatedData.success) {
     return encodedRedirect("error", "/sign-up", "Datos ingresados incorrectos");
@@ -82,7 +82,7 @@ export const assistantSignUpAction = async (formData: unknown) => {
 
 export const updateAssistantAction = async (formData: unknown, id: string) => {
   const validatedData = assistantFormSchema.safeParse(formData);
-  const supabase = getServiceClient();
+  const supabase = await getServiceClient();
 
   if (!validatedData.success) {
     return {
@@ -106,7 +106,7 @@ export const updateAssistantAction = async (formData: unknown, id: string) => {
   return validatedData.data;
 };
 export const deleteAssistantAction = async (id: string) => {
-  const supabase = getServiceClient();
+  const supabase = await getServiceClient();
   const { data, error } = await supabase.auth.admin.deleteUser(id);
   if (!data || error) {
     console.log("Error deleting assistant", error);
@@ -115,7 +115,7 @@ export const deleteAssistantAction = async (id: string) => {
   return { status: 200, message: "Auxiliar eliminado correctamente" };
 };
 export const getAssistantsAction = async () => {
-  const supabase = getServiceClient();
+  const supabase = await getServiceClient();
   const { data, error } = await supabase
     .from("profiles")
     .select("*")
@@ -127,7 +127,7 @@ export const getAssistantsAction = async () => {
   return data;
 };
 export const getAssistantCount = async () => {
-  const supabase = getServiceClient();
+  const supabase = await getServiceClient();
   const { data, error } = await supabase
     .from("profiles")
     .select("id")
@@ -140,7 +140,7 @@ export const getAssistantCount = async () => {
 };
 export const changePassword = async (currentPassword: string, newPassword: string) => {
   try {
-    const client = getServiceClient();
+    const client = await getServiceClient();
     const supaAdmin = await createClient();
     const { data: session, error: sessionError } = await supaAdmin.auth.getUser();
 
