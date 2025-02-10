@@ -8,7 +8,6 @@ import { signUpSchema } from "./schemas/sign-up-schema";
 
 export const signUpAction = async (formData: unknown) => {
   const validatedData = signUpSchema.safeParse(formData);
-
   const supabase = await createClient();
   const origin = (await headers()).get("origin");
 
@@ -26,8 +25,9 @@ export const signUpAction = async (formData: unknown) => {
       message: "Ya existe un usuario con el DNI ingresado",
     };
   }
+  // Si el usuario que se registra tiene "level" entonces es un deportista, si no es un auxiliar administrativo
 
-  const { error } = await supabase.auth.signUp({
+  const { data: signupData, error: signupError } = await supabase.auth.signUp({
     email: validatedData.data.email,
     password: validatedData.data.password,
     options: {
@@ -45,18 +45,34 @@ export const signUpAction = async (formData: unknown) => {
       },
     },
   });
-
-  if (error) {
-    console.log({ error });
-    console.error(error.code + " " + error.message);
-    return encodedRedirect("error", "/sign-up", error.message);
-  } else {
-    return encodedRedirect(
-      "success",
-      "/sign-up",
-      "Gracias por registrarte. Por favor, verifica tu correo electrónico.",
-    );
+  if (signupError) {
+    console.error(signupError);
+    return encodedRedirect("error", "/sign-up", signupError.message);
   }
+  const { error: rpcError } = await supabase.rpc("process_new_user", {
+    p_id: signupData.user?.id,
+    p_raw_user_meta_data: {
+      first_name: validatedData.data.firstName,
+      paternal_last_name: validatedData.data.paternalLastName,
+      maternal_last_name: validatedData.data.maternalLastName,
+      birth_date: validatedData.data.birthDate,
+      dni: validatedData.data.dni,
+      level: validatedData.data.level,
+      role: "deportista",
+      avatar_url: null,
+      phone: validatedData.data.phone,
+    },
+  });
+
+  if (rpcError) {
+    console.log({ rpcError });
+    return encodedRedirect("error", "/sign-up", rpcError.message);
+  }
+  return encodedRedirect(
+    "success",
+    "/sign-up",
+    "Gracias por registrarte. Por favor, verifica tu correo electrónico.",
+  );
 };
 
 export const signInAction = async (formData: FormData) => {
@@ -73,7 +89,20 @@ export const signInAction = async (formData: FormData) => {
     console.log(error);
     return encodedRedirect("error", "/sign-in", error.message);
   }
-  return redirect("/loading-data");
+  const { data: user } = await supabase.auth.getUser();
+  if (!user) return redirect("/sign-in");
+  const { data: profile } = await supabase
+    .from("profiles")
+    .select("*")
+    .eq("id", user.user?.id)
+    .single();
+  if (profile?.role === "admin") {
+    return redirect("/dashboard/admin");
+  } else if (profile?.role === "deportista") {
+    return redirect("/loading-data");
+  } else if (profile?.role === "auxiliar_administrativo") {
+    return redirect("/dashboard/auxiliar");
+  }
 };
 
 export const forgotPasswordAction = async (formData: FormData) => {

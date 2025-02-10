@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 export default function SchedulePage() {
   const [scheduleItems, setScheduleItems] = useState([]);
   const { athlete } = useAthleteStore();
+
   const formatData = (ath: any) => {
     return ath.enrollment_requests.map((request: any) => ({
       weekday: request.requested_schedule.weekday,
