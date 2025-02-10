@@ -72,7 +72,7 @@ export const submit = async (id: string) => {
             quantity: 1,
             currency_id: "PEN",
             description: "Inscripción a la academia",
-            unit_price: 1,
+            unit_price: 2,
           },
         ],
         metadata: {
@@ -80,8 +80,8 @@ export const submit = async (id: string) => {
         },
         back_urls: {
           success: `${BASE_URL}/dashboard/athlete/payments`,
-          failure: `${BASE_URL}$/failure`,
-          pending: `${BASE_URL}$/pending`,
+          failure: `${BASE_URL}/dashboard/athlete/payments`,
+          pending: `${BASE_URL}/dashboard/athlete/payments`,
         },
         auto_return: "approved",
       },
