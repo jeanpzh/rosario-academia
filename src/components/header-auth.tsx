@@ -9,11 +9,28 @@ export default async function AuthButton() {
   const {
     data: { user },
   } = await supabase.auth.getUser();
+  const { data: profile } = await supabase
+    .from("profiles")
+    .select("role")
+    .eq("id", user?.id)
+    .single();
 
   return user ? (
     <div className="flex items-center gap-4">
       <Button asChild size="sm" variant={"default"}>
-        <Link href="/loading-data">Dashboard</Link>
+        <Link
+          href={
+            profile?.role === "admin"
+              ? "/dashboard/admin"
+              : profile?.role === "deportista"
+                ? "/loading-data"
+                : profile?.role === "auxiliar_administrativo"
+                  ? "/dashboard/auxiliar"
+                  : "/sign-in"
+          }
+        >
+          Dashboard
+        </Link>
       </Button>
       <form action={signOutAction}>
         <Button type="submit" variant={"outline"}>

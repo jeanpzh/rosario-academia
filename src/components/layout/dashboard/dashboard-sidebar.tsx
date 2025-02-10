@@ -16,7 +16,6 @@ interface Links {
 }
 export function DashboardSidebar({ links, user }: { links: Links[]; user: any }) {
   const [open, setOpen] = useState(false);
-
   return (
     <div
       className={cn(
