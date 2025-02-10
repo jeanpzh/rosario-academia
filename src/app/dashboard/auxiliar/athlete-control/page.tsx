@@ -30,6 +30,9 @@ export default function AthletePage() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["athletes"] });
     },
+    onError: (error) => {
+      console.log(error);
+    },
   });
 
   const updateAthleteStatusMutation = useMutation({
@@ -58,7 +61,11 @@ export default function AthletePage() {
   };
 
   const handleDelete = (id: string) => {
-    deleteMutation.mutate(id);
+    try {
+      deleteMutation.mutate(id);
+    } catch (error) {
+      console.log(error);
+    }
   };
   return (
     <div className="dark:bg-dark-surface flex flex-col gap-4 bg-background p-4">
