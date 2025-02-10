@@ -59,10 +59,20 @@ export const useAthleteStore = create<AthleteStore>()(
     (set) => ({
       athlete: null,
       loading: false,
-      setAthleteData: (data) => {
-        set({ athlete: data });
-      },
+      setAthleteData: (updateProfile) => {
+        set((state) => ({
+          athlete: state.athlete
+            ? {
+                ...state.athlete,
 
+                profile: {
+                  ...state.athlete.profile,
+                  ...updateProfile,
+                },
+              }
+            : null,
+        }));
+      },
       fetchAthleteData: async () => {
         set({ loading: true });
         const { data: user, error: err } = await supabase.auth.getUser();
