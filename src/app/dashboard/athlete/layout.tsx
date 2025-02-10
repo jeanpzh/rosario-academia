@@ -2,7 +2,8 @@ import { ReactNode } from "react";
 import { DashboardSidebar } from "@/components/layout/dashboard/dashboard-sidebar";
 import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
-import links from "@/app/dashboard/athlete/utils/athlete-links";
+import { linksApproved, linksPending } from "@/utils/links/athlete-links";
+
 interface DashboardLayoutProps {
   children: ReactNode;
 }
@@ -15,9 +16,21 @@ export default async function DashboardLayout({ children }: DashboardLayoutProps
 
   if (!user) return redirect("/sign-in");
 
+  const { data, error } = await supabase
+    .from("enrollment_requests")
+    .select("status")
+    .match({ athlete_id: user.id });
+
+  if (error || !data) {
+    console.log({ error });
+    return;
+  }
+
+  const linksByStatus = data[0].status === "approved" ? linksApproved : linksPending;
+
   return (
     <div className="flex min-h-screen w-full max-md:flex max-md:flex-col">
-      <DashboardSidebar links={links} user={user.user_metadata} />
+      <DashboardSidebar links={linksByStatus} user={user.user_metadata} />
       <main className="h-full flex-1 overflow-y-auto">{children}</main>
     </div>
   );

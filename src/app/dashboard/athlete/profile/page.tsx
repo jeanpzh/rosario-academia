@@ -9,9 +9,12 @@ import { TEditForm } from "@/app/dashboard/athlete/schemas/edit-form-schema";
 import { useProfileData } from "./hooks/use-profile";
 import { EditProfileForm } from "./components/EditProfileForm";
 import { PersonalCard } from "./components/PersonalCard";
+import { useAthleteStore } from "@/lib/stores/useUserStore";
 
 export default function ProfilePage() {
   const { user, userProfile, athlete, loading, error, updateProfile } = useProfileData();
+
+  const { setAthleteData } = useAthleteStore();
 
   const [isEditing, setIsEditing] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
@@ -43,6 +46,13 @@ export default function ProfilePage() {
         setSaveStatus("error");
       } else {
         setSaveStatus("success");
+        setAthleteData({
+          ...athlete,
+          first_name: data.firstName,
+          paternal_last_name: data.paternalLastName,
+          maternal_last_name: data.maternalLastName,
+          phone: data.phone,
+        });
       }
       setMessage(res.message);
       setTimeout(() => {
