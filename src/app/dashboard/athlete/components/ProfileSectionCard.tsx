@@ -2,7 +2,7 @@ import { Label } from "@/components/ui/label";
 import React from "react";
 
 interface ProfileSectionCardProps {
-  icon: React.ElementType; // This allows passing SVG components
+  icon: React.ElementType;
   label: string;
   value?: string | number;
 }
