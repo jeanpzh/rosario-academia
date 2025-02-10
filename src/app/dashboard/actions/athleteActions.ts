@@ -29,7 +29,6 @@ export const updateAthleteAction = async (formData: unknown, id: string) => {
 
 export const deleteAthleteAction = async (id: string) => {
   const supabase = await getServiceClient();
-  console.log(id);
   const { error } = await supabase.auth.admin.deleteUser(id);
   if (error) throw new Error("Error al eliminar deportista");
   return { status: 200, message: "Deportista eliminado correctamente" };
