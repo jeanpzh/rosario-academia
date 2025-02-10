@@ -37,7 +37,7 @@ export default async function PaymentDashboard() {
 
   const handleBuy = async () => {
     "use server";
-    const url = await submit(user.user.email as string);
+    const url = await submit(user.user.id as string);
     if (!url) return;
     redirect(url);
   };
