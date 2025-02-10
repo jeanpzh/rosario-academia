@@ -1,3 +1,4 @@
+"use server";
 import { createServerClient } from "@supabase/ssr";
 import { cookies } from "next/headers";
 import { createClient as createService } from "@supabase/supabase-js";
@@ -26,7 +27,7 @@ export const createClient = async () => {
     },
   );
 };
-export const getServiceClient = () => {
+export const getServiceClient = async () => {
   return createService(
     process.env.NEXT_PUBLIC_SUPABASE_URL as string,
     process.env.SUPABASE_SERVICE_KEY as string,
