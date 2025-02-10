@@ -72,7 +72,7 @@ export const submit = async (id: string) => {
             quantity: 1,
             currency_id: "PEN",
             description: "Inscripción a la academia",
-            unit_price: 2,
+            unit_price: 1,
           },
         ],
         metadata: {
