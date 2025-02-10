@@ -1,7 +1,6 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
   eslint: {
     ignoreDuringBuilds: true,
   },
@@ -23,7 +22,20 @@ const nextConfig: NextConfig = {
         protocol: "https",
         hostname: "cdn.www.gob.pe",
       },
+      {
+        protocol: "https",
+        hostname: "scontent-lim1-1.xx.fbcdn.net",
+      },
+      {
+        protocol: "https",
+        hostname: "gcdn.emol.cl",
+      },
+      {
+        protocol: "https",
+        hostname: "i.pinimg.com",
+      },
     ],
   },
 };
+
 export default nextConfig;

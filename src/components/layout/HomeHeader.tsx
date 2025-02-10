@@ -24,7 +24,10 @@ export default function HomeHeader() {
             <a href="#eventos" className="text-sm font-medium transition-colors hover:text-primary">
               Eventos
             </a>
-            <a href="#galeria" className="text-sm font-medium transition-colors hover:text-primary">
+            <a
+              href="#testimonios"
+              className="text-sm font-medium transition-colors hover:text-primary"
+            >
               Galería
             </a>
             <a

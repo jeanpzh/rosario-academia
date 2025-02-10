@@ -1,6 +1,99 @@
 import Image from "next/image";
+import { FloatingDock } from "@/components/ui/floating-dock";
+import {
+  IconBrandWhatsapp,
+  IconBrandFacebook,
+  IconBrandInstagram,
+  IconHome,
+  IconArticle,
+  IconCalendarEvent,
+  IconMail,
+  IconUserCircle,
+} from "@tabler/icons-react";
+import { AnimatedTestimonials } from "@/components/ui/animated-testimonials";
 
 export default function HomeMain() {
+  const navigationLinks = [
+    {
+      title: "Inicio",
+      icon: <IconHome className="size-full text-neutral-500 dark:text-neutral-300" />,
+      href: "#",
+    },
+    {
+      title: "Noticias",
+      icon: <IconArticle className="size-full text-neutral-500 dark:text-neutral-300" />,
+      href: "#noticias",
+    },
+    {
+      title: "Eventos",
+      icon: <IconCalendarEvent className="size-full text-neutral-500 dark:text-neutral-300" />,
+      href: "#eventos",
+    },
+    {
+      title: "testimonios",
+      icon: <IconUserCircle className="size-full text-neutral-500 dark:text-neutral-300" />,
+      href: "#testimonios",
+    },
+    {
+      title: "Contacto",
+      icon: <IconMail className="size-full text-neutral-500 dark:text-neutral-300" />,
+      href: "#contacto",
+    },
+    {
+      title: "WhatsApp",
+      icon: <IconBrandWhatsapp className="size-full text-neutral-500 dark:text-neutral-300" />,
+      href: "https://wa.me/+51978257871",
+    },
+    {
+      title: "Facebook",
+      icon: <IconBrandFacebook className="size-full text-neutral-500 dark:text-neutral-300" />,
+      href: "https://www.facebook.com/people/Academia-De-Voleibol-CD-Rosario/100062953882723/",
+    },
+    {
+      title: "Instagram",
+      icon: <IconBrandInstagram className="size-full text-neutral-500 dark:text-neutral-300" />,
+      href: "https://instagram.com",
+    },
+  ];
+
+  const testimonials = [
+    {
+      quote:
+        "Nuestra categoría Sub-15 de Rosario acaba de coronarse campeona en este torneo, demostrando entrega, esfuerzo y pasión en cada set. Estamos inmensamente orgullosos de nuestras jugadoras, que con trabajo en equipo y determinación lograron este merecido triunfo. 🙌🏅",
+      name: "🔥 ¡Campeonas de la Copa Inicia!",
+      designation: "Nuestro Club Logro el 1er Puesto",
+      src: "https://scontent-lim1-1.xx.fbcdn.net/v/t39.30808-6/461248332_861599169281871_7469391401049985808_n.jpg?_nc_cat=111&ccb=1-7&_nc_sid=833d8c&_nc_ohc=laCaEJ4hg7QQ7kNvgGjlIjD&_nc_oc=AdgAI5csMLfE8n4UmyGO0mStBdamBM10NRLV757_bYtjdmdhXJFaVus3zwOiVegffds&_nc_zt=23&_nc_ht=scontent-lim1-1.xx&_nc_gid=AZXQYs9ZS72pVNIFsxS5EnB&oh=00_AYDqsMvhAaJKlp8HIFNCVbaQ1vwCsXlJo19Hpt2IKhni2g&oe=67AF3F40",
+    },
+    {
+      quote:
+        "Nuestra categoría Sub-16 de Rosario ha concluido su participación en este emocionante campeonato en Paracas, dejando todo en la cancha y demostrando su talento. Más que un torneo, fue una gran experiencia de aprendizaje, esfuerzo y crecimiento para nuestras jugadoras. ¡Seguimos sumando y mejorando! 🙌🏅",
+      name: "Torneo Juvenil",
+      designation: "Academia Rosario",
+      src: "https://scontent-lim1-1.xx.fbcdn.net/v/t39.30808-6/475553185_952114686896985_5298658132659183352_n.jpg?stp=dst-jpg_p526x296_tt6&_nc_cat=106&ccb=1-7&_nc_sid=833d8c&_nc_ohc=VsetXc8Yj5kQ7kNvgFDFaVo&_nc_oc=Adj7B99llOQsNnr8I5owxByo2nukOSd8Djs8ORxVfOA_nrZyPu7OmVNFGurSMZF5pv0&_nc_zt=23&_nc_ht=scontent-lim1-1.xx&_nc_gid=ACf3A2p_WN7xfBVvzBE0uTV&oh=00_AYBGyCxPOVf4KDR8spWIGxlsb8GHJ3NxW1ipplczvKvpBQ&oe=67AF25DC",
+    },
+    {
+      quote:
+        "Nuestra academia Rosario se ha inscrito en el torneo Inicia, listos para demostrar nuestra pasión, esfuerzo y talento en la cancha. Con disciplina y trabajo en equipo, estamos seguros de que daremos lo mejor en cada partido. 🏐 💪 💙",
+      name: "Copa Inicia",
+      designation: "Vamos por la Copa Inicia",
+      src: "https://scontent-lim1-1.xx.fbcdn.net/v/t39.30808-6/449823596_814925507282571_3650948511189200407_n.jpg?_nc_cat=104&ccb=1-7&_nc_sid=833d8c&_nc_ohc=iFEprawDuFgQ7kNvgHeiEkH&_nc_oc=Adgk9n0fFPTeuUxAW213pvIF-mRvDd5KdTdTPVvSVw62LFcSkFnfUzKjHYn3dgZiNYw&_nc_zt=23&_nc_ht=scontent-lim1-1.xx&_nc_gid=A3XlWrkJiMbYhEGj9K05Bjq&oh=00_AYBk4ZTTi7Txuk2T2VTj-3JrCicjvJ2TfGy72jw_1at3Lg&oe=67AF3016",
+    },
+    {
+      quote:
+        "Para cerrar con broche de oro nuestro ciclo de invierno, hemos organizado un emocionante campeonato junto a diversas academias, donde nuestras alumnas pusieron en práctica todo lo aprendido y, sobre todo, ¡disfrutaron al máximo!.Más que una competencia, fue una experiencia llena de aprendizaje, amistad y pasión por el vóley. 🙌🏅",
+      name: "Festival de Voleibol Rosario",
+      designation: "Festival Rosario",
+      src: "https://scontent-lim1-1.xx.fbcdn.net/v/t39.30808-6/429668901_739130968195359_1719156284860849123_n.jpg?_nc_cat=102&ccb=1-7&_nc_sid=833d8c&_nc_ohc=HAmOod7VZ6wQ7kNvgHqisSV&_nc_oc=Adhp42gwwj2lnEH3XwKhZEcdzlIzzhEnHoMTRHFvVfy5LE2lLXiGtQBkLDt1GV5WelQ&_nc_zt=23&_nc_ht=scontent-lim1-1.xx&_nc_gid=ACvb2xef4dA07eAICSL5V66&oh=00_AYBAt-FjVxx6f4uUc9CAaLRntUpdpvaV8EkDLveU3J6AwQ&oe=67AF534E",
+    },
+    {
+      quote:
+        " Nuestra academia Rosario ha sido parte del Campeonato Distrital de la Liga de Carabayllo, demostrando esfuerzo, disciplina y amor por el vóley en cada partido. Seguimos sumando experiencia y creciendo como equipo, enfrentándonos a nuevos desafíos con la misma pasión de siempre. 🙌🏅",
+      name: "Liga Deportiva Distrital de Voleibol",
+      designation: "Participación en la Liga de Carabayllo",
+      src: "https://scontent-lim1-1.xx.fbcdn.net/v/t39.30808-6/476436385_956177669824020_5382164427717118561_n.jpg?_nc_cat=102&ccb=1-7&_nc_sid=127cfc&_nc_ohc=FYB2pfUkMG0Q7kNvgEkAn_R&_nc_oc=AdgtXmy4hefO7-ipldDIbJhWU_U51JOeEFOQgQuIgabSc6ArglgpM8AgDPlycs6Jzto&_nc_zt=23&_nc_ht=scontent-lim1-1.xx&_nc_gid=A5M6FXErUdyZ7YM-3VMbqKn&oh=00_AYBgykvl0skHXW8GghvCg_OAoZFtS_eRr8OYiSUNbV_-IQ&oe=67AF4B80",
+    },
+  ];
+
   return (
     <div className="flex flex-col items-center gap-16">
       {/* Hero Section */}
@@ -16,7 +109,7 @@ export default function HomeMain() {
           <h1 className="mb-4 text-4xl font-bold md:text-6xl">Academia Rosario</h1>
           <p className="mb-8 text-xl md:text-2xl">Formando campeones desde la cuna</p>
           <a
-            href="#contacto"
+            href="/sign-up"
             className="rounded-full bg-primary px-6 py-3 text-lg font-semibold text-primary-foreground transition-colors hover:bg-primary/80"
           >
             Únete ahora
@@ -25,7 +118,7 @@ export default function HomeMain() {
       </section>
 
       {/* Noticias Destacadas */}
-      <section id="noticias" className="max-w-12xl w-full bg-blue-800/5 py-16 text-foreground">
+      <section id="noticias" className="w-full max-w-7xl py-16 text-foreground">
         <h2 className="mb-8 text-center text-3xl font-bold text-primary">Noticias Destacadas</h2>
         <div className="grid grid-cols-1 gap-5 md:grid-cols-3">
           {[
@@ -63,7 +156,9 @@ export default function HomeMain() {
               <div className="p-7">
                 <h3 className="mb-2 text-xl font-semibold">{noticia.title}</h3>
                 <p className="mb-16 text-muted-foreground">{noticia.description}</p>
-                <a href="#" className="text-primary transition-colors hover:text-primary/80"></a>
+                <a href="#" className="text-primary transition-colors hover:text-primary/80">
+                  Leer más
+                </a>
               </div>
             </div>
           ))}
@@ -71,8 +166,8 @@ export default function HomeMain() {
       </section>
 
       {/* Próximos Eventos */}
-      <section id="eventos" className="max-w-12xl w-full bg-blue-800/5 py-16 text-foreground">
-        <h2 className="mb-8 text-center text-3xl font-bold">PROXIMOS EVENTOS</h2>
+      <section id="eventos" className="w-full max-w-7xl py-16 text-foreground">
+        <h2 className="mb-8 text-center text-3xl font-bold">Próximos Eventos</h2>
         <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
           <div className="flex flex-col overflow-hidden rounded-lg border border-primary/20 bg-card p-6 text-card-foreground shadow-md transition-transform hover:scale-105">
             <img
@@ -96,7 +191,7 @@ export default function HomeMain() {
               className="mb-4 h-60 w-full rounded object-cover"
             />
             <h3 className="mb-2 text-xl font-semibold">
-              Sesion de entrenamiento gratis para UNMSM
+              Sesión de entrenamiento gratis para UNMSM
             </h3>
             <p className="mb-2 text-muted-foreground">Fecha: 10 de Febrero, 2025</p>
             <p className="mb-4 text-muted-foreground">Lugar: Puerta 1</p>
@@ -107,110 +202,35 @@ export default function HomeMain() {
         </div>
       </section>
 
-      {/* Galería de Imágenes */}
-      <section id="galeria" className="w-full max-w-7xl py-16">
-        <h2 className="mb-8 text-center text-3xl font-bold">Galería</h2>
-        <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
-          {[
-            {
-              id: 1,
-              imageUrl: "https://e.rpp-noticias.io/xlarge/2010/09/19/524895.jpg",
-              alt: "Equipo celebrando",
-            },
-            {
-              id: 2,
-              imageUrl:
-                "https://www.infobae.com/resizer/v2/KUHBIS5T4FAHDBYT33WNR4MENY.jpg?auth=aaa75ebfea162330370913bbfa8f5a0c322507498af24d8dcd2bba85c819bb41&smart=true&width=992&height=558&quality=85",
-              alt: "Entrenamiento intensivo",
-            },
-            {
-              id: 3,
-              imageUrl: "https://ogbu.unmsm.edu.pe/wp-content/uploads/2022/05/MG_9913-scaled.jpg",
-              alt: "Competencia de voley",
-            },
-            {
-              id: 4,
-              imageUrl:
-                "https://www.infobae.com/resizer/v2/LLUKISE7P5FZRFZPNNG4XZC7GM.jpg?auth=cca112f1c6d14b2bf6cfb37305745c7c61f1a41295a7f072f97fad02cb5f4e21&smart=true&width=992&height=661&quality=85",
-              alt: "Premiación de atletas",
-            },
-          ].map((imagen) => (
-            <div key={imagen.id} className="relative h-64 overflow-hidden rounded-lg">
-              <img
-                src={imagen.imageUrl || "/placeholder.svg"}
-                alt={imagen.alt}
-                className="size-full object-cover transition-transform duration-300 hover:scale-110"
-              />
-            </div>
-          ))}
-        </div>
+      {/* Testimonios */}
+      <section id="testimonios" className="w-full max-w-7xl py-16">
+        <h2 className="mb-8 text-center text-3xl font-bold">Torneos Ganados</h2>
+        <AnimatedTestimonials testimonials={testimonials} />
       </section>
 
       {/* CTA Section */}
-      <section id="contacto" className="w-full max-w-7xl rounded-xl bg-secondary p-16 text-center">
+      <section
+        id="contacto"
+        className="relative w-full max-w-7xl rounded-xl bg-secondary p-16 text-center"
+      >
         <h2 className="mb-4 text-3xl font-bold">¿Listo para unirte a nosotros?</h2>
         <p className="mb-8 text-xl">Descubre todo lo que Academia Rosario tiene para ofrecerte</p>
-        <form className="mx-auto max-w-md">
-          <input
-            type="email"
-            placeholder="Tu correo electrónico"
-            className="mb-4 w-full rounded-md border border-gray-300 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primary"
-          />
-          <button
-            type="submit"
-            className="w-full rounded-md bg-primary px-6 py-3 text-lg font-semibold text-primary-foreground transition-colors hover:bg-primary/80"
-          >
-            Comienza tu journey deportivo
-          </button>
-        </form>
-        <div className="mt-8 flex justify-center space-x-4">
-          <a
-            href="https://wa.me/+51978257871"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-primary transition-colors hover:text-primary/80"
-          >
-            <svg className="size-8" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-              <path
-                fillRule="evenodd"
-                d="M21.35 3.65c-2.33-2.33-5.43-3.62-8.73-3.62-6.82 0-12.36 5.54-12.36 12.36 0 2.17.57 4.29 1.65 6.16L0 24l6.54-1.72c1.8.98 3.84 1.5 5.92 1.5h.01c6.82 0 12.36-5.54 12.36-12.36 0-3.3-1.29-6.4-3.62-8.73zm-8.73 19.01h-.01c-1.84 0-3.65-.5-5.23-1.44l-.37-.22-3.87 1.02.99-3.62-.24-.38c-1.02-1.62-1.56-3.49-1.56-5.41 0-5.67 4.61-10.28 10.29-10.28 2.75 0 5.33 1.07 7.27 3.01 1.94 1.94 3.01 4.52 3.01 7.27 0 5.67-4.61 10.28-10.29 10.28zm5.66-7.71c-.31-.16-1.83-.9-2.11-1-.28-.1-.49-.15-.69.15-.21.3-.8.99-.98 1.19-.18.2-.36.22-.67.07-.31-.15-1.31-.48-2.49-1.53-.92-.82-1.54-1.83-1.72-2.14-.18-.31-.02-.48.13-.63.14-.14.31-.36.46-.54.15-.18.2-.31.3-.51.1-.2.05-.37-.02-.52-.07-.15-.69-1.66-.94-2.27-.24-.59-.49-.51-.67-.52-.17-.01-.37-.01-.56-.01-.2 0-.51.07-.78.37-.27.3-1.03 1.01-1.03 2.46 0 1.45 1.06 2.86 1.21 3.06.15.2 2.11 3.22 5.11 4.51.71.31 1.27.5 1.7.64.72.23 1.37.2 1.88.12.57-.08 1.77-.72 2.02-1.42.25-.7.25-1.29.18-1.42-.07-.13-.28-.21-.59-.37z"
-                clipRule="evenodd"
-              />
-            </svg>
-            <span className="sr-only">WhatsApp</span>
-          </a>
-          <a
-            href="https://www.facebook.com/people/Academia-De-Voleibol-CD-Rosario/100062953882723/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-primary transition-colors hover:text-primary/80"
-          >
-            <svg className="size-8" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-              <path
-                fillRule="evenodd"
-                d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z"
-                clipRule="evenodd"
-              />
-            </svg>
-            <span className="sr-only">Facebook</span>
-          </a>
-          <a
-            href="https://instagram.com"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-primary transition-colors hover:text-primary/80"
-          >
-            <svg className="size-8" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-              <path
-                fillRule="evenodd"
-                d="M12.315 2c2.43 0 2.784.013 3.808.06 1.064.049 1.791.218 2.427.465a4.902 4.902 0 011.772 1.153 4.902 4.902 0 011.153 1.772c.247.636.416 1.363.465 2.427.048 1.067.06 1.407.06 4.123v.08c0 2.643-.012 2.987-.06 4.043-.049 1.064-.218 1.791-.465 2.427a4.902 4.902 0 01-1.153 1.772 4.902 4.902 0 01-1.772 1.153c-.636.247-1.363.416-2.427.465-1.067.048-1.407.06-4.123.06h-.08c-2.643 0-2.987-.012-4.043-.06-1.064-.049-1.791-.218-2.427-.465a4.902 4.902 0 01-1.772-1.153 4.902 4.902 0 01-1.153-1.772c-.247-.636-.416-1.363-.465-2.427-.047-1.024-.06-1.379-.06-3.808v-.63c0-2.43.013-2.784.06-3.808.049-1.064.218-1.791.465-2.427a4.902 4.902 0 011.153-1.772A4.902 4.902 0 015.45 2.525c.636-.247 1.363-.416 2.427-.465C8.901 2.013 9.256 2 11.685 2h.63zm-.081 1.802h-.468c-2.456 0-2.784.011-3.807.058-.975.045-1.504.207-1.857.344-.467.182-.8.398-1.15.748-.35.35-.566.683-.748 1.15-.137.353-.3.882-.344 1.857-.047 1.023-.058 1.351-.058 3.807v.468c0 2.456.011 2.784.058 3.807.045.975.207 1.504.344 1.857.182.466.399.8.748 1.15.35.35.683.566 1.15.748.353.137.882.3 1.857.344 1.054.048 1.37.058 4.041.058h.08c2.597 0 2.917-.01 3.96-.058.976-.045 1.505-.207 1.858-.344.466-.182.8-.398 1.15-.748.35-.35.566-.683.748-1.15.137-.353.3-.882.344-1.857.048-1.055.058-1.37.058-4.041v-.08c0-2.597-.01-2.917-.058-3.96-.045-.976-.207-1.505-.344-1.858a3.097 3.097 0 00-.748-1.15 3.098 3.098 0 00-1.15-.748c-.353-.137-.882-.3-1.857-.344-1.023-.047-1.351-.058-3.807-.058zM12 6.865a5.135 5.135 0 110 10.27 5.135 5.135 0 010-10.27zm0 1.802a3.333 3.333 0 100 6.666 3.333 3.333 0 000-6.666zm5.338-3.205a1.2 1.2 0 110 2.4 1.2 1.2 0 010-2.4z"
-                clipRule="evenodd"
-              />
-            </svg>
-            <span className="sr-only">Instagram</span>
-          </a>
-        </div>
+        <a
+          href="#"
+          className="inline-block rounded-full bg-primary px-8 py-3 text-lg font-semibold text-primary-foreground transition-colors hover:bg-primary/80"
+        >
+          Contáctanos
+        </a>
       </section>
+
+      {/* FloatingDock */}
+      <div className="fixed bottom-8 left-1/2 z-50 w-full max-w-xl -translate-x-1/2 px-4">
+        <FloatingDock
+          items={navigationLinks}
+          desktopClassName="w-full"
+          mobileClassName="mx-auto flex justify-center"
+        />
+      </div>
     </div>
   );
 }
