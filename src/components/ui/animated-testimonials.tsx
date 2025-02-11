@@ -45,10 +45,16 @@ export const AnimatedTestimonials = ({
   };
 
   return (
-    <div className="mx-auto max-w-sm px-4 py-24 font-sans antialiased md:max-w-5xl md:px-2 lg:px-12">
-      <div className="relative grid grid-cols-1 gap-20 md:grid-cols-2">
+    <div className="mx-auto max-w-sm px-4 py-12 font-sans antialiased md:max-w-5xl md:px-2 lg:px-12">
+      {" "}
+      {/* Reducido py-24 a py-12 */}
+      <div className="relative grid grid-cols-1 gap-10 md:grid-cols-2">
+        {" "}
+        {/* Reducido gap-20 a gap-10 */}
         <div>
-          <div className="relative h-96 w-full">
+          <div className="relative h-72 w-full">
+            {" "}
+            {/* Reducido h-96 a h-72 */}
             <AnimatePresence>
               {testimonials.map((testimonial, index) => (
                 <motion.div
@@ -92,33 +98,27 @@ export const AnimatedTestimonials = ({
             </AnimatePresence>
           </div>
         </div>
-        <div className="flex flex-col justify-between py-4">
+        <div className="flex flex-col justify-between py-2">
+          {" "}
+          {/* Reducido py-4 a py-2 */}
           <motion.div
             key={active}
-            initial={{
-              y: 20,
-              opacity: 0,
-            }}
-            animate={{
-              y: 0,
-              opacity: 1,
-            }}
-            exit={{
-              y: -20,
-              opacity: 0,
-            }}
-            transition={{
-              duration: 0.2,
-              ease: "easeInOut",
-            }}
+            initial={{ y: 20, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            exit={{ y: -20, opacity: 0 }}
+            transition={{ duration: 0.2, ease: "easeInOut" }}
           >
-            <h3 className="text-3xl font-bold text-black dark:text-white">
+            <h3 className="text-2xl font-bold text-black dark:text-white">
+              {" "}
+              {/* Reducido text-3xl a text-2xl */}
               {testimonials[active].name}
             </h3>
-            <p className="mt-2 text-base text-gray-500 dark:text-neutral-500">
+            <p className="mt-1 text-base text-gray-500 dark:text-neutral-500">
+              {" "}
+              {/* Reducido mt-2 a mt-1 */}
               {testimonials[active].designation}
             </p>
-            <motion.p className="mt-10 text-xl leading-relaxed text-gray-500 dark:text-neutral-300">
+            <motion.p className="mt-5 text-xl leading-relaxed text-gray-500 dark:text-neutral-300">
               {testimonials[active].quote.split(" ").map((word, index) => (
                 <motion.span
                   key={index}
@@ -144,7 +144,7 @@ export const AnimatedTestimonials = ({
               ))}
             </motion.p>
           </motion.div>
-          <div className="flex gap-4 pt-16 md:pt-0">
+          <div className="flex gap-4 pt-8 md:pt-0">
             <button
               onClick={handlePrev}
               className="group/button flex size-10 items-center justify-center rounded-full bg-gray-100 dark:bg-neutral-800"

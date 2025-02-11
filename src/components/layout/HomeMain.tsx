@@ -25,6 +25,11 @@ export default function HomeMain() {
       href: "#noticias",
     },
     {
+      title: "Planes",
+      icon: <IconCalendarEvent className="size-full text-neutral-500 dark:text-neutral-300" />,
+      href: "#planes",
+    },
+    {
       title: "Eventos",
       icon: <IconCalendarEvent className="size-full text-neutral-500 dark:text-neutral-300" />,
       href: "#eventos",
@@ -165,6 +170,93 @@ export default function HomeMain() {
         </div>
       </section>
 
+      {/* Planes - Matrícula */}
+      <section id="planes" className="w-full max-w-7xl py-16 text-foreground">
+        <h2 className="mb-8 text-center text-3xl font-bold text-primary">Planes - Matrícula</h2>
+        <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
+          {[
+            {
+              nivel: "Avanzado",
+              descripcion: "Para jugadores con experiencia competitiva",
+              color: "bg-primary",
+              icon: "🏐",
+            },
+            {
+              nivel: "Intermedio",
+              descripcion: "Para jugadores con conocimientos sólidos",
+              color: "bg-primary",
+              icon: "🏐",
+            },
+            {
+              nivel: "Básico",
+              descripcion: "Para principiantes entusiastas",
+              color: "bg-primary",
+              icon: "🏐",
+            },
+          ].map((plan) => (
+            <div
+              key={plan.nivel}
+              className="group overflow-hidden rounded-xl bg-card text-card-foreground shadow-lg transition-all hover:shadow-xl"
+            >
+              {/* Encabezado */}
+              <div className={`relative p-6 ${plan.color} text-primary-foreground `}>
+                <div className="flex items-center justify-between">
+                  <h3 className="text-2xl font-bold">{plan.nivel}</h3>
+                  <span className="text-2xl">{plan.icon}</span>
+                </div>
+                <p className="mt-2 text-sm opacity-90">{plan.descripcion}</p>
+              </div>
+
+              <div className="p-6">
+                {/* Etiqueta Ciclo Verano */}
+                <div className="mb-4">
+                  <span className="rounded-full bg-blue-100 px-3 py-1 text-sm font-medium text-blue-600">
+                    Ciclo Verano
+                  </span>
+                </div>
+
+                {/* Precio */}
+                <div className="mb-6">
+                  <p className="text-4xl font-bold">S/ 80</p>
+                </div>
+
+                {/* Beneficios */}
+                <ul className="mb-6 space-y-4">
+                  {[
+                    "Carnet de estudiante",
+                    "Acceso completo a la plataforma",
+                    "Entrenamientos personalizados",
+                    "Participación en torneos internos",
+                  ].map((beneficio) => (
+                    <li key={beneficio} className="flex items-center gap-2">
+                      <svg
+                        className="size-5 text-green-500"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M5 13l4 4L19 7"
+                        />
+                      </svg>
+                      <span>{beneficio}</span>
+                    </li>
+                  ))}
+                </ul>
+
+                {/* Botón */}
+                <button className="w-full rounded-lg bg-primary py-3 text-lg font-semibold text-primary-foreground  transition-colors hover:bg-primary/90">
+                  Matricularme Ahora
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
       {/* Próximos Eventos */}
       <section id="eventos" className="w-full max-w-7xl py-16 text-foreground">
         <h2 className="mb-8 text-center text-3xl font-bold">Próximos Eventos</h2>
@@ -180,7 +272,7 @@ export default function HomeMain() {
             </h3>
             <p className="mb-2 text-muted-foreground">Fecha: 14 de Febrero, 2025</p>
             <p className="mb-4 text-muted-foreground">Lugar: Sede Rosario</p>
-            <button className="mt-auto rounded bg-primary px-4 py-2 text-primary-foreground transition-colors hover:bg-primary/80">
+            <button className="w-full rounded-lg bg-primary py-3 text-lg font-semibold text-primary-foreground  transition-colors hover:bg-primary/90">
               Más información
             </button>
           </div>
@@ -195,7 +287,7 @@ export default function HomeMain() {
             </h3>
             <p className="mb-2 text-muted-foreground">Fecha: 10 de Febrero, 2025</p>
             <p className="mb-4 text-muted-foreground">Lugar: Puerta 1</p>
-            <button className="mt-auto rounded bg-primary px-4 py-2 text-primary-foreground transition-colors hover:bg-primary/80">
+            <button className="w-full rounded-lg bg-primary py-3 text-lg font-semibold text-primary-foreground  transition-colors hover:bg-primary/90">
               Más información
             </button>
           </div>
@@ -203,24 +295,9 @@ export default function HomeMain() {
       </section>
 
       {/* Testimonios */}
-      <section id="testimonios" className="w-full max-w-7xl py-16">
-        <h2 className="mb-8 text-center text-3xl font-bold">Torneos Ganados</h2>
+      <section id="testimonios" className="w-full max-w-7xl py-8">
+        <h2 className="mb-4 text-center text-3xl font-bold">Torneos Ganados</h2>
         <AnimatedTestimonials testimonials={testimonials} />
-      </section>
-
-      {/* CTA Section */}
-      <section
-        id="contacto"
-        className="relative w-full max-w-7xl rounded-xl bg-secondary p-16 text-center"
-      >
-        <h2 className="mb-4 text-3xl font-bold">¿Listo para unirte a nosotros?</h2>
-        <p className="mb-8 text-xl">Descubre todo lo que Academia Rosario tiene para ofrecerte</p>
-        <a
-          href="#"
-          className="inline-block rounded-full bg-primary px-8 py-3 text-lg font-semibold text-primary-foreground transition-colors hover:bg-primary/80"
-        >
-          Contáctanos
-        </a>
       </section>
 
       {/* FloatingDock */}
