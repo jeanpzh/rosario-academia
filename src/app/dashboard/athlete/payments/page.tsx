@@ -64,7 +64,7 @@ export default async function PaymentDashboard() {
               id: key,
               date: new Date(payment?.payment_date).toLocaleDateString(),
               amount: payment.amount,
-              method: "Tarjeta de crédito",
+              method: "Yape",
               status: enrollmentData[0]?.status === "approved" ? "Pagado" : "Pendiente",
             }))}
           />
