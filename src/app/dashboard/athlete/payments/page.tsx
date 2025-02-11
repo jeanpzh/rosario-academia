@@ -14,16 +14,15 @@ export default async function PaymentDashboard() {
     console.log({ error });
     return;
   }
-  // Get user enrollment status
+  // Get user enrollment status and requested_schedule_id
   const { data: enrollmentData, error: enrollmentError } = await supabase
     .from("enrollment_requests")
-    .select("status")
+    .select("*")
     .match({ athlete_id: user.user.id });
   if (enrollmentError || !enrollmentData) {
     console.log({ enrollmentError });
     return;
   }
-  // Get payment data
   const { data: paymentData, error: paymentError } = await supabase
     .from("payments")
     .select("*")
@@ -37,7 +36,10 @@ export default async function PaymentDashboard() {
 
   const handleBuy = async () => {
     "use server";
-    const url = await submit(user.user.id as string);
+    const url = await submit(
+      user.user.id as string,
+      enrollmentData[0].requested_schedule_id as string,
+    );
     if (!url) return;
     redirect(url);
   };

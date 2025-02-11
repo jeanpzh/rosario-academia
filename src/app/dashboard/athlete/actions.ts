@@ -61,7 +61,7 @@ export const editProfileAction = async (data: unknown): Promise<ActionResponse> 
   }
 };
 
-export const submit = async (id: string) => {
+export const submit = async (id: string, schedule_id: string) => {
   try {
     const preference = await new Preference(MP).create({
       body: {
@@ -77,6 +77,7 @@ export const submit = async (id: string) => {
         ],
         metadata: {
           athlete_id: id,
+          schedule_id: schedule_id,
         },
         back_urls: {
           success: `${BASE_URL}/dashboard/athlete/payments`,
