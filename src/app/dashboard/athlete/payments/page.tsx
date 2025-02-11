@@ -53,7 +53,7 @@ export default async function PaymentDashboard() {
         <PaymentStatus
           isPaid={enrollmentData[0]?.status === "approved"}
           onPayNow={handleBuy}
-          payment_method="Tarjeta de crédito"
+          payment_method="Yape"
           last_payment_date={formattedPaymentDate}
           payment_amount={paymentData[0]?.amount}
         />
