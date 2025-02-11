@@ -80,14 +80,14 @@ export const signInAction = async (formData: FormData) => {
   const password = formData.get("password") as string;
   const supabase = await createClient();
 
-  const { error } = await supabase.auth.signInWithPassword({
+  const { error: signinError } = await supabase.auth.signInWithPassword({
     email,
     password,
   });
 
-  if (error) {
-    console.log(error);
-    return encodedRedirect("error", "/sign-in", error.message);
+  if (signinError) {
+    console.log(signinError);
+    return encodedRedirect("error", "/sign-in", signinError.message);
   }
   const { data: user } = await supabase.auth.getUser();
   if (!user) return redirect("/sign-in");
@@ -115,12 +115,12 @@ export const forgotPasswordAction = async (formData: FormData) => {
     return encodedRedirect("error", "/forgot-password", "Email is required");
   }
 
-  const { error } = await supabase.auth.resetPasswordForEmail(email, {
+  const { error: resetError } = await supabase.auth.resetPasswordForEmail(email, {
     redirectTo: `${origin}/auth/callback?redirect_to=/protected/reset-password`,
   });
 
-  if (error) {
-    console.error(error.message);
+  if (resetError) {
+    console.log(resetError.message);
     return encodedRedirect("error", "/forgot-password", "Could not reset password");
   }
 
@@ -146,11 +146,11 @@ export async function resetPasswordAction(formData: FormData) {
   const supabase = await createClient();
 
   // Update password with valid session
-  const { error } = await supabase.auth.updateUser({
+  const { error: updateError } = await supabase.auth.updateUser({
     password: password,
   });
 
-  if (error) {
+  if (updateError) {
     encodedRedirect("error", "/protected/reset-password", "Password update failed");
   }
 
@@ -166,4 +166,67 @@ export const getProfile = async (userId: string) => {
   const supabase = await createClient();
   const { data: profile } = await supabase.from("profiles").select("*").eq("id", userId);
   return profile;
+};
+// -> get Shift features by schedule filter by schedule_id
+/* Return object example
+id : "beginner" | "intermediate" | "advanced";
+description: "{start_time} - {end_time} ({days})";
+spots: number;
+-> HElPERS
+shifts {
+  shift_id: string;
+  schedule_id: string;
+  weekday : string,
+  }
+schedules {
+  schedule_id: string;
+  schedule_name : "Básico" | "Intermedio" | "Avanzado";
+  start_time : string;
+  end_time : string;
+  level : "beginner" | "intermediate" | "advanced";
+  available_spots : number;
+}
+*/
+interface ReturnResponse {
+  id: string;
+  name: string;
+  description: string;
+  spots: number;
+}
+export const getShifts = async (): Promise<
+  ReturnResponse[] | { status: number; data: any } | undefined
+> => {
+  const supabase = await createClient();
+  const { data: shifts, error: shiftError } = await supabase.from("shifts").select("*");
+
+  if (shiftError || !shifts) {
+    console.log(shiftError);
+    return { status: 500, data: null };
+  }
+
+  const { data: schedules, error: schedulesError } = await supabase.from("schedules").select("*");
+
+  if (schedulesError) {
+    console.log(schedulesError);
+    return { status: 500, data: null };
+  }
+
+  let id = "";
+  let days: string[] = [];
+  let description = "";
+  let spots = 0;
+  let name = "";
+
+  const res = schedules.map((schedule: any) => {
+    id = schedule.level as "beginner" | "intermediate" | "advanced";
+    name = schedule.schedule_name;
+    days = shifts
+      .filter((shift: any) => shift.schedule_id === schedule.schedule_id)
+      .map((shift: any) => shift.weekday);
+    description = `${schedule.start_time} - ${schedule.end_time} (${days.join(", ")})`;
+
+    spots = schedule.available_spot as number;
+    return { id, name, description, spots };
+  });
+  return res;
 };
