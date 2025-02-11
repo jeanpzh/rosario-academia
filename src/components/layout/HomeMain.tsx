@@ -169,29 +169,33 @@ export default function HomeMain() {
           ))}
         </div>
       </section>
-
       {/* Planes - Matrícula */}
       <section id="planes" className="w-full max-w-7xl py-16 text-foreground">
         <h2 className="mb-8 text-center text-3xl font-bold text-primary">Planes - Matrícula</h2>
         <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
           {[
             {
-              nivel: "Avanzado",
+              nivel: "Anual",
               descripcion: "Para jugadores con experiencia competitiva",
               color: "bg-primary",
               icon: "🏐",
+              precio: 800, // Precio para el plan Avanzado
+              descuento: "¡17% de descuento!", // Mensaje de descuento para Anual
             },
             {
-              nivel: "Intermedio",
+              nivel: "Bimestral",
               descripcion: "Para jugadores con conocimientos sólidos",
               color: "bg-primary",
               icon: "🏐",
+              precio: 150, // Precio para el plan Intermedio
+              descuento: "¡5% de descuento!", // Mensaje de descuento para Bimestral
             },
             {
-              nivel: "Básico",
+              nivel: "Mensual",
               descripcion: "Para principiantes entusiastas",
               color: "bg-primary",
               icon: "🏐",
+              precio: 80, // Precio para el plan Básico
             },
           ].map((plan) => (
             <div
@@ -217,7 +221,10 @@ export default function HomeMain() {
 
                 {/* Precio */}
                 <div className="mb-6">
-                  <p className="text-4xl font-bold">S/ 80</p>
+                  <p className="text-4xl font-bold">S/ {plan.precio}</p>
+                  {plan.descuento && ( // Condición para mostrar el descuento
+                    <p className="text-lg font-medium text-red-500">{plan.descuento}</p>
+                  )}
                 </div>
 
                 {/* Beneficios */}
@@ -248,7 +255,7 @@ export default function HomeMain() {
                 </ul>
 
                 {/* Botón */}
-                <button className="w-full rounded-lg bg-primary py-3 text-lg font-semibold text-primary-foreground  transition-colors hover:bg-primary/90">
+                <button className="text-primary-foreground   font-semibold w-full rounded-lg bg-primary py-3 text-primary-foreground transition-colors hover:bg-primary/90">
                   Matricularme Ahora
                 </button>
               </div>
