@@ -118,20 +118,20 @@ export const useAthleteStore = create<AthleteStore>()(
         ]);
 
         if (paymentsResult.error || enrollmentResult.error) {
-          console.error(
+          console.log(
             "Error fetching additional data:",
             paymentsResult.error || enrollmentResult.error,
           );
-        } else {
-          set((state) => ({
-            athlete: {
-              ...state.athlete!,
-              payments: paymentsResult.data ?? [],
-              enrollment_requests: enrollmentResult.data ?? [],
-            } as AthleteState,
-            loading: false,
-          }));
+          return set({ loading: false });
         }
+        set((state) => ({
+          athlete: {
+            ...state.athlete!,
+            payments: paymentsResult.data ?? [],
+            enrollment_requests: enrollmentResult.data ?? [],
+          } as AthleteState,
+          loading: false,
+        }));
       },
 
       clearAthleteData: () => {
