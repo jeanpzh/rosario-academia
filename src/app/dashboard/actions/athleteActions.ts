@@ -1,7 +1,9 @@
 "use server";
-import { getServiceClient } from "@/utils/supabase/server";
+import { createClient, getServiceClient } from "@/utils/supabase/server";
 
 import { athleteFormSchema } from "@/app/dashboard/schemas/athlete-schema";
+
+import { v4 as uuidv4 } from "uuid";
 
 export const updateAthleteAction = async (formData: unknown, id: string) => {
   const validatedData = athleteFormSchema.safeParse(formData);
@@ -78,4 +80,35 @@ export const getAthleteDistribution = async () => {
   const intermediate = levels.filter((level: string) => level === "intermediate").length;
   const advanced = levels.filter((level: string) => level === "advanced").length;
   return { beginner, intermediate, advanced };
+};
+
+/* ------------ */
+export const generateVerificationCode = async () => {
+  const supabase = await createClient();
+  const { data: user, error: userError } = await supabase.auth.getUser();
+  if (userError) return { status: 500, error: "Error al obtener usuario" };
+
+  const athleteId = user.user.id;
+
+  // Verify if verification_id already exists
+  const { data: athlete, error: athleteError } = await supabase
+    .from("athletes")
+    .select("verification_id")
+    .eq("athlete_id", athleteId)
+    .single();
+
+  if (athleteError) return { status: 500, error: "Error al obtener datos del deportista" };
+
+  // if verification_id already exists, return it
+  if (athlete.verification_id) return { status: 200, data: athlete.verification_id };
+
+  // Generate verification_id if it doesn't exist and update athlete
+  const verification_id = uuidv4();
+  const { error } = await supabase
+    .from("athletes")
+    .update({ verification_id: verification_id })
+    .eq("athlete_id", athleteId);
+
+  if (error) return { status: 500, error: "Error al generar código de verificación" };
+  return { status: 200, data: verification_id };
 };

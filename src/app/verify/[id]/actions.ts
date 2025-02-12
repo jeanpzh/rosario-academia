@@ -14,11 +14,22 @@ export const verifyAthlete = async (
   id: string,
 ): Promise<TResponse | { status: number; error: string }> => {
   const supabase = await createClient();
+  // GET athlete ID from athletes table to verify if verifcation_id exists
+  const { data: athleteInfo, error: athleteError } = await supabase
+    .from("athletes")
+    .select("athlete_id")
+    .eq("verification_id", id)
+    .single();
+
+  if (!athleteInfo || athleteError) return { status: 404, error: "Athlete not found" };
+
+  const athlete_id = athleteInfo.athlete_id;
+
   // Get Profile info
   const { data: profileInfo, error: profileError } = await supabase
     .from("profiles")
     .select("*")
-    .eq("id", id)
+    .eq("id", athlete_id)
     .single();
 
   if (!profileInfo || profileError) {
@@ -28,7 +39,7 @@ export const verifyAthlete = async (
   const { data: levelInfo, error: levelError } = await supabase
     .from("athletes")
     .select("level")
-    .eq("athlete_id", id)
+    .eq("athlete_id", athlete_id)
     .single();
 
   if (!levelInfo || levelError) {
@@ -38,7 +49,7 @@ export const verifyAthlete = async (
   const { data: statusInfo, error: statusError } = await supabase
     .from("enrollment_requests")
     .select("status")
-    .eq("athlete_id", id);
+    .eq("athlete_id", athlete_id);
 
   if (!statusInfo || !statusInfo.length || statusError) {
     return { status: 404, error: "Status not found" };

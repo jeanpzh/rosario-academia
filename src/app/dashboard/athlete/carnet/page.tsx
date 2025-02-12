@@ -1,88 +1,43 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { useReactToPrint } from "react-to-print";
 import { Card } from "@/components/ui/card";
 import { Avatar } from "@/components/ui/avatar";
 import Image from "next/image";
 import { useAthleteStore } from "@/lib/stores/useUserStore";
 import { QRCodeSVG } from "qrcode.react";
 import { HoverBorderGradient } from "@/components/hover-border-gradient";
-import { BASE_URL } from "@/lib/config";
+import { formatDate } from "@/utils/formats";
+import { useHandlePrint } from "./hooks/useHandlePrint";
+import { useMutation } from "@tanstack/react-query";
+import { generateVerificationCode } from "../../actions/athleteActions";
 
 const AthleteCard = () => {
+  const [verificationId, setVerificationId] = useState<string | null>(null);
   const { athlete: athleteData } = useAthleteStore();
   const [showPreview, setShowPreview] = useState(true);
+
   const cardRef = useRef<HTMLDivElement>(null);
+  const handlePrint = useHandlePrint(cardRef, "Carnet de Deportista");
 
-  const handlePrint = useReactToPrint({
-    contentRef: cardRef,
-    documentTitle: `Carnet_${athleteData?.profile.first_name}_${athleteData?.profile.paternal_last_name}`,
-    bodyClass: "print-body",
-    pageStyle: `
-      @page {
-        size: 100mm 80mm;
-        margin: 0;
-        marks: none; /* Elimina las marcas de corte de página */
-      }
-      @media print {
-        @page {
-        size: 110mm 110mm;
-        margin: 0;
-        marks: none; 
-      }
-        body {
-          margin: 0; /* Elimina márgenes del body */
-          -webkit-print-color-adjust: exact;
-          print-color-adjust: exact;
-        }
-        .print-card {
-          width: 60mm;
-          height: 110mm;
-          padding: 4mm;
-          box-sizing: border-box;
-          font-size: 5pt;
-          display: flex;
-          flex-direction: column;
-        }
-        .print-card .header {
-          font-size: 6pt;
-          margin-bottom: 1mm;
-        }
-        .print-card .avatar {
-          width: 20mm;
-          height: 20mm;
-        }
-        .print-card .content {
-          display: flex;
-          flex-direction: row;
-        }
-        .print-card .info {
-          margin-left: 2mm;
-        }
-        .print-card p {
-          margin: 0.5mm 0;
-        }
-      }
-    `,
-    onPrintError: (error) => console.log(error),
+  // For generate the verification ID
+  const mutationGenerate = useMutation({
+    mutationKey: ["generateVerificationId"],
+    mutationFn: generateVerificationCode,
+    onSuccess: (data) => {
+      if (data.status === 200) setVerificationId(data.data);
+    },
   });
+  useEffect(() => {
+    if (athleteData) {
+      mutationGenerate.mutate();
+    }
+  }, [athleteData, mutationGenerate]);
 
-  const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString("es-ES", {
-      year: "numeric",
-      month: "2-digit",
-      day: "2-digit",
-    });
-  };
+  const verificationUrl = `https://rosario-academia.vercel.app/verify/${verificationId}`;
 
   if (!athleteData) return null;
-
-  console.log(BASE_URL);
-
-  const verificationUrl = `https://rosario-academia.vercel.app/verify/${athleteData.athlete_id}`;
-
   return (
     <div className="min-h-screen bg-gray-100 p-4 dark:bg-[#292929] sm:p-8">
       <h1 className="mb-6 text-center font-sans text-3xl font-bold text-gray-800 dark:text-gray-100 sm:text-4xl">
