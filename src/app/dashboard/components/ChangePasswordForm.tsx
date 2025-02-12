@@ -63,13 +63,6 @@ export function ChangePasswordForm() {
         name="confirmPassword"
         htmlFor="confirmPassword"
       />
-      <PasswordInput
-        label="Nueva Contraseña"
-        control={control}
-        id="newPassword"
-        name="newPassword"
-        htmlFor="newPassword"
-      />
 
       <Button type="submit" disabled={isLoading}>
         {isLoading ? "Actualizando..." : "Actualizar Contraseña"}
