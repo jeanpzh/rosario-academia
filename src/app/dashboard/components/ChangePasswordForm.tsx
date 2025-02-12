@@ -7,10 +7,11 @@ import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import { changePassword } from "@/app/dashboard/actions/assistantActions";
 import { changePasswordFormData, ChangePasswordFormData } from "../schemas/change-password-schema";
-import TextField from "@/app/(auth-pages)/components/TextField";
+import PasswordInput from "@/components/password-input";
+import VerifyPassword from "@/app/(auth-pages)/components/VerifyPassword";
 
 export function ChangePasswordForm() {
-  const { handleSubmit, reset, control } = useForm<ChangePasswordFormData>({
+  const { handleSubmit, reset, control, watch } = useForm<ChangePasswordFormData>({
     resolver: zodResolver(changePasswordFormData),
   });
   const [isLoading, setIsLoading] = useState(false);
@@ -40,29 +41,34 @@ export function ChangePasswordForm() {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-      <TextField
+      <PasswordInput
         label="Contraseña Actual"
-        type="Password"
         control={control}
         id="currentPassword"
         name="currentPassword"
         htmlFor="currentPassword"
       />
-      <TextField
+      <PasswordInput
         label="Nueva Contraseña"
-        type="Password"
         control={control}
         id="newPassword"
         name="newPassword"
         htmlFor="newPassword"
       />
-      <TextField
+      <VerifyPassword password={watch("newPassword", "")} />
+      <PasswordInput
         label="Confirmar Contraseña"
-        type="Password"
         control={control}
         id="confirmPassword"
         name="confirmPassword"
         htmlFor="confirmPassword"
+      />
+      <PasswordInput
+        label="Nueva Contraseña"
+        control={control}
+        id="newPassword"
+        name="newPassword"
+        htmlFor="newPassword"
       />
 
       <Button type="submit" disabled={isLoading}>

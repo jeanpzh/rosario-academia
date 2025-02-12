@@ -4,9 +4,9 @@ import { FORM_FIELDS_STEP_ONE } from "../fields";
 import { HoverBorderGradient } from "@/components/hover-border-gradient";
 import TextField from "./TextField";
 import VerifyPassword from "./VerifyPassword";
-import { PasswordVisualizer } from "./PasswordVisualizer";
 import { useFormContext } from "react-hook-form";
 import { SignUpSchema } from "../schemas/sign-up-schema";
+import PasswordInput from "@/components/password-input";
 
 export default function SignUpStepOne({ onNext }: { onNext: () => void }) {
   const { control, watch } = useFormContext<SignUpSchema>();
@@ -46,33 +46,10 @@ export default function SignUpStepOne({ onNext }: { onNext: () => void }) {
       </div>
 
       <div className="space-y-4">
-        <div className="relative">
-          <TextField
-            htmlFor="password"
-            control={control}
-            name="password"
-            label="Contraseña"
-            type="password"
-            placeholder="********"
-            id="password-input"
-          />
-          <PasswordVisualizer inputId="password-input" />
-        </div>
-
+        <PasswordInput control={control} label="Contraseña" name="password" />
         <VerifyPassword password={watch("password", "")} />
 
-        <div className="relative">
-          <TextField
-            htmlFor="confirmPassword"
-            control={control}
-            name="confirmPassword"
-            label="Confirmar Contraseña"
-            type="password"
-            placeholder="********"
-            id="confirm-password-input"
-          />
-          <PasswordVisualizer inputId="confirm-password-input" />
-        </div>
+        <PasswordInput control={control} label="Confirmar Contraseña" name="confirmPassword" />
       </div>
 
       <HoverBorderGradient onClick={onNext} className="w-full" containerClassName="w-full">
