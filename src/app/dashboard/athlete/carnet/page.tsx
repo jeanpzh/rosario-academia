@@ -9,6 +9,7 @@ import Image from "next/image";
 import { useAthleteStore } from "@/lib/stores/useUserStore";
 import { QRCodeSVG } from "qrcode.react";
 import { HoverBorderGradient } from "@/components/hover-border-gradient";
+import { BASE_URL } from "@/lib/config";
 
 const AthleteCard = () => {
   const { athlete: athleteData } = useAthleteStore();
@@ -78,7 +79,7 @@ const AthleteCard = () => {
 
   if (!athleteData) return null;
 
-  const verificationUrl = `https://academia-rosario.com/verify/${athleteData.athlete_id}`;
+  const verificationUrl = `${BASE_URL}/verify/${athleteData.athlete_id}`;
 
   return (
     <div className="min-h-screen bg-gray-100 p-4 dark:bg-[#292929] sm:p-8">
