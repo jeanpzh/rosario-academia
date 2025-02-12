@@ -79,7 +79,9 @@ const AthleteCard = () => {
 
   if (!athleteData) return null;
 
-  const verificationUrl = `${BASE_URL}/verify/${athleteData.athlete_id}`;
+  console.log(BASE_URL);
+
+  const verificationUrl = `https://rosario-academia.vercel.app/verify/${athleteData.athlete_id}`;
 
   return (
     <div className="min-h-screen bg-gray-100 p-4 dark:bg-[#292929] sm:p-8">
