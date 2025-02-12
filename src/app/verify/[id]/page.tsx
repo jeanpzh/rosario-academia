@@ -2,11 +2,11 @@
 import { createClient } from "@/utils/supabase/server";
 import { notFound } from "next/navigation";
 
-export default async function VerifyPage({ params }: { params: { id: string } }) {
+export default async function VerifyPage({ params }: { params: Promise<{ id: string }> }) {
   const supabase = await createClient();
 
   // Obtener el ID desde la URL
-  const { id } = params;
+  const id = (await params).id;
 
   // Consultar la base de datos en Supabase
   const { data: athlete, error } = await supabase
