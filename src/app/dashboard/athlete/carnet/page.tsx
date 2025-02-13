@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useMemo, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Card } from "@/components/ui/card";
 import { Avatar } from "@/components/ui/avatar";
@@ -21,6 +21,10 @@ const AthleteCard = () => {
   const cardRef = useRef<HTMLDivElement>(null);
   const handlePrint = useHandlePrint(cardRef, "Carnet de Deportista");
 
+  const togglePreview = useCallback(() => setShowPreview((prev) => !prev), []);
+
+  const handlePrintClick = useCallback(() => handlePrint(), [handlePrint]);
+
   // For generate the verification ID
   const mutationGenerate = useMutation({
     mutationKey: ["generateVerificationId"],
@@ -29,29 +33,31 @@ const AthleteCard = () => {
       if (data.status === 200) setVerificationId(data.data);
     },
   });
+  const { mutate } = mutationGenerate;
+
   useEffect(() => {
     if (athleteData) {
-      mutationGenerate.mutate();
+      mutate();
     }
-  }, [athleteData, mutationGenerate]);
+  }, [athleteData, mutate]);
 
-  const verificationUrl = `https://rosario-academia.vercel.app/verify/${verificationId}`;
+  const verificationUrl = useMemo(
+    () => `https://rosario-academia.vercel.app/verify/${verificationId}`,
+    [verificationId],
+  );
 
   if (!athleteData) return null;
   return (
     <div className="min-h-screen bg-gray-100 p-4 dark:bg-[#292929] sm:p-8">
       <h1 className="mb-6 text-center font-sans text-3xl font-bold text-gray-800 dark:text-gray-100 sm:text-4xl">
-        Carnet de Atleta - Academia de Voleibol
+        Carnet de Deportista
       </h1>
 
       <div className="mb-8 flex flex-col justify-center gap-4 sm:flex-row">
-        <HoverBorderGradient
-          onClick={() => setShowPreview(!showPreview)}
-          className="w-full sm:w-auto"
-        >
+        <HoverBorderGradient onClick={togglePreview} className="w-full sm:w-auto">
           {showPreview ? "Ocultar" : "Mostrar"} Previsualización
         </HoverBorderGradient>
-        <HoverBorderGradient onClick={() => handlePrint()} className="w-full sm:w-auto">
+        <HoverBorderGradient onClick={handlePrintClick} className="w-full sm:w-auto">
           Imprimir Carnet
         </HoverBorderGradient>
       </div>
