@@ -42,20 +42,7 @@ export function EditProfileForm({
     onCancelEdit();
   };
   const watchedValues = useWatch({ control });
-  console.log(JSON.stringify(watchedValues, null, 2));
-  console.log(
-    "userProfile",
-    JSON.stringify(
-      {
-        firstName: userProfile?.first_name || "",
-        paternalLastName: userProfile?.paternal_last_name || "",
-        maternalLastName: userProfile?.maternal_last_name || "",
-        phone: userProfile?.phone || "",
-      },
-      null,
-      2,
-    ),
-  );
+
   const hasChanges =
     JSON.stringify(watchedValues) !==
     JSON.stringify({
