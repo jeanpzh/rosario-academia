@@ -14,23 +14,6 @@ import Link from "next/link";
 import { useRef, useState } from "react";
 import type React from "react"; // Added import for React
 
-export const FloatingDock = ({
-  items,
-  desktopClassName,
-  mobileClassName,
-}: {
-  items: { title: string; icon: React.ReactNode; href: string }[];
-  desktopClassName?: string;
-  mobileClassName?: string;
-}) => {
-  return (
-    <>
-      <FloatingDockDesktop items={items} className={desktopClassName} />
-      <FloatingDockMobile items={items} className={mobileClassName} />
-    </>
-  );
-};
-
 const FloatingDockMobile = ({
   items,
   className,
@@ -83,30 +66,6 @@ const FloatingDockMobile = ({
         <IconLayoutNavbarCollapse className="size-5 text-neutral-500 dark:text-neutral-400" />
       </button>
     </div>
-  );
-};
-
-const FloatingDockDesktop = ({
-  items,
-  className,
-}: {
-  items: { title: string; icon: React.ReactNode; href: string }[];
-  className?: string;
-}) => {
-  const mouseX = useMotionValue(Number.POSITIVE_INFINITY);
-  return (
-    <motion.div
-      onMouseMove={(e) => mouseX.set(e.pageX)}
-      onMouseLeave={() => mouseX.set(Number.POSITIVE_INFINITY)}
-      className={cn(
-        "mx-auto hidden md:flex h-16 gap-4 items-end rounded-2xl bg-gray-50 dark:bg-neutral-900 px-4 pb-3",
-        className,
-      )}
-    >
-      {items.map((item) => (
-        <IconContainer mouseX={mouseX} key={item.title} {...item} />
-      ))}
-    </motion.div>
   );
 };
 
@@ -190,3 +149,42 @@ function IconContainer({
     </Link>
   );
 }
+const FloatingDockDesktop = ({
+  items,
+  className,
+}: {
+  items: { title: string; icon: React.ReactNode; href: string }[];
+  className?: string;
+}) => {
+  const mouseX = useMotionValue(Number.POSITIVE_INFINITY);
+  return (
+    <motion.div
+      onMouseMove={(e) => mouseX.set(e.pageX)}
+      onMouseLeave={() => mouseX.set(Number.POSITIVE_INFINITY)}
+      className={cn(
+        "mx-auto hidden md:flex h-16 gap-4 items-end rounded-2xl bg-gray-50 dark:bg-neutral-900 px-4 pb-3",
+        className,
+      )}
+    >
+      {items.map((item) => (
+        <IconContainer mouseX={mouseX} key={item.title} {...item} />
+      ))}
+    </motion.div>
+  );
+};
+export const FloatingDock = ({
+  items,
+  desktopClassName,
+  mobileClassName,
+}: {
+  items: { title: string; icon: React.ReactNode; href: string }[];
+  desktopClassName?: string;
+  mobileClassName?: string;
+}) => {
+  return (
+    <>
+      <FloatingDockDesktop items={items} className={desktopClassName} />
+      <FloatingDockMobile items={items} className={mobileClassName} />
+    </>
+  );
+};

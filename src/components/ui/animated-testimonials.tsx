@@ -3,7 +3,7 @@
 import { IconArrowLeft, IconArrowRight } from "@tabler/icons-react";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, useMemo } from "react";
 
 type Testimonial = {
   quote: string;
@@ -12,14 +12,26 @@ type Testimonial = {
   src: string;
 };
 
-export const AnimatedTestimonials = ({
+// Simple seeded random function using the index as the seed.
+function seededRandom(seed: number) {
+  const x = Math.sin(seed) * 10000;
+  return x - Math.floor(x);
+}
+
+export default function AnimatedTestimonials({
   testimonials,
   autoplay = false,
 }: {
   testimonials: Testimonial[];
   autoplay?: boolean;
-}) => {
+}) {
   const [active, setActive] = useState(0);
+
+  // Generate stable "random" rotations using a seeded random function.
+  const randomRotations = useMemo(
+    () => testimonials.map((_, index) => Math.floor(seededRandom(index) * 21) - 10),
+    [testimonials],
+  );
 
   const handleNext = useCallback(() => {
     setActive((prev) => (prev + 1) % testimonials.length);
@@ -29,9 +41,7 @@ export const AnimatedTestimonials = ({
     setActive((prev) => (prev - 1 + testimonials.length) % testimonials.length);
   }, [testimonials.length]);
 
-  const isActive = (index: number) => {
-    return index === active;
-  };
+  const isActive = (index: number) => index === active;
 
   useEffect(() => {
     if (autoplay) {
@@ -40,21 +50,11 @@ export const AnimatedTestimonials = ({
     }
   }, [autoplay, handleNext]);
 
-  const randomRotateY = () => {
-    return Math.floor(Math.random() * 21) - 10;
-  };
-
   return (
     <div className="mx-auto max-w-sm px-4 py-12 font-sans antialiased md:max-w-5xl md:px-2 lg:px-12">
-      {" "}
-      {/* Reducido py-24 a py-12 */}
       <div className="relative grid grid-cols-1 gap-10 md:grid-cols-2">
-        {" "}
-        {/* Reducido gap-20 a gap-10 */}
         <div>
           <div className="relative h-72 w-full">
-            {" "}
-            {/* Reducido h-96 a h-72 */}
             <AnimatePresence>
               {testimonials.map((testimonial, index) => (
                 <motion.div
@@ -63,13 +63,13 @@ export const AnimatedTestimonials = ({
                     opacity: 0,
                     scale: 0.9,
                     z: -100,
-                    rotate: randomRotateY(),
+                    rotate: randomRotations[index],
                   }}
                   animate={{
                     opacity: isActive(index) ? 1 : 0.7,
                     scale: isActive(index) ? 1 : 0.95,
                     z: isActive(index) ? 0 : -100,
-                    rotate: isActive(index) ? 0 : randomRotateY(),
+                    rotate: isActive(index) ? 0 : randomRotations[index],
                     zIndex: isActive(index) ? 999 : testimonials.length + 2 - index,
                     y: isActive(index) ? [0, -80, 0] : 0,
                   }}
@@ -77,7 +77,7 @@ export const AnimatedTestimonials = ({
                     opacity: 0,
                     scale: 0.9,
                     z: 100,
-                    rotate: randomRotateY(),
+                    rotate: randomRotations[index],
                   }}
                   transition={{
                     duration: 0.4,
@@ -99,8 +99,6 @@ export const AnimatedTestimonials = ({
           </div>
         </div>
         <div className="flex flex-col justify-between py-2">
-          {" "}
-          {/* Reducido py-4 a py-2 */}
           <motion.div
             key={active}
             initial={{ y: 20, opacity: 0 }}
@@ -109,16 +107,12 @@ export const AnimatedTestimonials = ({
             transition={{ duration: 0.2, ease: "easeInOut" }}
           >
             <h3 className="text-2xl font-bold text-black dark:text-white">
-              {" "}
-              {/* Reducido text-3xl a text-2xl */}
               {testimonials[active].name}
             </h3>
             <p className="mt-1 text-base text-gray-500 dark:text-neutral-500">
-              {" "}
-              {/* Reducido mt-2 a mt-1 */}
               {testimonials[active].designation}
             </p>
-            <motion.p className="mt-5 text-xl leading-relaxed text-gray-500 dark:text-neutral-300">
+            <motion.div className="mt-5 text-xl leading-relaxed text-gray-500 dark:text-neutral-300">
               {testimonials[active].quote.split(" ").map((word, index) => (
                 <motion.span
                   key={index}
@@ -142,7 +136,7 @@ export const AnimatedTestimonials = ({
                   {word}&nbsp;
                 </motion.span>
               ))}
-            </motion.p>
+            </motion.div>
           </motion.div>
           <div className="flex gap-4 pt-8 md:pt-0">
             <button
@@ -162,4 +156,4 @@ export const AnimatedTestimonials = ({
       </div>
     </div>
   );
-};
+}

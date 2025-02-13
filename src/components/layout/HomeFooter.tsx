@@ -1,3 +1,4 @@
+"use client";
 import { Users, Building2, Trophy } from "lucide-react";
 
 export default function HomeFooter() {

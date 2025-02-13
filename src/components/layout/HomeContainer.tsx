@@ -1,8 +1,9 @@
+"use server";
 import React from "react";
 import HomeHeader from "./HomeHeader";
 import HomeFooter from "./HomeFooter";
 
-export default function HomeContainer({ children }: { children: React.ReactNode }) {
+export default async function HomeContainer({ children }: { children: React.ReactNode }) {
   return (
     <main className="flex min-h-screen flex-col items-center">
       <div className="flex w-full flex-1 flex-col items-center gap-5">

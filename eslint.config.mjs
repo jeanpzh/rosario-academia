@@ -55,6 +55,7 @@ const eslintConfig = [
       "no-trailing-spaces": "off",
       "react/no-unescaped-entities": "off",
       "tailwindcss/no-custom-classname": "off",
+      "@next/next/no-img-element": "off",
     },
   }),
 ];
