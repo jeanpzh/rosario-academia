@@ -51,6 +51,7 @@ export interface AthleteStore {
   fetchAthleteData: () => Promise<void>;
   clearAthleteData: () => void;
   setAthleteData: (data: AthleteState) => void;
+  setImg: (url: string) => void;
 }
 const supabase = createClient();
 
@@ -68,6 +69,19 @@ export const useAthleteStore = create<AthleteStore>()(
                 profile: {
                   ...state.athlete.profile,
                   ...updateProfile,
+                },
+              }
+            : null,
+        }));
+      },
+      setImg: (img: string | null) => {
+        set((state) => ({
+          athlete: state.athlete
+            ? {
+                ...state.athlete,
+                profile: {
+                  ...state.athlete.profile,
+                  avatar_url: img,
                 },
               }
             : null,

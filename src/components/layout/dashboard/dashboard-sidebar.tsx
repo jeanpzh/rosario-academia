@@ -8,13 +8,19 @@ import Image from "next/image";
 import { signOutAction } from "@/app/(auth-pages)/actions";
 import { Button } from "@/components/ui/button";
 import { ThemeSwitcher } from "@/components/theme-switcher";
+import { useAthleteStore } from "@/lib/stores/useUserStore";
 
 interface Links {
   label: string;
   href?: string;
   icon: React.JSX.Element | React.ReactNode;
 }
+
+const DEFAULT_IMAGE =
+  "https://png.pngtree.com/element_our/20200610/ourmid/pngtree-character-default-avatar-image_2237203.jpg";
+
 export function DashboardSidebar({ links, user }: { links: Links[]; user: any }) {
+  const { athlete } = useAthleteStore();
   const [open, setOpen] = useState(false);
   return (
     <div
@@ -33,6 +39,7 @@ export function DashboardSidebar({ links, user }: { links: Links[]; user: any })
               {links.map((link, index) => (
                 <SidebarLink key={index} link={link} />
               ))}
+
               <form action={signOutAction}>
                 <Button type="submit" variant={"ghost"} className="flex items-center gap-2">
                   <IconArrowLeft className="size-5 shrink-0 text-neutral-700 dark:text-neutral-200" />{" "}
@@ -48,10 +55,7 @@ export function DashboardSidebar({ links, user }: { links: Links[]; user: any })
                 href: "#",
                 icon: (
                   <Image
-                    src={
-                      user.avatar_url ||
-                      "https://png.pngtree.com/element_our/20200610/ourmid/pngtree-character-default-avatar-image_2237203.jpg"
-                    }
+                    src={athlete?.profile.avatar_url || DEFAULT_IMAGE}
                     className="size-8 shrink-0 rounded-full object-cover"
                     width={50}
                     height={50}

@@ -8,6 +8,7 @@ interface PaymentStatusProps {
   payment_method: string;
   last_payment_date: string;
   payment_amount: string;
+  disabled?: boolean;
 }
 
 export function PaymentStatus({
@@ -16,6 +17,7 @@ export function PaymentStatus({
   payment_method,
   last_payment_date,
   payment_amount,
+  disabled,
 }: PaymentStatusProps) {
   return (
     <Card className="w-full">
@@ -41,7 +43,9 @@ export function PaymentStatus({
             Último pago: {last_payment_date}| Método: {payment_method} | Monto: S/.{payment_amount}
           </p>
         ) : (
-          <Button onClick={onPayNow}>Pagar ahora</Button>
+          <Button disabled={disabled} onClick={onPayNow}>
+            Pagar ahora
+          </Button>
         )}
       </CardFooter>
     </Card>

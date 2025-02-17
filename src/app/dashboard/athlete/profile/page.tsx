@@ -10,9 +10,12 @@ import { useProfileData } from "./hooks/use-profile";
 import { EditProfileForm } from "./components/EditProfileForm";
 import { PersonalCard } from "./components/PersonalCard";
 import { useAthleteStore } from "@/lib/stores/useUserStore";
+import { useRouter } from "next/navigation";
 
 export default function ProfilePage() {
   const { user, userProfile, athlete, loading, error, updateProfile } = useProfileData();
+
+  const { push } = useRouter();
 
   const { setAthleteData } = useAthleteStore();
 
@@ -92,7 +95,12 @@ export default function ProfilePage() {
           </div>
 
           <div className="grid h-full gap-8 md:grid-cols-3">
-            <PersonalCard userProfile={userProfile!} athlete={athlete} isEditing={isEditing} />
+            <PersonalCard
+              userProfile={userProfile!}
+              athlete={athlete}
+              isEditing={isEditing}
+              onAvatarClick={() => push("/dashboard/athlete/profile/avatar")}
+            />
 
             <motion.div
               initial={{ opacity: 0, y: 20 }}

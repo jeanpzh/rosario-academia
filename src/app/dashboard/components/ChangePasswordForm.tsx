@@ -4,35 +4,40 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
-import { useToast } from "@/hooks/use-toast";
 import { changePassword } from "@/app/dashboard/actions/assistantActions";
 import { changePasswordFormData, ChangePasswordFormData } from "../schemas/change-password-schema";
 import PasswordInput from "@/components/password-input";
 import VerifyPassword from "@/app/(auth-pages)/components/VerifyPassword";
+import { toast, Toaster } from "sonner";
 
 export function ChangePasswordForm() {
   const { handleSubmit, reset, control, watch } = useForm<ChangePasswordFormData>({
     resolver: zodResolver(changePasswordFormData),
   });
   const [isLoading, setIsLoading] = useState(false);
-  const { toast } = useToast();
 
   const onSubmit = async (data: ChangePasswordFormData) => {
     setIsLoading(true);
     try {
       const { success, message } = await changePassword(data.currentPassword, data.newPassword);
       if (!success) {
-        toast({ title: "Error", description: message, variant: "destructive" });
+        toast.error("Error", {
+          description: message,
+          duration: 5000,
+        });
         return;
       }
-      toast({ title: "Éxito", description: message, variant: "default" });
+
+      toast.success("Éxito", {
+        description: message,
+        duration: 5000,
+      });
       reset();
     } catch (error) {
       console.error(error);
-      toast({
-        title: "Error",
+      toast.error("Error", {
         description: "Hubo un problema al actualizar tu contraseña. Por favor, intenta de nuevo.",
-        variant: "destructive",
+        duration: 5000,
       });
     } finally {
       setIsLoading(false);
@@ -67,6 +72,7 @@ export function ChangePasswordForm() {
       <Button type="submit" disabled={isLoading}>
         {isLoading ? "Actualizando..." : "Actualizar Contraseña"}
       </Button>
+      <Toaster />
     </form>
   );
 }

@@ -8,12 +8,14 @@ import Image from "next/image";
 import { useAthleteStore } from "@/lib/stores/useUserStore";
 import { QRCodeSVG } from "qrcode.react";
 import { HoverBorderGradient } from "@/components/hover-border-gradient";
-import { formatDate } from "@/utils/formats";
+import { formatDate, getNextFormattedDate } from "@/utils/formats";
 import { useHandlePrint } from "./hooks/useHandlePrint";
-import { useMutation } from "@tanstack/react-query";
-import { generateVerificationCode } from "../../actions/athleteActions";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { generateVerificationCode, getPaymentDate } from "@/app/dashboard/actions/athleteActions";
+import LoadingPage from "../components/LoadingPage";
 
 const AthleteCard = () => {
+  const { athlete } = useAthleteStore();
   const [verificationId, setVerificationId] = useState<string | null>(null);
   const { athlete: athleteData } = useAthleteStore();
   const [showPreview, setShowPreview] = useState(true);
@@ -24,6 +26,25 @@ const AthleteCard = () => {
   const togglePreview = useCallback(() => setShowPreview((prev) => !prev), []);
 
   const handlePrintClick = useCallback(() => handlePrint(), [handlePrint]);
+
+  // GET payment DATE
+  const {
+    data: responseData,
+    error,
+    isLoading,
+  } = useQuery({
+    queryKey: ["paymentDate"],
+    queryFn: getPaymentDate,
+  });
+  const availableDate = useMemo(() => {
+    if (!responseData?.data) return null;
+    try {
+      return getNextFormattedDate(responseData.data as string);
+    } catch (err) {
+      console.error(err);
+      return null;
+    }
+  }, [responseData]);
 
   // For generate the verification ID
   const mutationGenerate = useMutation({
@@ -46,9 +67,15 @@ const AthleteCard = () => {
     [verificationId],
   );
 
+  const DEFAULT_IMAGE =
+    "https://res.cloudinary.com/dcxmhgysh/image/upload/v1737848404/rosario-removebg-preview_yves2v.png";
+
   if (!athleteData) return null;
+  if (isLoading) return <LoadingPage />;
+  if (error) return <div>Ocurrió un error inesperado</div>;
+
   return (
-    <div className="min-h-screen bg-gray-100 p-4 dark:bg-[#292929] sm:p-8">
+    <div className="min-h-screen bg-gray-100 p-4 dark:bg-[#181818] sm:p-8">
       <h1 className="mb-6 text-center font-sans text-3xl font-bold text-gray-800 dark:text-gray-100 sm:text-4xl">
         Carnet de Deportista
       </h1>
@@ -84,7 +111,7 @@ const AthleteCard = () => {
                     <div className="shrink-0">
                       <Avatar className="avatar size-24 border-2 border-blue-600 dark:border-blue-400">
                         <Image
-                          src="https://res.cloudinary.com/dcxmhgysh/image/upload/v1737848404/rosario-removebg-preview_yves2v.png"
+                          src={athlete?.profile.avatar_url || DEFAULT_IMAGE}
                           alt="Logo Academia de Voleibol"
                           className="rounded-full object-cover"
                           width={96}
@@ -132,13 +159,9 @@ const AthleteCard = () => {
                     ))}
                   </div>
                   <div className="mt-2 bg-blue-100 p-2 text-center text-xs text-blue-800 dark:bg-blue-900 dark:text-blue-200">
-                    <p>
-                      Válido hasta:{" "}
-                      {formatDate(
-                        new Date(
-                          new Date().setFullYear(new Date().getFullYear() + 1),
-                        ).toISOString(),
-                      )}
+                    {/* RESPONSEDATA + 1MONTH OR 1 YEAR */}
+                    <p className="font-semibold">
+                      Disponible hasta : {availableDate ? availableDate : "No disponible"}
                     </p>
                   </div>
                 </div>

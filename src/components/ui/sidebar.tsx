@@ -1,6 +1,6 @@
 "use client";
 import { cn } from "@/lib/utils";
-import Link, { LinkProps } from "next/link";
+import Link from "next/link";
 import React, { useState, createContext, useContext } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { IconMenu2, IconX } from "@tabler/icons-react";
@@ -151,23 +151,24 @@ export const SidebarBody = (props: React.ComponentProps<typeof motion.div>) => {
 export const SidebarLink = ({
   link,
   className,
-  ...props
+  mode,
+  ...buttonProps
 }: {
   link: Links;
   className?: string;
-  props?: LinkProps;
+  mode?: "button" | "link";
+  buttonProps?: React.ComponentProps<"button">;
   onClick?: () => void;
 }) => {
   const { open, animate } = useSidebar();
   return (
     <Link
-      onClick={props.onClick}
+      onClick={buttonProps.onClick}
       href={link.href || "#"}
       className={cn("group/sidebar flex items-center justify-start gap-2 py-2", className)}
-      {...props}
+      {...buttonProps}
     >
       {link.icon}
-
       <motion.span
         animate={{
           display: animate ? (open ? "inline-block" : "none") : "inline-block",

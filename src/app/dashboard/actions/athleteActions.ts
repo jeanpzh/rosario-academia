@@ -112,3 +112,20 @@ export const generateVerificationCode = async () => {
   if (error) return { status: 500, error: "Error al generar código de verificación" };
   return { status: 200, data: verification_id };
 };
+export const getPaymentDate = async () => {
+  const supabase = await createClient();
+  const { data: user, error: userError } = await supabase.auth.getUser();
+  if (userError) return { status: 500, error: "Error al obtener usuario" };
+
+  const athleteId = user.user.id;
+
+  const { data: payment, error: paymentError } = await supabase
+    .from("payments")
+    .select("payment_date")
+    .eq("athlete_id", athleteId)
+    .single();
+
+  if (paymentError) return { status: 500, error: "Error al obtener datos de pago" };
+
+  return { status: 200, data: payment.payment_date };
+};

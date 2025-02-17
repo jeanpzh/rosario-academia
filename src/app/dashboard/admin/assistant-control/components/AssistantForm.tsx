@@ -1,7 +1,7 @@
 import TextField from "@/app/(auth-pages)/components/TextField";
 import React, { useEffect } from "react";
 import { useFormContext } from "react-hook-form";
-import { AssistantFormData } from "../../schemas/assistant-schema";
+import { AssistantFormData } from "@/app/dashboard/admin/schemas/assistant-schema";
 import { Button } from "@/components/ui/button";
 import { useModalStore } from "@/lib/stores/useModalStore";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -9,12 +9,10 @@ import {
   assistantSignUpAction,
   updateAssistantAction,
 } from "@/app/dashboard/actions/assistantActions";
-import { useToast } from "@/hooks/use-toast";
-
+import { toast, Toaster } from "sonner";
 export default function AssistantForm() {
   const { mode, currentItem, entity, setModalOpen, id } = useModalStore();
   const { control, reset, handleSubmit } = useFormContext<AssistantFormData>();
-  const { toast } = useToast();
   const queryClient = useQueryClient();
 
   // For Assistant Sign Up from Table
@@ -45,11 +43,9 @@ export default function AssistantForm() {
       if (mode === "create") postMutation.mutate(data);
       else if (mode === "edit") updateMutation.mutate(data);
     } catch (error) {
-      // Handle error with toast
-      toast({
-        title: "Error",
+      toast.error("Error", {
         description: "Hubo un problema al guardar los datos. Por favor, intenta de nuevo.",
-        variant: "destructive",
+        duration: 5000,
       });
     }
   };
@@ -131,6 +127,7 @@ export default function AssistantForm() {
       <Button type="submit" className="col-span-2">
         Guardar
       </Button>
+      <Toaster />
     </form>
   );
 }

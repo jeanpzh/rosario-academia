@@ -1,11 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "../supabase/server";
 
-const restrictedUrls = [
-  "/dashboard/athlete/profile",
-  "/dashboard/athlete/schedule",
-  "/dashboard/athlete/carnet",
-];
+const restrictedUrls = ["/dashboard/athlete/schedule", "/dashboard/athlete/carnet"];
 
 export const athleteMiddleware = async (
   request: NextRequest,
