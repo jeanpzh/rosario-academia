@@ -2,18 +2,18 @@
 
 import React, { useState } from "react";
 import styles from "./styles.module.css";
-import { FormMessage, Message } from "@/components/form-message";
 import { SubmitButton } from "@/components/submit-button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import Link from "next/link";
 import { signInAction } from "../actions";
 import PasswordInput from "@/components/password-input";
-interface SignInProps {
-  searchParams: Message;
-}
+import { toast, Toaster } from "sonner";
+import { useRouter } from "next/navigation";
 
-const SignIn = ({ searchParams }: SignInProps) => {
+const SignIn = () => {
+  const [loading, setLoading] = useState(false);
+  const { push } = useRouter();
   const [isRightPanelActive, setIsRightPanelActive] = useState(false);
 
   const handleRegisterClick = () => {
@@ -26,11 +26,21 @@ const SignIn = ({ searchParams }: SignInProps) => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
-    try {
-      await signInAction(formData);
-    } catch (error) {
-      console.error("signInAction failed", error);
+    setLoading(true);
+    const res = await signInAction(formData);
+
+    if (res?.status === 500) {
+      toast.error("Error", {
+        description: res.message,
+      });
+      setLoading(false);
+      return;
     }
+    setLoading(false);
+    toast.success("Éxito", {
+      description: "Inicio de sesión exitoso",
+    });
+    push(res.redirectUrl as string);
   };
 
   return (
@@ -59,8 +69,9 @@ const SignIn = ({ searchParams }: SignInProps) => {
                 required
               />
             </div>
-            <SubmitButton pendingText="Loggeando...">Iniciar Sesión</SubmitButton>
-            <FormMessage message={searchParams} />
+            <SubmitButton pending={loading} pendingText="Loggeando ...">
+              Iniciar Sesión
+            </SubmitButton>
           </div>
           <span className={styles.signInText}>
             ¿No tienes una cuenta?{" "}
@@ -112,6 +123,7 @@ const SignIn = ({ searchParams }: SignInProps) => {
           </div>
         </div>
       </div>
+      <Toaster />
     </div>
   );
 };

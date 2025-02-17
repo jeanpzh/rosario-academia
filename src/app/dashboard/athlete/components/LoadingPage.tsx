@@ -1,9 +1,14 @@
 import React from "react";
+import { cn } from "@/lib/utils";
 
-export default function LoadingPage() {
+interface LoadingPageProps {
+  className?: string;
+}
+
+export default function LoadingPage({ className = "dark:bg-[#181818]" }: LoadingPageProps) {
   return (
-    <div className="flex h-screen w-full items-center justify-center dark:bg-[#181818]">
-      <div className="size-16 animate-spin rounded-full border-y-2 border-black dark:border-gray-300 "></div>
+    <div className={cn("flex h-screen items-center justify-center", className)}>
+      <div className="size-16 animate-spin rounded-full border-y-2 border-primary"></div>
     </div>
   );
 }

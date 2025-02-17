@@ -12,6 +12,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { FlipWords } from "@/components/flip-words";
 import SignUpStepOne from "./SignUpStepOne";
 import SignUpStepTwo from "./SignUpStepTwo";
+import { toast, Toaster } from "sonner";
 
 interface SignUpFormProps {
   message: Message;
@@ -42,13 +43,25 @@ export default function SignUpForm({ message }: SignUpFormProps) {
           type: "manual",
           message: res.message,
         });
+        toast.error("Error", {
+          description: res.message,
+          duration: 5000,
+        });
         setStep(1);
         setFocus("dni");
+        return;
       } else {
         clearErrors("dni");
+        toast.success("Éxito", {
+          description: res.message,
+        });
       }
     } catch (err: any) {
       console.log({ err });
+      toast.error("Error", {
+        description: err.message,
+        duration: 5000,
+      });
     } finally {
       setPending(false);
     }
@@ -108,6 +121,7 @@ export default function SignUpForm({ message }: SignUpFormProps) {
           </FormProvider>
         </div>
       </div>
+      <Toaster />
     </div>
   );
 }

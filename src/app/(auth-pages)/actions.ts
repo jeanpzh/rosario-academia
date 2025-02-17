@@ -86,25 +86,31 @@ export const signInAction = async (formData: FormData) => {
   });
 
   if (signinError) {
-    console.log(signinError);
-    return encodedRedirect("error", "/sign-in", signinError.message);
+    return { status: 500, message: "Error al iniciar sesión. Email o contraseña incorrectos." };
   }
+
   const { data: user } = await supabase.auth.getUser();
-  if (!user) return redirect("/sign-in");
+  if (!user) {
+    return { status: 401, message: "Usuario no encontrado" };
+  }
+
   const { data: profile } = await supabase
     .from("profiles")
     .select("*")
     .eq("id", user.user?.id)
     .single();
-  if (profile?.role === "admin") {
-    return redirect("/dashboard/admin");
-  } else if (profile?.role === "deportista") {
-    return redirect("/loading-data");
-  } else if (profile?.role === "auxiliar_administrativo") {
-    return redirect("/dashboard/auxiliar");
-  }
-};
 
+  let redirectUrl = "";
+  if (profile?.role === "admin") {
+    redirectUrl = "/dashboard/admin";
+  } else if (profile?.role === "deportista") {
+    redirectUrl = "/loading-data";
+  } else if (profile?.role === "auxiliar_administrativo") {
+    redirectUrl = "/dashboard/auxiliar";
+  }
+
+  return { status: 200, redirectUrl };
+};
 export const forgotPasswordAction = async (formData: FormData) => {
   const email = formData.get("email")?.toString();
   const supabase = await createClient();
@@ -167,26 +173,7 @@ export const getProfile = async (userId: string) => {
   const { data: profile } = await supabase.from("profiles").select("*").eq("id", userId);
   return profile;
 };
-// -> get Shift features by schedule filter by schedule_id
-/* Return object example
-id : "beginner" | "intermediate" | "advanced";
-description: "{start_time} - {end_time} ({days})";
-spots: number;
--> HElPERS
-shifts {
-  shift_id: string;
-  schedule_id: string;
-  weekday : string,
-  }
-schedules {
-  schedule_id: string;
-  schedule_name : "Básico" | "Intermedio" | "Avanzado";
-  start_time : string;
-  end_time : string;
-  level : "beginner" | "intermediate" | "advanced";
-  available_spots : number;
-}
-*/
+
 interface ReturnResponse {
   id: string;
   name: string;

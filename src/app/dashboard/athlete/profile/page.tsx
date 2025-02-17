@@ -11,6 +11,7 @@ import { EditProfileForm } from "./components/EditProfileForm";
 import { PersonalCard } from "./components/PersonalCard";
 import { useAthleteStore } from "@/lib/stores/useUserStore";
 import { useRouter } from "next/navigation";
+import LoadingPage from "../components/LoadingPage";
 
 export default function ProfilePage() {
   const { user, userProfile, athlete, loading, error, updateProfile } = useProfileData();
@@ -24,13 +25,7 @@ export default function ProfilePage() {
   const [message, setMessage] = useState<string | null>(null);
   const [saveStatus, setSaveStatus] = useState<"success" | "error">("success");
 
-  if (loading) {
-    return (
-      <div className="flex h-screen items-center justify-center dark:bg-[#181818]">
-        <div className="size-16 animate-spin rounded-full border-y-2 border-primary"></div>
-      </div>
-    );
-  }
+  if (loading) return <LoadingPage />;
 
   if (error) {
     return <div>Ocurrió un error: {error}</div>;
