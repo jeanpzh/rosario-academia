@@ -29,7 +29,6 @@ export interface ProfileCardProps {
   };
   athlete: any;
   isEditing: boolean;
-  onAvatarClick?: () => void;
 }
 
 export interface AthleteProfile {

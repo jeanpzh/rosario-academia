@@ -8,6 +8,7 @@ import { Preference } from "mercadopago";
 type ActionResponse = {
   status: number;
   message: string;
+  data?: any;
 };
 
 export const editProfileAction = async (data: unknown): Promise<ActionResponse> => {
@@ -30,6 +31,29 @@ export const editProfileAction = async (data: unknown): Promise<ActionResponse> 
         message: "Usuario no encontrado",
       };
     }
+    // Verify if last_profile_update is more than 30 days
+    const { data: profile, error: profileError } = await supabase
+      .from("profiles")
+      .select("*")
+      .eq("id", userData.user.id)
+      .single();
+
+    if (profileError) {
+      return {
+        status: 500,
+        message: profileError.message,
+      };
+    }
+    const thirtyDays = 30 * 24 * 60 * 60 * 1000;
+    const lastUpdate = new Date(profile.last_profile_update).getTime();
+    const currentDate = new Date().getTime();
+
+    if (currentDate - lastUpdate < thirtyDays) {
+      return {
+        status: 400,
+        message: "Solo puedes actualizar tu perfil una vez al mes",
+      };
+    }
 
     const { error } = await supabase
       .from("profiles")
@@ -38,6 +62,7 @@ export const editProfileAction = async (data: unknown): Promise<ActionResponse> 
         paternal_last_name: validatedData.data.paternalLastName,
         maternal_last_name: validatedData.data.maternalLastName,
         phone: validatedData.data.phone,
+        last_profile_update: new Date(),
       })
       .eq("id", userData.user.id)
       .single();

@@ -10,20 +10,16 @@ import { useProfileData } from "./hooks/use-profile";
 import { EditProfileForm } from "./components/EditProfileForm";
 import { PersonalCard } from "./components/PersonalCard";
 import { useAthleteStore } from "@/lib/stores/useUserStore";
-import { useRouter } from "next/navigation";
 import LoadingPage from "../components/LoadingPage";
+import { toast } from "sonner";
 
 export default function ProfilePage() {
   const { user, userProfile, athlete, loading, error, updateProfile } = useProfileData();
 
-  const { push } = useRouter();
-
-  const { setAthleteData } = useAthleteStore();
+  const { setAthleteData, setDaysRemaining } = useAthleteStore();
 
   const [isEditing, setIsEditing] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
-  const [message, setMessage] = useState<string | null>(null);
-  const [saveStatus, setSaveStatus] = useState<"success" | "error">("success");
 
   if (loading) return <LoadingPage />;
 
@@ -34,31 +30,36 @@ export default function ProfilePage() {
   const handleEditSubmit = async (data: TEditForm) => {
     try {
       setIsSaving(true);
-      const res = await updateProfile({
-        first_name: data.firstName,
-        paternal_last_name: data.paternalLastName,
-        maternal_last_name: data.maternalLastName,
-        phone: data.phone,
-      });
-      if (res.status !== 200) {
-        setSaveStatus("error");
-      } else {
-        setSaveStatus("success");
-        setAthleteData({
-          ...athlete,
+      toast.promise(
+        updateProfile({
           first_name: data.firstName,
           paternal_last_name: data.paternalLastName,
           maternal_last_name: data.maternalLastName,
           phone: data.phone,
-        });
-      }
-      setMessage(res.message);
-      setTimeout(() => {
-        setMessage(null);
-      }, 2500);
+        }),
+        {
+          loading: "Guardando cambios...",
+          success: (res) => {
+            setAthleteData({
+              ...athlete,
+              first_name: data.firstName,
+              paternal_last_name: data.paternalLastName,
+              maternal_last_name: data.maternalLastName,
+              phone: data.phone,
+            });
+            setDaysRemaining(30);
+            return res.message;
+          },
+          error: (err) => {
+            return err.message || "Error al actualizar el perfil";
+          },
+        },
+      );
     } catch (e: any) {
-      setMessage(e.message || "Error al actualizar el perfil");
-      setSaveStatus("error");
+      toast.error("Error", {
+        description: e.message || "Error al actualizar el perfil",
+        duration: 5000,
+      });
     } finally {
       setIsSaving(false);
       setIsEditing(false);
@@ -90,12 +91,7 @@ export default function ProfilePage() {
           </div>
 
           <div className="grid h-full gap-8 md:grid-cols-3">
-            <PersonalCard
-              userProfile={userProfile!}
-              athlete={athlete}
-              isEditing={isEditing}
-              onAvatarClick={() => push("/dashboard/athlete/profile/avatar")}
-            />
+            <PersonalCard userProfile={userProfile!} athlete={athlete} isEditing={isEditing} />
 
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -112,8 +108,6 @@ export default function ProfilePage() {
                   onSubmit={handleEditSubmit}
                   isEditing={isEditing}
                   isSaving={isSaving}
-                  message={message}
-                  saveStatus={saveStatus}
                   onCancelEdit={() => setIsEditing(false)}
                   user={user}
                   userProfile={userProfile}

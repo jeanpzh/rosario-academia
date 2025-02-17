@@ -18,6 +18,7 @@ export const saveAvatar = async (
       .from("profiles")
       .update({
         avatar_url: res.secure_url,
+        last_avatar_change: new Date(),
       })
       .match({ id: session?.user.id });
 

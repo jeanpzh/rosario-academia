@@ -129,3 +129,37 @@ export const getPaymentDate = async () => {
 
   return { status: 200, data: payment.payment_date };
 };
+export const getLastAvatarDate = async () => {
+  const supabase = await createClient();
+  const { data: user, error: userError } = await supabase.auth.getUser();
+  if (userError) return { status: 500, error: "Error al obtener usuario" };
+
+  const athleteId = user.user.id;
+
+  const { data: profile, error: profileError } = await supabase
+    .from("profiles")
+    .select("last_avatar_change")
+    .eq("id", athleteId)
+    .single();
+
+  if (profileError) return { status: 500, error: "Error al obtener datos de perfil" };
+
+  return { status: 200, data: profile.last_avatar_change };
+};
+export const getLastProfileUpdateDate = async () => {
+  const supabase = await createClient();
+  const { data: user, error: userError } = await supabase.auth.getUser();
+  if (userError) return { status: 500, error: "Error al obtener usuario" };
+
+  const athleteId = user.user.id;
+
+  const { data: profile, error: profileError } = await supabase
+    .from("profiles")
+    .select("last_profile_update")
+    .eq("id", athleteId)
+    .single();
+
+  if (profileError) return { status: 500, error: "Error al obtener datos de perfil" };
+
+  return { status: 200, data: profile.last_profile_update };
+};

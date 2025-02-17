@@ -10,6 +10,8 @@ interface Profile {
   first_name: string;
   paternal_last_name: string;
   maternal_last_name: string;
+  last_avatar_change: string | null;
+  days_remaining: number | null;
 }
 
 interface Payment {
@@ -51,6 +53,8 @@ export interface AthleteStore {
   fetchAthleteData: () => Promise<void>;
   clearAthleteData: () => void;
   setAthleteData: (data: AthleteState) => void;
+  setLastAvatarChange: (date: string) => void;
+  setDaysRemaining: (days: number) => void;
   setImg: (url: string) => void;
 }
 const supabase = createClient();
@@ -82,6 +86,32 @@ export const useAthleteStore = create<AthleteStore>()(
                 profile: {
                   ...state.athlete.profile,
                   avatar_url: img,
+                },
+              }
+            : null,
+        }));
+      },
+      setLastAvatarChange: (date: string) => {
+        set((state) => ({
+          athlete: state.athlete
+            ? {
+                ...state.athlete,
+                profile: {
+                  ...state.athlete.profile,
+                  last_avatar_change: date,
+                },
+              }
+            : null,
+        }));
+      },
+      setDaysRemaining(days: number) {
+        set((state) => ({
+          athlete: state.athlete
+            ? {
+                ...state.athlete,
+                profile: {
+                  ...state.athlete.profile,
+                  days_remaining: days,
                 },
               }
             : null,

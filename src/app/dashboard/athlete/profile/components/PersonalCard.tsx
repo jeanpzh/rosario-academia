@@ -1,6 +1,5 @@
 "use client";
 
-import React from "react";
 import { motion } from "framer-motion";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -10,11 +9,59 @@ import { Button } from "@/components/ui/button";
 import ProfileSectionCard from "@/app/dashboard/athlete/components/ProfileSectionCard";
 import { LevelToSpanish, ProfileCardProps } from "@/app/dashboard/athlete/profile/types";
 import { Scale, Ruler, Camera, Calendar, IndentIcon } from "lucide-react";
-export function PersonalCard({ userProfile, athlete, isEditing, onAvatarClick }: ProfileCardProps) {
+import { useQuery } from "@tanstack/react-query";
+import { getLastAvatarDate } from "@/app/dashboard/actions/athleteActions";
+import CardSkeleton from "@/app/dashboard/components/CardSkeleton";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
+import { useAthleteStore } from "@/lib/stores/useUserStore";
+import { getDaysRemaining } from "@/utils/formats";
+
+export function PersonalCard({ userProfile, athlete, isEditing }: ProfileCardProps) {
+  const { push } = useRouter();
+  const { setLastAvatarChange } = useAthleteStore();
+
   const onFormattedDate = (date: string) => {
     const formattedDate = new Date(date);
     return formattedDate.toLocaleDateString("es-ES");
   };
+
+  const {
+    data: lastAvatarChangeData,
+    isLoading: lastAvatarChangeLoading,
+    error: lastAvatarChangeError,
+  } = useQuery({
+    queryKey: ["last-avatar-change"],
+    queryFn: async () => {
+      const res = await getLastAvatarDate();
+      // Guarda la fecha en el estado global
+      setLastAvatarChange(res.data);
+      return res.data;
+    },
+  });
+
+  // lastAvatarChangeData ya es la fecha guardada
+
+  const onAvatarClick = () => {
+    const daysRemaining = getDaysRemaining(lastAvatarChangeData as string);
+    if (daysRemaining > 0) {
+      toast.info("Info", {
+        description:
+          "Solo puedes cambiar tu foto de perfil una vez al mes. Faltan " +
+          daysRemaining +
+          " día" +
+          (daysRemaining > 1 ? "s" : "") +
+          " para tu próximo cambio.",
+        duration: 5000,
+      });
+      return;
+    }
+    push("/dashboard/athlete/profile/avatar");
+  };
+
+  if (lastAvatarChangeLoading) return <CardSkeleton />;
+  if (lastAvatarChangeError) return null;
+
   return (
     <motion.div
       className="max-md:col-span-2"

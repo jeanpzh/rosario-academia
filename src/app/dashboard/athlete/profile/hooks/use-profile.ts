@@ -85,7 +85,6 @@ export function useProfileData() {
 
       return res;
     } catch (err: any) {
-      console.log("Error actualizando perfil:", err);
       throw err;
     }
   };

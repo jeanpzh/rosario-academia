@@ -12,8 +12,9 @@ import {
   updateStatusAthleteAction,
 } from "@/app/dashboard/actions/athleteActions";
 import { useState } from "react";
-import CustomTable from "../../components/CustomTable";
-import Header from "../../components/Header";
+import CustomTable from "@/app/dashboard/components/CustomTable";
+import Header from "@/app/dashboard/components/Header";
+import { toast } from "sonner";
 
 export default function AthletePage() {
   const [isOpen, onOpenChange] = useState(false);
@@ -28,10 +29,15 @@ export default function AthletePage() {
   const deleteMutation = useMutation({
     mutationFn: deleteAthleteAction,
     onSuccess: () => {
+      toast.success("Exito", {
+        description: "Deportista eliminado correctamente",
+      });
       queryClient.invalidateQueries({ queryKey: ["athletes"] });
     },
     onError: (error) => {
-      console.log(error);
+      toast.error("Error", {
+        description: error.message,
+      });
     },
   });
 

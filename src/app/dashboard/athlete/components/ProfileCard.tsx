@@ -27,9 +27,11 @@ export function ProfileCard({ className, athlete }: { className?: string; athlet
           <p className="text-sm text-muted-foreground">
             Nivel: {athlete?.level && LevelToSpanish[athlete?.level]}
           </p>
-          <Button size="sm" variant={"default"}>
-            <Link href="/dashboard/athlete/profile">Ver Perfil</Link>
-          </Button>
+          <Link href="/dashboard/athlete/profile">
+            <Button size="sm" variant={"default"}>
+              Ver perfil
+            </Button>
+          </Link>
         </div>
       </CardContent>
     </Card>
