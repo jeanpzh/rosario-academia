@@ -8,7 +8,7 @@ import { Label } from "@/components/ui/label";
 import Link from "next/link";
 import { signInAction } from "../actions";
 import PasswordInput from "@/components/password-input";
-import { toast, Toaster } from "sonner";
+import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 
 const SignIn = () => {
@@ -123,7 +123,6 @@ const SignIn = () => {
           </div>
         </div>
       </div>
-      <Toaster />
     </div>
   );
 };

@@ -12,7 +12,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { FlipWords } from "@/components/flip-words";
 import SignUpStepOne from "./SignUpStepOne";
 import SignUpStepTwo from "./SignUpStepTwo";
-import { toast, Toaster } from "sonner";
+import { toast } from "sonner";
 
 interface SignUpFormProps {
   message: Message;
@@ -121,7 +121,6 @@ export default function SignUpForm({ message }: SignUpFormProps) {
           </FormProvider>
         </div>
       </div>
-      <Toaster />
     </div>
   );
 }

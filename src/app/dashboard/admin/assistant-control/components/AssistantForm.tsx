@@ -9,7 +9,7 @@ import {
   assistantSignUpAction,
   updateAssistantAction,
 } from "@/app/dashboard/actions/assistantActions";
-import { toast, Toaster } from "sonner";
+import { toast } from "sonner";
 export default function AssistantForm() {
   const { mode, currentItem, entity, setModalOpen, id } = useModalStore();
   const { control, reset, handleSubmit } = useFormContext<AssistantFormData>();
@@ -127,7 +127,6 @@ export default function AssistantForm() {
       <Button type="submit" className="col-span-2">
         Guardar
       </Button>
-      <Toaster />
     </form>
   );
 }

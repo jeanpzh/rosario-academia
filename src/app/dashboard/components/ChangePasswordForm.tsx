@@ -8,7 +8,7 @@ import { changePassword } from "@/app/dashboard/actions/assistantActions";
 import { changePasswordFormData, ChangePasswordFormData } from "../schemas/change-password-schema";
 import PasswordInput from "@/components/password-input";
 import VerifyPassword from "@/app/(auth-pages)/components/VerifyPassword";
-import { toast, Toaster } from "sonner";
+import { toast } from "sonner";
 
 export function ChangePasswordForm() {
   const { handleSubmit, reset, control, watch } = useForm<ChangePasswordFormData>({
@@ -72,7 +72,6 @@ export function ChangePasswordForm() {
       <Button type="submit" disabled={isLoading}>
         {isLoading ? "Actualizando..." : "Actualizar Contraseña"}
       </Button>
-      <Toaster />
     </form>
   );
 }
