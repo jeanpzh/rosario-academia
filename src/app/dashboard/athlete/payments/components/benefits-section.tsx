@@ -19,9 +19,7 @@ export function BenefitsSection() {
     {
       icon: PhoneCall,
       title: "Contáctanos",
-      content: [
-        "¿Problemas con tu pago? Llámanos al 0800-00000 o escríbenos a ayuda@universidad.edu",
-      ],
+      content: ["¿Problemas con tu pago? Llámanos al 977849277 o escríbenos a fisib22@gmail.com"],
     },
   ];
 

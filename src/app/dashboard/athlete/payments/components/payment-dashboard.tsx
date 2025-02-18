@@ -8,50 +8,50 @@ import { BenefitsSection } from "./benefits-section";
 import { submit } from "@/app/dashboard/athlete/actions";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import { getAllPaymentData } from "@/app/dashboard/actions/athleteActions";
-
 import LoadingPage from "@/components/LoadingPage";
-import { useQuery } from "@tanstack/react-query";
+import { useMemo, useCallback } from "react";
+import { usePaymentData } from "@/hooks/use-payment-data";
+import { getDaysUntilNextPayment } from "@/utils/formats";
 
 export function PaymentDashboard() {
-  const { data, isLoading, error } = useQuery({
-    queryKey: ["allPaymentData"],
-    queryFn: getAllPaymentData,
-  });
-  if (isLoading) return <LoadingPage />;
-  if (error) {
-    return <div>Ocurrió un error inesperado</div>;
-  }
-  const { user, profile, enrollment, payments, subscriptionData } = data || {};
+  const { data, isLoading, error } = usePaymentData();
 
-  console.log({ profile });
+  // Calculate the days until the next payment
+  const daysUntilNextPayment = useMemo(() => {
+    return getDaysUntilNextPayment(data);
+  }, [data]);
 
-  const handleBuy = async () => {
-    if (profile[0]?.avatar_url === null) {
+  // Handle the buy button click, redirecting
+  const handleBuy = useCallback(async () => {
+    const user = data?.user;
+    const [firstProfile] = data?.profile || [];
+
+    if (firstProfile?.avatar_url === null) {
       toast.error("Debes completar tu perfil antes de realizar el pago.");
       return;
     }
     try {
-      const url = await submit(user.id, enrollment?.requested_schedule_id as string);
-      if (url) {
-        toast.success("Pago procesado correctamente. Redirigiendo a MercadoPago...");
-        window.location.href = url;
-      } else {
+      const enrollment = data?.enrollment;
+      const url = await submit(user.id, enrollment?.requested_schedule_id);
+      if (!url) {
         toast.error("Hubo un error al procesar el pago. Por favor, intenta de nuevo.");
+        return;
       }
+      toast.success("Pago procesado correctamente. Redirigiendo a MercadoPago...");
+      window.location.href = url;
     } catch (err) {
       toast.error("Hubo un error al procesar el pago. Por favor, intenta de nuevo.");
     }
-  };
-  const calculateDaysUntilNextPayment = () => {
-    if (!payments || payments.length === 0) return 0;
-    const nextPaymentDate = new Date(subscriptionData?.end_date);
-    const today = new Date();
-    const diffTime = nextPaymentDate.getTime() - today.getTime();
-    return Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-  };
+  }, [data]);
 
-  const daysUntilNextPayment = calculateDaysUntilNextPayment();
+  if (isLoading) return <LoadingPage />;
+  if (error) return <div>Ocurrió un error inesperado</div>;
+
+  const { profile, enrollment, payments } = data || {};
+
+  // Extract the first profile and the last payment
+  const [firstProfile] = profile || [];
+  const lastPayment = payments?.[0];
 
   return (
     <motion.div
@@ -69,16 +69,16 @@ export function PaymentDashboard() {
         <PaymentStatus
           isPaid={enrollment?.status === "approved"}
           onPayNow={handleBuy}
-          payment_method={payments?.[0]?.payment_method || "Yape"}
+          payment_method={lastPayment?.payment_method || "Yape"}
           last_payment_date={
-            payments?.[0]?.payment_date
-              ? new Date(payments[0].payment_date).toLocaleDateString()
+            lastPayment?.payment_date
+              ? new Date(lastPayment?.payment_date).toLocaleDateString()
               : "N/A"
           }
-          payment_amount={payments?.[0]?.amount || "N/A"}
+          payment_amount={lastPayment?.amount || "N/A"}
           daysUntilNextPayment={daysUntilNextPayment}
         />
-        {profile[0]?.avatar_url === null && (
+        {firstProfile?.avatar_url === null && (
           <motion.div
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}

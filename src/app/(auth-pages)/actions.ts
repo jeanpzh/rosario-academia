@@ -6,7 +6,19 @@ import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { signUpSchema } from "@/app/(auth-pages)/schemas/sign-up-schema";
 
+/**
+ * Handles user sign-up.
+ *
+ * - Validates incoming form data.
+ * - Checks for duplicate DNI.
+ * - Registers the user with Supabase.
+ * - Calls an RPC procedure to process the new user.
+ *
+ * @param formData - The incoming sign-up form data.
+ * @returns A redirect response using encodedRedirect.
+ */
 export const signUpAction = async (formData: unknown) => {
+  // Validate the incoming form data against the schema.
   const validatedData = signUpSchema.safeParse(formData);
   const supabase = await createClient();
   const origin = (await headers()).get("origin");
@@ -14,6 +26,8 @@ export const signUpAction = async (formData: unknown) => {
   if (!validatedData.success) {
     return encodedRedirect("error", "/sign-up", "Datos ingresados incorrectos");
   }
+
+  // Check if the provided DNI already exists.
   const { data: findedDNI } = await supabase
     .from("profiles")
     .select("dni")
@@ -25,33 +39,11 @@ export const signUpAction = async (formData: unknown) => {
       message: "Ya existe un usuario con el DNI ingresado",
     };
   }
-  // Si el usuario que se registra tiene "level" entonces es un deportista, si no es un auxiliar administrativo
 
-  const { data: signupData, error: signupError } = await supabase.auth.signUp({
-    email: validatedData.data.email,
-    password: validatedData.data.password,
-    options: {
-      emailRedirectTo: `${origin}/auth/callback`,
-      data: {
-        first_name: validatedData.data.firstName,
-        paternal_last_name: validatedData.data.paternalLastName,
-        maternal_last_name: validatedData.data.maternalLastName,
-        birth_date: validatedData.data.birthDate,
-        dni: validatedData.data.dni,
-        level: validatedData.data.level,
-        role: "deportista",
-        avatar_url: null,
-        phone: validatedData.data.phone,
-      },
-    },
-  });
-  if (signupError) {
-    console.error(signupError);
-    return encodedRedirect("error", "/sign-up", signupError.message);
-  }
-  const { error: rpcError } = await supabase.rpc("process_new_user", {
-    p_id: signupData.user?.id,
-    p_raw_user_meta_data: {
+  // Determine the role: if "level" is provided, the user is a deportista.
+  const options = {
+    emailRedirectTo: `${origin}/auth/callback`,
+    data: {
       first_name: validatedData.data.firstName,
       paternal_last_name: validatedData.data.paternalLastName,
       maternal_last_name: validatedData.data.maternalLastName,
@@ -62,12 +54,31 @@ export const signUpAction = async (formData: unknown) => {
       avatar_url: null,
       phone: validatedData.data.phone,
     },
+  };
+
+  // Sign up the user using Supabase's auth API.
+  const { data: signupData, error: signupError } = await supabase.auth.signUp({
+    email: validatedData.data.email,
+    password: validatedData.data.password,
+    options,
+  });
+
+  if (signupError) {
+    console.error(signupError);
+    return encodedRedirect("error", "/sign-up", signupError.message);
+  }
+
+  // Process the new user via an RPC call.
+  const { error: rpcError } = await supabase.rpc("process_new_user", {
+    p_id: signupData.user?.id,
+    p_raw_user_meta_data: options.data,
   });
 
   if (rpcError) {
     console.log({ rpcError });
     return encodedRedirect("error", "/sign-up", rpcError.message);
   }
+
   return encodedRedirect(
     "success",
     "/sign-up",
@@ -75,11 +86,22 @@ export const signUpAction = async (formData: unknown) => {
   );
 };
 
+/**
+ * Handles user sign-in.
+ *
+ * - Authenticates the user with email and password.
+ * - Retrieves the user and profile information.
+ * - Determines the correct redirect URL based on the user role.
+ *
+ * @param formData - A FormData object containing "email" and "password".
+ * @returns An object with status and either a redirectUrl or an error message.
+ */
 export const signInAction = async (formData: FormData) => {
   const email = formData.get("email") as string;
   const password = formData.get("password") as string;
   const supabase = await createClient();
 
+  // Authenticate the user.
   const { error: signinError } = await supabase.auth.signInWithPassword({
     email,
     password,
@@ -89,17 +111,20 @@ export const signInAction = async (formData: FormData) => {
     return { status: 500, message: "Error al iniciar sesión. Email o contraseña incorrectos." };
   }
 
+  // Retrieve the authenticated user.
   const { data: user } = await supabase.auth.getUser();
   if (!user) {
     return { status: 401, message: "Usuario no encontrado" };
   }
 
+  // Fetch the user's profile from the "profiles" table.
   const { data: profile } = await supabase
     .from("profiles")
     .select("*")
     .eq("id", user.user?.id)
     .single();
 
+  // Determine the appropriate redirect URL based on the user's role.
   let redirectUrl = "";
   if (profile?.role === "admin") {
     redirectUrl = "/dashboard/admin";
@@ -111,6 +136,16 @@ export const signInAction = async (formData: FormData) => {
 
   return { status: 200, redirectUrl };
 };
+
+/**
+ * Handles password reset request.
+ *
+ * - Sends a password reset email with a callback URL.
+ * - If a callbackUrl is provided in the form data, redirects to it.
+ *
+ * @param formData - A FormData object containing "email" and optionally "callbackUrl".
+ * @returns A redirect response or an encodedRedirect response.
+ */
 export const forgotPasswordAction = async (formData: FormData) => {
   const email = formData.get("email")?.toString();
   const supabase = await createClient();
@@ -121,6 +156,7 @@ export const forgotPasswordAction = async (formData: FormData) => {
     return encodedRedirect("error", "/forgot-password", "Email is required");
   }
 
+  // Initiate the password reset process.
   const { error: resetError } = await supabase.auth.resetPasswordForEmail(email, {
     redirectTo: `${origin}/auth/callback?redirect_to=/protected/reset-password`,
   });
@@ -141,79 +177,109 @@ export const forgotPasswordAction = async (formData: FormData) => {
   );
 };
 
+/**
+ * Resets the user's password.
+ *
+ * - Validates that the password and confirmation match.
+ * - Updates the user's password using Supabase's auth API.
+ *
+ * @param formData - A FormData object containing "password" and "confirmPassword".
+ * @returns An encodedRedirect response indicating success or error.
+ */
 export async function resetPasswordAction(formData: FormData) {
   const password = formData.get("password") as string;
   const confirmPassword = formData.get("confirmPassword") as string;
 
   if (password !== confirmPassword) {
-    encodedRedirect("error", "/protected/reset-password", "Passwords do not match");
+    return encodedRedirect("error", "/protected/reset-password", "Passwords do not match");
   }
 
   const supabase = await createClient();
 
-  // Update password with valid session
+  // Update the user's password.
   const { error: updateError } = await supabase.auth.updateUser({
-    password: password,
+    password,
   });
 
   if (updateError) {
-    encodedRedirect("error", "/protected/reset-password", "Password update failed");
+    return encodedRedirect("error", "/protected/reset-password", "Password update failed");
   }
 
-  encodedRedirect("success", "/sign-in", "Password updated successfully");
+  return encodedRedirect("success", "/sign-in", "Password updated successfully");
 }
+
+/**
+ * Signs out the current user.
+ *
+ * @returns A redirect response to the logout cleanup route.
+ */
 export const signOutAction = async () => {
   const supabase = await createClient();
   await supabase.auth.signOut();
   return redirect("/logout-cleanup");
 };
 
+/**
+ * Retrieves a user profile by user ID.
+ *
+ * @param userId - The user's ID.
+ * @returns The user profile data.
+ */
 export const getProfile = async (userId: string): Promise<any> => {
   const supabase = await createClient();
   const { data: profile } = await supabase.from("profiles").select("*").eq("id", userId);
   return profile;
 };
 
+/**
+ * Represents a shift with basic properties.
+ */
 interface ReturnResponse {
   id: string;
   name: string;
   description: string;
   spots: number;
 }
+
+/**
+ * Retrieves available shifts and associated schedules.
+ *
+ * - Retrieves all shifts and schedules from Supabase.
+ * - Maps schedules to include related shift weekdays and description.
+ *
+ * @returns An array of shift objects or an error object.
+ */
 export const getShifts = async (): Promise<
   ReturnResponse[] | { status: number; data: any } | undefined
 > => {
   const supabase = await createClient();
-  const { data: shifts, error: shiftError } = await supabase.from("shifts").select("*");
 
+  // Retrieve shifts from the "shifts" table.
+  const { data: shifts, error: shiftError } = await supabase.from("shifts").select("*");
   if (shiftError || !shifts) {
     console.log(shiftError);
     return { status: 500, data: null };
   }
 
+  // Retrieve schedules from the "schedules" table.
   const { data: schedules, error: schedulesError } = await supabase.from("schedules").select("*");
-
   if (schedulesError) {
     console.log(schedulesError);
     return { status: 500, data: null };
   }
 
-  let id = "";
-  let days: string[] = [];
-  let description = "";
-  let spots = 0;
-  let name = "";
-
+  // Map schedules to the desired shift structure.
   const res = schedules.map((schedule: any) => {
-    id = schedule.level as "beginner" | "intermediate" | "advanced";
-    name = schedule.schedule_name;
-    days = shifts
+    const id = schedule.level as "beginner" | "intermediate" | "advanced";
+    const name = schedule.schedule_name;
+    // Find weekdays for the current schedule.
+    const days = shifts
       .filter((shift: any) => shift.schedule_id === schedule.schedule_id)
       .map((shift: any) => shift.weekday);
-    description = `${schedule.start_time} - ${schedule.end_time} (${days.join(", ")})`;
-
-    spots = schedule.available_spot as number;
+    const description = `${schedule.start_time} - ${schedule.end_time} (${days.join(", ")})`;
+    const spots = schedule.available_spot as number;
     return { id, name, description, spots };
   });
+
   return res;
 };

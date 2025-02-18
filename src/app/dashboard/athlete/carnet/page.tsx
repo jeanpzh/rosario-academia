@@ -6,7 +6,7 @@ import { Card } from "@/components/ui/card";
 import { useAthleteStore } from "@/lib/stores/useUserStore";
 import { HoverBorderGradient } from "@/components/hover-border-gradient";
 import { formatDate, getNextFormattedDate } from "@/utils/formats";
-import { useHandlePrint } from "@/app/dashboard/athlete/carnet/hooks/useHandlePrint";
+import { useHandlePrint } from "@/hooks/use-handle-print";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { generateVerificationCode, getPaymentDate } from "@/app/dashboard/actions/athleteActions";
 import LoadingPage from "@/components/LoadingPage";

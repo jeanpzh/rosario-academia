@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
-import { CheckCircle, AlertCircle, Clock } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardTitle, CardContent, CardFooter } from "@/components/ui/card";
+import { getPaymentStatus } from "@/utils/payment-status";
 
 interface PaymentStatusProps {
   isPaid: boolean;
@@ -12,56 +12,12 @@ interface PaymentStatusProps {
   daysUntilNextPayment: number;
 }
 
-export function PaymentStatus({
-  isPaid,
-  onPayNow,
-  payment_method,
-  last_payment_date,
-  payment_amount,
-  daysUntilNextPayment,
-}: PaymentStatusProps) {
-  const getStatus = () => {
-    if (!isPaid) {
-      return {
-        icon: <AlertCircle className="size-6" />,
-        message: "Tu matrícula está pendiente de pago",
-        colorClasses: "text-yellow-600 dark:text-yellow-400",
-      };
-    }
-    // Si se pagó, diferenciamos según los días restantes
-    if (daysUntilNextPayment <= -5) {
-      // Más de 5 días de retraso
-      return {
-        icon: <AlertCircle className="size-6" />,
-        message:
-          "Tu matrícula está vencida, no podrás acceder a las clases. No se pagó en la fecha límite.",
-        colorClasses: "text-red-600 dark:text-red-400",
-      };
-    }
-    if (daysUntilNextPayment <= 30 && daysUntilNextPayment > 15) {
-      return {
-        icon: <CheckCircle className="size-6" />,
-        message: `Tu matrícula está al día, pero tu próximo pago viene en ${daysUntilNextPayment - 15} día${daysUntilNextPayment - 15 === 1 ? "" : "s"}`,
-        colorClasses: "text-yellow-600 dark:text-yellow-400",
-      };
-    }
-    if (daysUntilNextPayment <= 15 && daysUntilNextPayment > -5) {
-      return {
-        icon: <Clock className="size-6" />,
-        message: `Pendiente de pago, vence en ${daysUntilNextPayment + 5} día${
-          daysUntilNextPayment + 5 === 1 ? "" : "s"
-        }`,
-        colorClasses: "text-yellow-600 dark:text-yellow-400",
-      };
-    }
-    return {
-      icon: <CheckCircle className="size-6" />,
-      message: "Tu matrícula está al día",
-      colorClasses: "text-green-600 dark:text-green-400",
-    };
-  };
-
-  const { icon, message, colorClasses } = getStatus();
+export function PaymentStatus({ ...props }: PaymentStatusProps) {
+  // Get the payment status
+  const { icon, message, colorClasses } = getPaymentStatus(
+    props.isPaid,
+    props.daysUntilNextPayment,
+  );
 
   return (
     <motion.div
@@ -72,8 +28,7 @@ export function PaymentStatus({
       <Card className="w-full overflow-hidden">
         <CardHeader className="bg-gray-100 dark:bg-[#222222]">
           <CardTitle className="text-xl">
-            {/* Estado de matrícula , estado de mensualidad */}
-            {isPaid ? "Estado de mensualidad" : "Estado de matrícula"}
+            {props.isPaid ? "Estado de mensualidad" : "Estado de matrícula"}
           </CardTitle>
         </CardHeader>
         <CardContent className="p-6">
@@ -88,18 +43,18 @@ export function PaymentStatus({
           </motion.div>
         </CardContent>
         <CardFooter className="bg-gray-50 p-4 dark:bg-[#1e1e1e]">
-          {isPaid ? (
+          {props.isPaid ? (
             <p className="text-sm text-gray-600 dark:text-gray-400">
-              Último pago: {last_payment_date} | Método: {payment_method} | Monto: S/.{" "}
-              {payment_amount}
+              Último pago: {props.last_payment_date} | Método: {props.payment_method} | Monto: S/.{" "}
+              {props.payment_amount}
             </p>
           ) : (
-            <Button onClick={onPayNow} className="w-full">
+            <Button onClick={props.onPayNow} className="w-full">
               Pagar ahora
             </Button>
           )}
-          {isPaid && daysUntilNextPayment <= 15 && daysUntilNextPayment >= 0 && (
-            <Button onClick={onPayNow} className="ml-4">
+          {props.isPaid && props.daysUntilNextPayment <= 15 && props.daysUntilNextPayment >= 0 && (
+            <Button onClick={props.onPayNow} className="ml-4">
               Pagar próxima mensualidad
             </Button>
           )}

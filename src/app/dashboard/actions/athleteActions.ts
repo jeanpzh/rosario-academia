@@ -6,8 +6,9 @@ import { v4 as uuidv4 } from "uuid";
 import { getProfile } from "@/app/(auth-pages)/actions";
 
 /**
- * Obtiene el usuario actual desde Supabase.
- * Lanza un error si no se logra obtener el usuario.
+ * Retrieves the current user from Supabase.
+ * @returns The current authenticated user.
+ * @throws Error if the user cannot be retrieved.
  */
 export async function getUser(): Promise<any> {
   const supabase = await createClient();
@@ -17,57 +18,63 @@ export async function getUser(): Promise<any> {
   }
   return user.user;
 }
+
 /**
- * Obtiene la información de matrícula del deportista.
+ * Retrieves the athlete's enrollment information.
+ * @returns Enrollment data for the athlete.
+ * @throws Error if the enrollment data cannot be retrieved.
  */
-export async function getEnrollmentAction() {
-  const user = await getUser();
+export async function getEnrollmentAction(userId: string) {
   const supabase = await getServiceClient();
   const { data, error } = await supabase
     .from("enrollment_requests")
     .select("*")
-    .eq("athlete_id", user.id)
+    .eq("athlete_id", userId)
     .single();
   if (error) {
     throw new Error("Error al obtener matrícula de deportista");
   }
   return data;
 }
-/**
- *
- * @returns  Devuelve los pagos del deportista
- */
-export async function getPaymentsAction() {
-  const user = await getUser();
-  const supabase = await getServiceClient();
-  const { data, error } = await supabase.from("payments").select("*").eq("athlete_id", user.id);
 
+/**
+ * Retrieves the payments made by the athlete.
+ * @returns Payments data for the athlete.
+ * @throws Error if the payments cannot be retrieved.
+ */
+export async function getPaymentsAction(userId: string) {
+  const supabase = await getServiceClient();
+  const { data, error } = await supabase.from("payments").select("*").eq("athlete_id", userId);
   if (error) {
-    console.log(error);
+    console.error(error);
     throw new Error("Error al obtener pagos de deportista");
   }
   return data;
 }
-/**
- * @returns Devuelve la suscripción del deportista
- */
 
-export async function getSubscription() {
-  const user = await getUser();
+/**
+ * Retrieves the athlete's subscription details.
+ * @returns Subscription data for the athlete.
+ * @throws Error if the subscription data cannot be retrieved.
+ */
+export async function getSubscription(userId: string) {
   const supabase = await getServiceClient();
   const { data, error } = await supabase
     .from("subscriptions")
     .select("*")
-    .eq("athlete_id", user.id)
+    .eq("athlete_id", userId)
     .maybeSingle();
   if (error) {
-    console.log(error);
+    console.error(error);
     throw new Error("Error al obtener suscripción de deportista");
   }
   return data;
 }
+
 /**
- * Devuelve el ID del deportista (usuario) actual.
+ * Retrieves the current athlete's ID.
+ * @returns The athlete's user ID.
+ * @throws Error if the athlete's ID is not found.
  */
 export async function getAthleteId(): Promise<string> {
   const user = await getUser();
@@ -78,9 +85,14 @@ export async function getAthleteId(): Promise<string> {
 }
 
 /**
- * Actualiza el perfil del deportista.
+ * Updates the athlete's profile with the provided form data.
+ * @param formData - The new data to update.
+ * @param id - The athlete's profile ID.
+ * @returns The updated profile data.
+ * @throws Error if the profile update fails.
  */
 export async function updateAthleteAction(formData: unknown, id: string) {
+  // Validate the form data using the athlete schema.
   const validated = athleteFormSchema.safeParse(formData);
   if (!validated.success) {
     return { error: "Datos ingresados incorrectos" };
@@ -109,7 +121,10 @@ export async function updateAthleteAction(formData: unknown, id: string) {
 }
 
 /**
- * Elimina el deportista usando el ID.
+ * Deletes an athlete using the provided user ID.
+ * @param id - The athlete's user ID.
+ * @returns A status message confirming deletion.
+ * @throws Error if the deletion fails.
  */
 export async function deleteAthleteAction(id: string) {
   const supabase = await getServiceClient();
@@ -121,7 +136,9 @@ export async function deleteAthleteAction(id: string) {
 }
 
 /**
- * Obtiene la lista de deportistas usando un procedimiento (RPC).
+ * Retrieves the list of athletes by calling an RPC procedure.
+ * @returns The list of athletes.
+ * @throws Error if the retrieval fails.
  */
 export async function getAthletesAction() {
   const supabase = await getServiceClient();
@@ -133,7 +150,11 @@ export async function getAthletesAction() {
 }
 
 /**
- * Actualiza el estado de una solicitud de inscripción para un deportista.
+ * Updates the enrollment status for a given athlete.
+ * @param id - The athlete's user ID.
+ * @param status - The new enrollment status.
+ * @returns The updated enrollment data.
+ * @throws Error if the update fails.
  */
 export async function updateStatusAthleteAction(id: string, status: string) {
   const supabase = await getServiceClient();
@@ -149,7 +170,11 @@ export async function updateStatusAthleteAction(id: string, status: string) {
 }
 
 /**
- * Actualiza el nivel del deportista.
+ * Updates the athlete's level.
+ * @param id - The athlete's user ID.
+ * @param level - The new level (e.g., beginner, intermediate, advanced).
+ * @returns The updated athlete data.
+ * @throws Error if the update fails.
  */
 export async function updateLevelAthleteAction(id: string, level: string) {
   const supabase = await getServiceClient();
@@ -162,7 +187,9 @@ export async function updateLevelAthleteAction(id: string, level: string) {
 }
 
 /**
- * Obtiene la cantidad de deportistas registrados.
+ * Retrieves the count of registered athletes.
+ * @returns The number of athletes.
+ * @throws Error if the count cannot be retrieved.
  */
 export async function getAthletesCount() {
   const supabase = await getServiceClient();
@@ -174,7 +201,9 @@ export async function getAthletesCount() {
 }
 
 /**
- * Obtiene la distribución por niveles de los deportistas.
+ * Retrieves the distribution of athletes by level.
+ * @returns An object with counts for beginner, intermediate, and advanced levels.
+ * @throws Error if the distribution data cannot be retrieved.
  */
 export async function getAthleteDistribution() {
   const supabase = await getServiceClient();
@@ -190,13 +219,16 @@ export async function getAthleteDistribution() {
 }
 
 /**
- * Genera o regresa un código de verificación para el deportista.
+ * Generates or returns an existing verification code for the athlete.
+ * @returns An object containing a status code and the verification code.
+ * @throws Error if the verification code generation fails.
  */
 export async function generateVerificationCode() {
+  // Retrieve the current athlete's ID.
   const athleteId = await getAthleteId();
   const supabase = await getServiceClient();
 
-  // Verificar si ya existe un verification_id
+  // Check if a verification_id already exists.
   const { data: athlete, error } = await supabase
     .from("athletes")
     .select("verification_id")
@@ -205,9 +237,11 @@ export async function generateVerificationCode() {
   if (error) {
     throw new Error("Error al obtener datos del deportista");
   }
-  if (athlete.verification_id) return { status: 200, data: athlete.verification_id };
+  if (athlete.verification_id) {
+    return { status: 200, data: athlete.verification_id };
+  }
 
-  // Generar verification_id y actualizar
+  // Generate a new verification_id and update the athlete's record.
   const verification_id = uuidv4();
   const { error: updateError } = await supabase
     .from("athletes")
@@ -220,14 +254,15 @@ export async function generateVerificationCode() {
 }
 
 /**
- * Obtiene la fecha de pago del deportista.
+ * Retrieves the athlete's payment start date from their subscription.
+ * @returns An object containing a status code and the subscription start date (or null).
  */
 export async function getPaymentDate() {
   const athleteId = await getAthleteId();
   const supabase = await getServiceClient();
   const { data: subscription, error } = await supabase
     .from("subscriptions")
-    .select("end_date")
+    .select("start_date")
     .eq("athlete_id", athleteId)
     .single();
   if (error) {
@@ -236,11 +271,13 @@ export async function getPaymentDate() {
   if (!subscription) {
     return { status: 200, data: null };
   }
-  return { status: 200, data: subscription.end_date };
+  return { status: 200, data: subscription.start_date };
 }
 
 /**
- * Obtiene la fecha del último cambio de foto de perfil.
+ * Retrieves the date of the athlete's last avatar change.
+ * @returns An object containing a status code and the last avatar change date.
+ * @throws Error if the profile data cannot be retrieved.
  */
 export async function getLastAvatarDate() {
   const athleteId = await getAthleteId();
@@ -257,7 +294,9 @@ export async function getLastAvatarDate() {
 }
 
 /**
- * Obtiene la fecha de la última actualización del perfil.
+ * Retrieves the date of the athlete's last profile update.
+ * @returns An object containing a status code and the last profile update date.
+ * @throws Error if the profile data cannot be retrieved.
  */
 export async function getLastProfileUpdateDate() {
   const athleteId = await getAthleteId();
@@ -272,11 +311,23 @@ export async function getLastProfileUpdateDate() {
   }
   return { status: 200, data: profile.last_profile_update };
 }
+
+/**
+ * Retrieves all payment-related data for the current athlete.
+ * Executes multiple asynchronous actions in parallel.
+ * @returns An object containing user data, payments, profile, enrollment, and subscription data.
+ */
 export async function getAllPaymentData() {
+  // Retrieve the current user (needed for all other actions).
   const user = await getUser();
-  const payments = await getPaymentsAction();
-  const profile = await getProfile(user.id);
-  const enrollment = await getEnrollmentAction();
-  const subscriptionData = await getSubscription();
+
+  // Execute all actions concurrently using Promise.all
+  const [payments, profile, enrollment, subscriptionData] = await Promise.all([
+    getPaymentsAction(user.id),
+    getProfile(user.id),
+    getEnrollmentAction(user.id),
+    getSubscription(user.id),
+  ]);
+
   return { user, payments, profile, enrollment, subscriptionData };
 }
