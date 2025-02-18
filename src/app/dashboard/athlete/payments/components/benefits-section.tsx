@@ -1,46 +1,60 @@
+"use client";
+
+import { motion } from "framer-motion";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { GraduationCap, HelpCircle, PhoneCall } from "lucide-react";
 
 export function BenefitsSection() {
+  const benefits = [
+    {
+      icon: GraduationCap,
+      title: "Beneficios de tu matrícula",
+      content: ["Acceso a todas las clases", "Materiales de estudio", "Asesoría académica"],
+    },
+    {
+      icon: HelpCircle,
+      title: "Ayuda sobre pagos",
+      content: ["Si tienes dudas sobre tus pagos, visita nuestra sección de Preguntas Frecuentes."],
+    },
+    {
+      icon: PhoneCall,
+      title: "Contáctanos",
+      content: [
+        "¿Problemas con tu pago? Llámanos al 0800-00000 o escríbenos a ayuda@universidad.edu",
+      ],
+    },
+  ];
+
   return (
     <div className="space-y-4">
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center">
-            <GraduationCap className="mr-2" />
-            Beneficios de tu matrícula
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <ul className="list-inside list-disc">
-            <li>Acceso a todas las clases</li>
-            <li>Materiales de estudio</li>
-            <li>Asesoría académica</li>
-          </ul>
-        </CardContent>
-      </Card>
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center">
-            <HelpCircle className="mr-2" />
-            Ayuda sobre pagos
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <p>Si tienes dudas sobre tus pagos, visita nuestra sección de Preguntas Frecuentes.</p>
-        </CardContent>
-      </Card>
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center">
-            <PhoneCall className="mr-2" />
-            Contáctanos
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <p>¿Problemas con tu pago? Llámanos al 0800-00000 o escríbenos a ayuda@universidad.edu</p>
-        </CardContent>
-      </Card>
+      {benefits.map((benefit, index) => (
+        <motion.div
+          key={index}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: index * 0.2 }}
+        >
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center text-lg">
+                <benefit.icon className="mr-2 size-5" />
+                {benefit.title}
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              {Array.isArray(benefit.content) ? (
+                <ul className="list-inside list-disc space-y-1">
+                  {benefit.content.map((item, i) => (
+                    <li key={i}>{item}</li>
+                  ))}
+                </ul>
+              ) : (
+                <p>{benefit.content}</p>
+              )}
+            </CardContent>
+          </Card>
+        </motion.div>
+      ))}
     </div>
   );
 }
