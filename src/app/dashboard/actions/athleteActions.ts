@@ -59,8 +59,9 @@ export async function getSubscription() {
     .from("subscriptions")
     .select("*")
     .eq("athlete_id", user.id)
-    .single();
+    .maybeSingle();
   if (error) {
+    console.log(error);
     throw new Error("Error al obtener suscripción de deportista");
   }
   return data;
@@ -224,17 +225,18 @@ export async function generateVerificationCode() {
 export async function getPaymentDate() {
   const athleteId = await getAthleteId();
   const supabase = await getServiceClient();
-  const { data: payment, error } = await supabase
-    .from("payments")
-    .select("payment_date")
+  const { data: subscription, error } = await supabase
+    .from("subscriptions")
+    .select("end_date")
     .eq("athlete_id", athleteId)
-    .limit(1)
     .single();
-  if (error || !payment) {
-    console.error("Error al obtener datos de pago", error);
-    throw new Error("Error al obtener datos de pago");
+  if (error) {
+    return { status: 500, data: null };
   }
-  return { status: 200, data: payment.payment_date };
+  if (!subscription) {
+    return { status: 200, data: null };
+  }
+  return { status: 200, data: subscription.end_date };
 }
 
 /**

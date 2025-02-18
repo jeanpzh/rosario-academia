@@ -24,8 +24,10 @@ export function PaymentDashboard() {
   }
   const { user, profile, enrollment, payments, subscriptionData } = data || {};
 
+  console.log({ profile });
+
   const handleBuy = async () => {
-    if (profile?.avatar_url === null) {
+    if (profile[0]?.avatar_url === null) {
       toast.error("Debes completar tu perfil antes de realizar el pago.");
       return;
     }
@@ -76,7 +78,7 @@ export function PaymentDashboard() {
           payment_amount={payments?.[0]?.amount || "N/A"}
           daysUntilNextPayment={daysUntilNextPayment}
         />
-        {profile?.avatar_url === null && (
+        {profile[0]?.avatar_url === null && (
           <motion.div
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}

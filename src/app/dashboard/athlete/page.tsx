@@ -44,8 +44,8 @@ export default function DashboardPage() {
         <ProfileCard className="md:col-span-2" athlete={athlete} />
         <ScheduleCard className="md:col-span-2 lg:col-span-1" />
         <ProgressCard className="md:col-span-2 lg:col-span-1" />
-        <PaymentCard availableDate={availableDate} />
-        <CarnetCard />
+        {availableDate && <PaymentCard availableDate={availableDate} />}
+        {availableDate && <CarnetCard />}
         <AnnouncementsCard className="w-full md:col-span-2" />
         <UpcomingEventsCard className="w-full md:col-span-2 xl:col-span-1" />
       </div>
