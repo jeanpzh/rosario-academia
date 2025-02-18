@@ -58,10 +58,7 @@ export default function SignUpForm({ message }: SignUpFormProps) {
       }
     } catch (err: any) {
       console.log({ err });
-      toast.error("Error", {
-        description: err.message,
-        duration: 5000,
-      });
+      throw err;
     } finally {
       setPending(false);
     }
