@@ -7,7 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import ProfileSectionCard from "@/app/dashboard/athlete/components/ProfileSectionCard";
-import { LevelToSpanish, ProfileCardProps } from "@/app/dashboard/athlete/profile/types";
+import { LevelToSpanish } from "@/app/dashboard/athlete/profile/types";
 import { Scale, Ruler, Camera, Calendar, IndentIcon } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { getLastAvatarDate } from "@/app/dashboard/actions/athleteActions";
@@ -16,6 +16,13 @@ import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { useAthleteStore } from "@/lib/stores/useUserStore";
 import { getDaysRemaining } from "@/utils/formats";
+import { Profile } from "@/lib/types/Profile";
+
+export interface ProfileCardProps {
+  userProfile: Profile;
+  athlete: AthleteState;
+  isEditing: boolean;
+}
 
 export function PersonalCard({ userProfile, athlete, isEditing }: ProfileCardProps) {
   const { push } = useRouter();
@@ -74,7 +81,10 @@ export function PersonalCard({ userProfile, athlete, isEditing }: ProfileCardPro
           <div className="flex flex-col items-center space-y-4">
             <div className="relative">
               <Avatar className="size-32 border-4 border-primary/10">
-                <AvatarImage src={userProfile?.avatar_url} alt={userProfile?.first_name} />
+                <AvatarImage
+                  src={userProfile?.avatar_url as string}
+                  alt={userProfile?.first_name}
+                />
                 <AvatarFallback>
                   {userProfile?.first_name?.[0]}
                   {userProfile?.paternal_last_name?.[0]}
@@ -114,12 +124,12 @@ export function PersonalCard({ userProfile, athlete, isEditing }: ProfileCardPro
             <ProfileSectionCard
               icon={Scale}
               label="Peso"
-              value={userProfile?.weight ? `${userProfile?.weight} kg` : "En proceso..."}
+              value={athlete ? `${athlete?.weight} kg` : "En proceso..."}
             />
             <ProfileSectionCard
               icon={Ruler}
               label="Altura"
-              value={userProfile?.height ? `${userProfile?.height} cm` : "En proceso..."}
+              value={athlete?.height ? `${athlete?.height} cm` : "En proceso..."}
             />
             <ProfileSectionCard
               icon={IndentIcon}

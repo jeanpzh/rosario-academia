@@ -3,9 +3,10 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import Link from "next/link";
-import { Athlete, LevelToSpanish } from "@/app/dashboard/athlete/profile/types";
+import { LevelToSpanish } from "@/app/dashboard/athlete/profile/types";
+import { DEFAULT_IMAGE } from "@/utils/utils";
 
-export function ProfileCard({ className, athlete }: { className?: string; athlete: Athlete }) {
+export function ProfileCard({ className, athlete }: { className?: string; athlete: AthleteState }) {
   return (
     <Card className={className}>
       <CardHeader>
@@ -13,7 +14,7 @@ export function ProfileCard({ className, athlete }: { className?: string; athlet
       </CardHeader>
       <CardContent className="flex items-center space-x-4">
         <Avatar className="size-24">
-          <AvatarImage src="/avatar-placeholder.png" alt="Foto de perfil" />
+          <AvatarImage src={athlete.profile.avatar_url || DEFAULT_IMAGE} alt="Foto de perfil" />
           <AvatarFallback>
             {athlete?.profile?.first_name[0]}
             {athlete?.profile?.paternal_last_name[0]}

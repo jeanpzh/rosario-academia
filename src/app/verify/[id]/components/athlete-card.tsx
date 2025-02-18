@@ -1,4 +1,5 @@
 import { CheckCircle, XCircle } from "lucide-react";
+import { LevelToSpanish } from "@/app/dashboard/athlete/profile/types";
 
 interface Props {
   first_name: string;
@@ -36,7 +37,9 @@ export default function AthleteCard({ athlete }: { athlete: Props }) {
           <p className="text-sm text-gray-700 dark:text-gray-300 sm:text-base">
             <strong className="block sm:inline">Nivel:</strong>
           </p>
-          <p className="text-sm text-gray-900 dark:text-gray-100 sm:text-base">{athlete.level}</p>
+          <p className="text-sm text-gray-900 dark:text-gray-100 sm:text-base">
+            {LevelToSpanish[athlete.level as keyof typeof LevelToSpanish]}
+          </p>
         </div>
         <div
           className={`mt-4 flex flex-col items-center justify-between rounded-lg p-3 sm:flex-row ${
@@ -51,7 +54,7 @@ export default function AthleteCard({ athlete }: { athlete: Props }) {
               <>
                 <CheckCircle className="mr-2 size-5 text-green-600 dark:text-green-400" />
                 <span className="text-sm font-medium text-green-700 dark:text-green-300 sm:text-base">
-                  Aprobada
+                  Aprobada y Verificada
                 </span>
               </>
             ) : (

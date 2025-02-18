@@ -2,51 +2,6 @@ import { createClient } from "@/utils/supabase/client";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
-interface Profile {
-  id: string;
-  dni: string;
-  avatar_url: string | null;
-  birth_date: string;
-  first_name: string;
-  paternal_last_name: string;
-  maternal_last_name: string;
-  last_avatar_change: string | null;
-  days_remaining: number | null;
-}
-
-interface Payment {
-  amount: number;
-  payment_date: string;
-  method_name: string;
-}
-
-interface Schedule {
-  weekday: string;
-  schedule_id: number | null;
-  schedule_name: string | null;
-  start_time: string | null;
-  end_time: string | null;
-  level: string | null;
-}
-
-interface EnrollmentRequest {
-  request_id: number;
-  request_date: string;
-  status: "pending" | "approved" | "rejected";
-  requested_schedule: Schedule;
-  assigned_schedule: Schedule;
-}
-
-interface AthleteState {
-  email: string;
-  athlete_id: string;
-  level: "beginner" | "intermediate" | "advanced";
-  height: string | null;
-  weight: string | null;
-  profile: Profile;
-  payments: Payment[] | null;
-  enrollment_requests: EnrollmentRequest[];
-}
 export interface AthleteStore {
   athlete: AthleteState | null;
   loading: boolean;

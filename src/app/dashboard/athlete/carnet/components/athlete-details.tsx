@@ -1,9 +1,10 @@
 import React from "react";
 import Image from "next/image";
 import { Avatar } from "@/components/ui/avatar";
+import { LevelToSpanish } from "@/app/dashboard/athlete/profile/types";
 
 interface AthleteDetailsProps {
-  athleteData: any;
+  athleteData: AthleteState;
   availableDate: string | null;
   DEFAULT_IMAGE: string;
   formatDate: (date: string) => string;
@@ -47,7 +48,7 @@ const AthleteDetails: React.FC<AthleteDetailsProps> = ({
           </p>
           <p>
             <strong>Nivel:</strong>{" "}
-            {athleteData.level.charAt(0).toUpperCase() + athleteData.level.slice(1)}
+            {LevelToSpanish[athleteData.level as keyof typeof LevelToSpanish]}
           </p>
           {athleteData.height && (
             <p>

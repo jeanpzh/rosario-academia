@@ -9,15 +9,13 @@ import { signOutAction } from "@/app/(auth-pages)/actions";
 import { Button } from "@/components/ui/button";
 import { ThemeSwitcher } from "@/components/theme-switcher";
 import { useAthleteStore } from "@/lib/stores/useUserStore";
+import { DEFAULT_IMAGE } from "@/utils/utils";
 
 interface Links {
   label: string;
   href?: string;
   icon: React.JSX.Element | React.ReactNode;
 }
-
-const DEFAULT_IMAGE =
-  "https://png.pngtree.com/element_our/20200610/ourmid/pngtree-character-default-avatar-image_2237203.jpg";
 
 export function DashboardSidebar({ links, user }: { links: Links[]; user: any }) {
   const { athlete } = useAthleteStore();

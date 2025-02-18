@@ -10,3 +10,6 @@ import { redirect } from "next/navigation";
 export function encodedRedirect(type: "error" | "success", path: string, message: string) {
   return redirect(`${path}?${type}=${encodeURIComponent(message)}`);
 }
+
+export const DEFAULT_IMAGE =
+  "https://png.pngtree.com/element_our/20200610/ourmid/pngtree-character-default-avatar-image_2237203.jpg";
