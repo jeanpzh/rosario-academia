@@ -1,6 +1,6 @@
 "use client";
-import { BenefitsIcon } from "./icons";
-import { Button } from "./ui/button";
+import { BenefitsIcon } from "@/components/icons";
+import { Button } from "@/components/ui/button";
 
 const benefits = [
   "Carnet de estudiante",

@@ -4,14 +4,14 @@ import React from "react";
 import { useState } from "react";
 import { FormMessage, type Message } from "@/components/form-message";
 import { motion } from "framer-motion";
-import { FORM_FIELDS_STEP_ONE } from "../fields";
-import { signUpAction } from "../actions";
+import { FORM_FIELDS_STEP_ONE } from "@/app/(auth-pages)/fields";
+import { signUpAction } from "@/app/(auth-pages)/actions";
 import { FormProvider, useForm } from "react-hook-form";
-import { signUpSchema, type SignUpSchema } from "../schemas/sign-up-schema";
+import { signUpSchema, type SignUpSchema } from "@/app/(auth-pages)/schemas/sign-up-schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FlipWords } from "@/components/flip-words";
-import SignUpStepOne from "./SignUpStepOne";
-import SignUpStepTwo from "./SignUpStepTwo";
+import SignUpStepOne from "@/app/(auth-pages)/components/SignUpStepOne";
+import SignUpStepTwo from "@/app/(auth-pages)/components/SignUpStepTwo";
 import { toast } from "sonner";
 
 interface SignUpFormProps {

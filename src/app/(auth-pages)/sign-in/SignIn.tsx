@@ -6,7 +6,7 @@ import { SubmitButton } from "@/components/submit-button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import Link from "next/link";
-import { signInAction } from "../actions";
+import { signInAction } from "@/app/(auth-pages)/actions";
 import PasswordInput from "@/components/password-input";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";

@@ -2,8 +2,8 @@
 
 import { Suspense } from "react";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { AthleteDistribution } from "../components/athletes/AthleteDistribution";
-import Profile from "../components/Profile";
+import { AthleteDistribution } from "@/app/dashboard/components/athletes/AthleteDistribution";
+import Profile from "@/app/dashboard/components/Profile";
 import { Skeleton } from "@/components/ui/skeleton";
 import {
   BookOpen,

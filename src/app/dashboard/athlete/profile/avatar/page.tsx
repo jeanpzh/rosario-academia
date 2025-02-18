@@ -12,7 +12,7 @@ import { saveAvatar } from "@/app/dashboard/athlete/profile/actions";
 import { toast } from "sonner";
 import { useAthleteStore } from "@/lib/stores/useUserStore";
 import { getDaysRemaining } from "@/utils/formats";
-import LockedAvatarPage from "../components/locked-avatar-page";
+import LockedAvatarPage from "@/app/dashboard/athlete/profile/components/locked-avatar-page";
 import {
   Dialog,
   DialogContent,

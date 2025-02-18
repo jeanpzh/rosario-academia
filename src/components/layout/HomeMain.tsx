@@ -5,11 +5,11 @@ import { testimonials } from "@/utils/mock-data/testimonials";
 import { navigationLinks } from "@/utils/links/nav-links";
 import { prices } from "@/utils/mock-data/prices";
 import { news } from "@/utils/mock-data/news";
-import FeaturedNews from "../featured-news";
-import PriceCard from "../price-card";
+import FeaturedNews from "@/components/featured-news";
+import PriceCard from "@/components/price-card";
 import { upcomingEvents } from "@/utils/mock-data/upcoming-events";
-import UpcomingEvents from "../upcoming-events";
-import HeroSection from "../hero-section";
+import UpcomingEvents from "@/components/upcoming-events";
+import HeroSection from "@/components/hero-section";
 
 export default function HomeMain() {
   return (

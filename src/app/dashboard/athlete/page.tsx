@@ -7,7 +7,7 @@ import { AnnouncementsCard } from "@/app/dashboard/athlete/components/Announceme
 import { UpcomingEventsCard } from "@/app/dashboard/athlete/components/UpComingEvents";
 import { CarnetCard } from "@/app/dashboard/athlete/components/CarnetCard";
 import { useAthleteStore } from "@/lib/stores/useUserStore";
-import DashboardSkeleton from "./components/DashboardSkeleton";
+import DashboardSkeleton from "@/app/dashboard/components/DashboardSkeleton";
 import { getNextFormattedDate } from "@/utils/formats";
 import { getPaymentDate } from "@/app/dashboard/actions/athleteActions";
 import { useQuery } from "@tanstack/react-query";

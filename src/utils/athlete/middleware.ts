@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { createClient } from "../supabase/server";
+import { createClient } from "@/utils/supabase/server";
 
 const restrictedUrls = ["/dashboard/athlete/schedule", "/dashboard/athlete/carnet"];
 

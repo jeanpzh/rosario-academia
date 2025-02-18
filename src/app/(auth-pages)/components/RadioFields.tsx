@@ -1,7 +1,7 @@
 import { Controller, Control } from "react-hook-form";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
-import { getShifts } from "../actions";
+import { getShifts } from "@/app/(auth-pages)/actions";
 import { useQuery } from "@tanstack/react-query";
 import { Badge } from "@/components/ui/badge";
 

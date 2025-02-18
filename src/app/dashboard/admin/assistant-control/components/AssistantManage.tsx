@@ -15,7 +15,7 @@ import {
 } from "@/app/dashboard/admin/schemas/assistant-schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useModalStore } from "@/lib/stores/useModalStore";
-import AssistantForm from "./AssistantForm";
+import AssistantForm from "@/app/dashboard/admin/assistant-control/components/AssistantForm";
 import { HoverBorderGradient } from "@/components/hover-border-gradient";
 
 interface AssistantManageProps {

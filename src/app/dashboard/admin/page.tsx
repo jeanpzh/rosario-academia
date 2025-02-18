@@ -3,8 +3,8 @@
 import { Suspense } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import Link from "next/link";
-import { AthleteDistribution } from "../components/athletes/AthleteDistribution";
-import Profile from "../components/Profile";
+import { AthleteDistribution } from "@/app/dashboard/components/athletes/AthleteDistribution";
+import Profile from "@/app/dashboard/components/Profile";
 import { useQuery } from "@tanstack/react-query";
 import { getAthletesCount } from "@/app/dashboard/actions/athleteActions";
 import { getAssistantCount } from "@/app/dashboard/actions/assistantActions";

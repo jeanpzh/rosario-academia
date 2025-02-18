@@ -1,7 +1,7 @@
 "use server";
 import React from "react";
-import HomeHeader from "./HomeHeader";
-import HomeFooter from "./HomeFooter";
+import HomeHeader from "@/components/layout/HomeHeader";
+import HomeFooter from "@/components/layout/HomeFooter";
 
 export default async function HomeContainer({ children }: { children: React.ReactNode }) {
   return (

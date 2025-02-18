@@ -2,7 +2,7 @@
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useAthleteStore } from "@/lib/stores/useUserStore";
-import LoadingPage from "../dashboard/athlete/components/LoadingPage";
+import LoadingPage from "@/components/LoadingPage";
 
 export default function LoadingDataPage() {
   const router = useRouter();

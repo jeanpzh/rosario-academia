@@ -10,7 +10,7 @@ import {
   SelectItem,
 } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
-import { Athlete } from "../types/AthleteTable";
+import { Athlete } from "@/lib/types/AthleteTable";
 import AthleteManage from "@/app/dashboard/components/athletes/AthleteManage";
 import { DeleteAlert } from "@/app/dashboard/components/DeleteAlert";
 

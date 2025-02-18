@@ -40,7 +40,7 @@ import {
   getSortedRowModel,
   SortingState,
 } from "@tanstack/react-table";
-import AthleteManage from "./AthleteManage";
+import AthleteManage from "@/app/dashboard/components/athletes/AthleteManage";
 import { Card, CardContent } from "@/components/ui/card";
 import {
   DropdownMenu,

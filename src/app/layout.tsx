@@ -1,6 +1,6 @@
 import { Geist } from "next/font/google";
 import "./globals.css";
-import Providers from "./providers";
+import Providers from "@/app/providers";
 import { openGraphImage } from "./shared-metadata";
 
 const defaultUrl = process.env.VERCEL_URL

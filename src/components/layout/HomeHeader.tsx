@@ -2,7 +2,7 @@
 import React from "react";
 import HeaderAuth from "@/components/header-auth";
 import Link from "next/link";
-import { ThemeSwitcher } from "../theme-switcher";
+import { ThemeSwitcher } from "@/components/theme-switcher";
 
 export default async function HomeHeader() {
   return (

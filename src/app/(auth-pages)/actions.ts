@@ -4,7 +4,7 @@ import { encodedRedirect } from "@/utils/utils";
 import { createClient } from "@/utils/supabase/server";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
-import { signUpSchema } from "./schemas/sign-up-schema";
+import { signUpSchema } from "@/app/(auth-pages)/schemas/sign-up-schema";
 
 export const signUpAction = async (formData: unknown) => {
   const validatedData = signUpSchema.safeParse(formData);
@@ -168,7 +168,7 @@ export const signOutAction = async () => {
   return redirect("/logout-cleanup");
 };
 
-export const getProfile = async (userId: string) => {
+export const getProfile = async (userId: string): Promise<any> => {
   const supabase = await createClient();
   const { data: profile } = await supabase.from("profiles").select("*").eq("id", userId);
   return profile;

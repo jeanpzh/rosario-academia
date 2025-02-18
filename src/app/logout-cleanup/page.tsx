@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import LoadingPage from "../dashboard/athlete/components/LoadingPage";
+import LoadingPage from "@/components/LoadingPage";
 import { useAthleteStore } from "@/lib/stores/useUserStore";
 
 export default function LogoutCleanup() {

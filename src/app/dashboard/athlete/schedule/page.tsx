@@ -1,9 +1,9 @@
 "use client";
 
 import { useAthleteStore } from "@/lib/stores/useUserStore";
-import WeeklySchedule from "./components/WeeklySchedule";
+import WeeklySchedule from "@/app/dashboard/athlete/schedule/components/WeeklySchedule";
 import { useEffect, useState } from "react";
-import LoadingPage from "../components/LoadingPage";
+import LoadingPage from "@/components/LoadingPage";
 
 export default function SchedulePage() {
   const [loading, setLoading] = useState(true);

@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
-import { verifyAthlete } from "./actions";
-import AthleteCard from "./components/athlete-card";
+import { verifyAthlete } from "@/app/verify/[id]/actions";
+import AthleteCard from "@/app/verify/[id]/components/athlete-card";
 
 export default async function VerifyPage({ params }: { params: Promise<{ id: string }> }) {
   const id = (await params).id;

@@ -1,8 +1,8 @@
 "use client";
 import React, { useState } from "react";
-import Header from "../../components/Header";
-import AssistantManage from "./components/AssistantManage";
-import CustomTable from "../../components/CustomTable";
+import Header from "@/app/dashboard/components/Header";
+import AssistantManage from "@/app/dashboard/admin/assistant-control/components/AssistantManage";
+import CustomTable from "@/app/dashboard/components/CustomTable";
 import { columns } from "@/lib/columns/assitant-column";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {

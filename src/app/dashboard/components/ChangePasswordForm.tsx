@@ -5,7 +5,10 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
 import { changePassword } from "@/app/dashboard/actions/assistantActions";
-import { changePasswordFormData, ChangePasswordFormData } from "../schemas/change-password-schema";
+import {
+  changePasswordFormData,
+  ChangePasswordFormData,
+} from "@/app/dashboard/schemas/change-password-schema";
 import PasswordInput from "@/components/password-input";
 import VerifyPassword from "@/app/(auth-pages)/components/VerifyPassword";
 import { toast } from "sonner";

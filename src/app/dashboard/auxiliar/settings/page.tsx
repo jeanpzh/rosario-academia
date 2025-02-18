@@ -1,6 +1,6 @@
 import { Suspense } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { ChangePasswordForm } from "../../components/ChangePasswordForm";
+import { ChangePasswordForm } from "@/app/dashboard/components/ChangePasswordForm";
 
 export default function ConfiguracionPage() {
   return (

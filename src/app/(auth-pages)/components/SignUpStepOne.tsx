@@ -1,11 +1,11 @@
 import React from "react";
 import Link from "next/link";
-import { FORM_FIELDS_STEP_ONE } from "../fields";
+import { FORM_FIELDS_STEP_ONE } from "@/app/(auth-pages)/fields";
 import { HoverBorderGradient } from "@/components/hover-border-gradient";
-import TextField from "./TextField";
-import VerifyPassword from "./VerifyPassword";
+import TextField from "@/app/(auth-pages)/components/TextField";
+import VerifyPassword from "@/app/(auth-pages)/components/VerifyPassword";
 import { useFormContext } from "react-hook-form";
-import { SignUpSchema } from "../schemas/sign-up-schema";
+import { SignUpSchema } from "@/app/(auth-pages)/schemas/sign-up-schema";
 import PasswordInput from "@/components/password-input";
 
 export default function SignUpStepOne({ onNext }: { onNext: () => void }) {

@@ -1,6 +1,6 @@
 "use client";
-import Header from "../../components/Header";
-import CustomTable from "../../components/CustomTable";
+import Header from "@/app/dashboard/components/Header";
+import CustomTable from "@/app/dashboard/components/CustomTable";
 import { athleteColumns } from "@/lib/columns/athlete-columns";
 import { levelColors, statusColors } from "@/utils/table";
 import { useModalStore } from "@/lib/stores/useModalStore";

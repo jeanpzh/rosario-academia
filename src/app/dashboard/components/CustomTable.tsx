@@ -30,8 +30,8 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Card, CardContent } from "@/components/ui/card";
-import SkeletonTable from "./TableSkeleton";
-import SearchWithFilters from "./SearchWithFilters";
+import SkeletonTable from "@/app/dashboard/components/TableSkeleton";
+import SearchWithFilters from "@/app/dashboard/components/SearchWithFilters";
 
 interface TableProps<T> {
   columns: ColumnDef<T>[];

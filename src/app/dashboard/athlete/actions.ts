@@ -1,6 +1,6 @@
 "use server";
 import { createClient } from "@/utils/supabase/server";
-import { editFormSchema } from "./schemas/edit-form-schema";
+import { editFormSchema } from "@/app/dashboard/athlete/schemas/edit-form-schema";
 import { MP } from ".";
 import { BASE_URL } from "@/lib/config";
 import { Preference } from "mercadopago";
@@ -93,16 +93,17 @@ export const submit = async (id: string, schedule_id: string) => {
         items: [
           {
             id: "1234",
-            title: "Pago a Academia Rosario",
+            title: "Pago de Matrícula y Suscripción - Academia Rosario",
             quantity: 1,
             currency_id: "PEN",
-            description: "Inscripción a la academia",
+            description: "Pago para inscripción y creación/renovación de suscripción",
             unit_price: 2,
           },
         ],
         metadata: {
           athlete_id: id,
           schedule_id: schedule_id,
+          payment_type: "subscription",
         },
         back_urls: {
           success: `${BASE_URL}/dashboard/athlete/payments`,

@@ -11,9 +11,9 @@ import {
 import { FormProvider, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useModalStore } from "@/lib/stores/useModalStore";
-import AthleteForm from "./AthleteForm";
+import AthleteForm from "@/app/dashboard/components/athletes/AthleteForm";
 import { AthleteFormData, athleteFormSchema } from "@/app/dashboard/schemas/athlete-schema";
-import { Button } from "../../../../components/ui/button";
+import { Button } from "@/components/ui/button";
 
 interface AthleteManageProps {
   onClick: () => void;

@@ -6,11 +6,11 @@ import { Card, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { TEditForm } from "@/app/dashboard/athlete/schemas/edit-form-schema";
-import { useProfileData } from "./hooks/use-profile";
-import { EditProfileForm } from "./components/EditProfileForm";
-import { PersonalCard } from "./components/PersonalCard";
+import { useProfileData } from "@/app/dashboard/athlete/profile/hooks/use-profile";
+import { EditProfileForm } from "@/app/dashboard/athlete/profile/components/EditProfileForm";
+import { PersonalCard } from "@/app/dashboard/athlete/profile/components/PersonalCard";
 import { useAthleteStore } from "@/lib/stores/useUserStore";
-import LoadingPage from "../components/LoadingPage";
+import LoadingPage from "@/components/LoadingPage";
 import { toast } from "sonner";
 
 export default function ProfilePage() {

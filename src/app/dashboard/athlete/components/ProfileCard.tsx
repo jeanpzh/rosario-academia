@@ -3,7 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import Link from "next/link";
-import { Athlete, LevelToSpanish } from "../profile/types";
+import { Athlete, LevelToSpanish } from "@/app/dashboard/athlete/profile/types";
 
 export function ProfileCard({ className, athlete }: { className?: string; athlete: Athlete }) {
   return (
