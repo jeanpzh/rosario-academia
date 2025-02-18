@@ -1,5 +1,7 @@
+import Image from "next/image";
 import { CheckCircle, XCircle } from "lucide-react";
 import { LevelToSpanish } from "@/app/dashboard/athlete/profile/types";
+import { DEFAULT_IMAGE } from "@/utils/utils";
 
 interface Props {
   first_name: string;
@@ -8,6 +10,7 @@ interface Props {
   dni: string;
   level: "beginner" | "intermediate" | "advanced";
   enrollmentStatus: "approved" | "rejected" | "pending";
+  avatar_url: string;
 }
 
 export default function AthleteCard({ athlete }: { athlete: Props }) {
@@ -18,6 +21,15 @@ export default function AthleteCard({ athlete }: { athlete: Props }) {
       <h1 className="mb-4 text-center text-xl font-bold text-gray-900 dark:text-white sm:text-left sm:text-2xl">
         Verificación de Matrícula
       </h1>
+      <div className="mb-4 flex justify-center">
+        <Image
+          src={athlete.avatar_url || DEFAULT_IMAGE}
+          alt={`Foto de ${athlete.first_name} ${athlete.paternal_last_name}`}
+          width={200}
+          height={200}
+          className="rounded-full object-cover"
+        />
+      </div>
       <div className="space-y-3">
         <div className="flex flex-col sm:flex-row sm:justify-between">
           <p className="text-sm text-gray-700 dark:text-gray-300 sm:text-base">

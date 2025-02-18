@@ -8,6 +8,7 @@ interface TResponse {
   dni: string;
   level: "beginner" | "intermediate" | "advanced";
   enrollmentStatus: "approved" | "rejected" | "pending";
+  avatar_url: string;
 }
 
 export const verifyAthlete = async (
@@ -60,6 +61,7 @@ export const verifyAthlete = async (
   const dni = profileInfo.dni;
   const level = levelInfo.level as "beginner" | "intermediate" | "advanced";
   const enrollmentStatus = statusInfo[0].status as "approved" | "rejected" | "pending";
+  const avatar_url = profileInfo.avatar_url;
 
   // Return a json
   return {
@@ -69,5 +71,6 @@ export const verifyAthlete = async (
     dni,
     level,
     enrollmentStatus,
+    avatar_url,
   } as TResponse;
 };
