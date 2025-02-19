@@ -124,7 +124,7 @@ export function PersonalCard({ userProfile, athlete, isEditing }: ProfileCardPro
             <ProfileSectionCard
               icon={Scale}
               label="Peso"
-              value={athlete ? `${athlete?.weight} kg` : "En proceso..."}
+              value={athlete?.weight ? `${athlete?.weight} kg` : "En proceso..."}
             />
             <ProfileSectionCard
               icon={Ruler}
