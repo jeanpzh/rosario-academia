@@ -28,12 +28,13 @@ export default function AssistantManage({ modalId }: AssistantManageProps) {
   const methods = useForm<AssistantFormData>({
     resolver: zodResolver(assistantFormSchema),
   });
+  const handleAddAssistant = () => setMode("create");
 
   return (
     <div className="mb-4 flex items-center justify-between bg-background p-4 shadow-sm">
       <Dialog open={modalOpen} onOpenChange={(open) => setModalOpen(modalId, open)}>
         <DialogTrigger asChild>
-          <HoverBorderGradient onClick={() => setMode("create")} className="flex items-center">
+          <HoverBorderGradient onClick={handleAddAssistant} className="flex items-center">
             <Plus className="mr-2 size-4" />
             Nuevo Auxiliar Administrativo
           </HoverBorderGradient>

@@ -58,7 +58,23 @@ const checkDuplicateDNI = async (dni: string) =>
   withSupabase(async (supabase) => {
     const { data } = await supabase.from("profiles").select("dni").eq("dni", dni);
     if (data && data.length > 0) {
-      throw new Error("Ya existe un usuario con el DNI ingresado");
+      return {
+        status: 400,
+        message: "Ya existe un usuario con el DNI ingresado",
+      };
+    }
+  });
+/**
+ * Check if a profile with the given email already exists.
+ *
+ * @param email - The email to check for duplicates.
+ * @throws An error if a duplicate email is found.
+ */
+const checkDuplicateEmail = async (email: string) =>
+  withSupabase(async (supabase) => {
+    const { data } = await supabase.from("profiles").select("email").eq("email", email);
+    if (data && data.length > 0) {
+      return { status: 400, message: "Ya existe un usuario con el email ingresado" };
     }
   });
 
@@ -181,7 +197,17 @@ export const assistantSignUpAction = async (formData: unknown) => {
   try {
     const validatedData = validateAssistantData(formData);
     // Check if DNI already exists
-    await checkDuplicateDNI(validatedData.dni);
+    const checkDNI = await checkDuplicateDNI(validatedData.dni);
+
+    if (checkDNI) {
+      return checkDNI;
+    }
+
+    const checkEmail = await checkDuplicateEmail(validatedData.email);
+
+    if (checkEmail) {
+      return checkEmail;
+    }
 
     // Generate a default random password for the user
     const defaultPassword = generateRandomPassword();

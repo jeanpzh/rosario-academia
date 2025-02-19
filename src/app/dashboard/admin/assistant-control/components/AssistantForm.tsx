@@ -20,11 +20,26 @@ export default function AssistantForm() {
     mutationFn: async (data: AssistantFormData) => {
       return assistantSignUpAction(data);
     },
-    onSuccess: () => {
+    onSuccess: (response) => {
+      if ("status" in response && response.status !== 200) {
+        toast.error("Error", {
+          description: response.message,
+        });
+        return;
+      }
       // if success, refetch the data
       queryClient.invalidateQueries({ queryKey: ["assistants"] });
       // Open Modal
       setModalOpen("assistant-modal", false);
+      toast.success("Éxito", {
+        description: "El auxiliar administrativo fue registrado con éxito.",
+      });
+    },
+    onError: (error: any) => {
+      toast.error("Error", {
+        description: error.message,
+        duration: 5000,
+      });
     },
   });
   // For PUT request, update Assistant
