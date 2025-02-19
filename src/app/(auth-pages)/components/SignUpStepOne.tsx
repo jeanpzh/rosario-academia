@@ -18,11 +18,12 @@ export default function SignUpStepOne({ onNext }: { onNext: () => void }) {
           Inicia sesión
         </Link>
       </p>
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-2 gap-4 max-sm:grid-cols-1">
         {FORM_FIELDS_STEP_ONE.filter(
           (field) => !["password", "confirmPassword", "email"].includes(field.name),
         ).map((field, index) => (
           <TextField
+            className="max-sm:p-2"
             key={index}
             htmlFor={field.name}
             control={control}

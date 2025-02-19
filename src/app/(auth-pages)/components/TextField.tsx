@@ -15,7 +15,7 @@ export default function TextField({ htmlFor, label, control, name, ...props }: T
     _formState: { errors },
   } = control;
   return (
-    <div className="mb-3">
+    <div className="mb-3 max-sm:w-[310px]">
       <Label htmlFor={htmlFor}>{label}</Label>
       <Input {...control.register(name)} {...props} />
       {errors[name] && (

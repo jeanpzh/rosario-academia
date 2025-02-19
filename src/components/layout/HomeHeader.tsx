@@ -6,7 +6,7 @@ import { ThemeSwitcher } from "@/components/theme-switcher";
 
 export default async function HomeHeader() {
   return (
-    <nav className="sticky top-0 z-10 w-full border-b border-b-foreground/10 bg-background/80 backdrop-blur-sm">
+    <nav className="sticky top-0 z-20 w-full border-b border-b-foreground/10 bg-background/80 backdrop-blur-sm">
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between p-3 px-5">
         <div className="flex items-center gap-8">
           <Link

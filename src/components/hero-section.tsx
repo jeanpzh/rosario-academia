@@ -1,6 +1,7 @@
 "use client";
 import Image from "next/image";
 import React from "react";
+import Balancer from "react-wrap-balancer";
 
 export default function HeroSection() {
   return (
@@ -13,7 +14,7 @@ export default function HeroSection() {
         priority
       />
       <div className="relative z-10 rounded-lg bg-black/0 p-8 text-center text-white">
-        <h1 className="mb-4 text-4xl font-bold md:text-6xl">Academia Rosario</h1>
+        <Balancer className="mb-4 text-4xl  font-medium md:text-6xl">Academia Rosario</Balancer>
         <p className="mb-8 text-xl md:text-2xl">Formando campeones desde la cuna</p>
         <a
           href="/sign-up"

@@ -16,7 +16,7 @@ export default function SignUpStepTwo({
     <div className="space-y-6">
       <RadioFields control={control} name="level" labelText="Niveles" />
       <div className="flex justify-between gap-4">
-        <HoverBorderGradient onClick={onPrevStep} className="w-full" containerClassName="w-full">
+        <HoverBorderGradient onClick={onPrevStep} className=" w-full" containerClassName="w-full">
           Atrás
         </HoverBorderGradient>
         <HoverBorderGradient className="w-full" containerClassName="w-full">

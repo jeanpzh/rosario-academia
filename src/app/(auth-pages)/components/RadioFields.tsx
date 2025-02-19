@@ -28,7 +28,7 @@ export default function RadioFields({ control, name, labelText }: RadioFieldProp
   const LEVELS = Array.isArray(data) ? data : (data?.data as LevelProps[]);
 
   return (
-    <div>
+    <div className="max-sm:w-[310px]">
       {labelText && <Label className="text-sm text-gray-700 dark:text-gray-300">{labelText}</Label>}
       <Controller
         name={name}

@@ -87,7 +87,9 @@ const SignIn = () => {
 
       <div className={styles.signInOverlayContainer}>
         <div className={styles.signInOverlay}>
-          <div className={`${styles.signInOverlayPanel} ${styles.signInOverlayLeft}`}>
+          <div
+            className={`overflow-hidden ${styles.signInOverlayPanel} ${styles.signInOverlayLeft}`}
+          >
             <h1 className={styles.signInSubtitle}>
               Nada es imposible, <br /> cree en ti!
             </h1>

@@ -82,8 +82,8 @@ export default function SignUpForm({ message }: SignUpFormProps) {
   };
 
   return (
-    <div className="flex h-auto w-[80rem] rounded-lg shadow-xl">
-      <div className="relative hidden flex-col items-center justify-center overflow-hidden bg-[rgb(246,246,246)] p-8 text-white dark:bg-black lg:flex lg:w-1/2 ">
+    <div className="flex h-auto rounded-lg shadow-xl  md:w-[80rem]  ">
+      <div className="relative hidden flex-col items-center justify-center overflow-hidden bg-[rgb(246,246,246)] p-8 text-white dark:bg-black max-sm:hidden lg:flex lg:w-1/2 ">
         <div className="flex h-[40rem] items-center justify-center px-4">
           <div className="mx-auto text-4xl font-normal text-neutral-600 dark:text-neutral-400">
             <span className="text-5xl">Bienvenidos!</span>
