@@ -4,6 +4,7 @@ import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { ArrowUpDown, Pencil } from "lucide-react";
 import { DeleteAlert } from "@/app/dashboard/components/DeleteAlert";
+import { DEFAULT_IMAGE } from "@/utils/utils";
 
 export const columns = (
   handleEdit: (assistant: Assistant) => void,
@@ -39,10 +40,7 @@ export const columns = (
       cell: ({ row }) => (
         <Image
           className="rounded-full"
-          src={
-            row.original.avatar_url ||
-            "https://res.cloudinary.com/dlzlfasou/image/upload/v1736358072/avatar-40-03_dkeufx.jpg"
-          }
+          src={row.original.avatar_url || DEFAULT_IMAGE}
           width={40}
           height={40}
           alt={`${row.original.first_name} ${row.original.paternal_last_name}`}
