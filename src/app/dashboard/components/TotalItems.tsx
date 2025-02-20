@@ -14,6 +14,7 @@ export default function TotalItems({
   const { data: count, isLoading } = useQuery({
     queryKey: ["totalItems", title],
     queryFn: fetchCount,
+    staleTime: 1000 * 60 * 5,
   });
 
   return (

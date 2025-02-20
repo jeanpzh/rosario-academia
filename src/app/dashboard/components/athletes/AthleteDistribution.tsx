@@ -1,21 +1,13 @@
 "use client";
 
-import { useQuery } from "@tanstack/react-query";
 import { PieChart, Pie, Cell, ResponsiveContainer, Legend, Tooltip } from "recharts";
-import { getAthleteDistribution } from "@/app/dashboard/actions/athleteActions";
 import { Skeleton } from "@/components/ui/skeleton";
+import { useFetchAthleteDistribution } from "@/hooks/use-fetch-athlete-distribution";
 
 const COLORS = ["#3b82f6", "#10b981", "#f59e0b"];
 
 export function AthleteDistribution() {
-  const {
-    data: distributionData,
-    isLoading,
-    error,
-  } = useQuery({
-    queryKey: ["athleteDistribution"],
-    queryFn: getAthleteDistribution,
-  });
+  const { data: distributionData, isLoading, error } = useFetchAthleteDistribution();
 
   if (isLoading) return <Skeleton className="h-[300px] w-full" />;
   if (error) return <div className="text-center text-red-500">Error al cargar los datos</div>;

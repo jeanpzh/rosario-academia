@@ -246,6 +246,7 @@ export const assistantSignUpAction = async (formData: unknown) => {
 export const updateAssistantAction = async (formData: unknown, id: string) => {
   try {
     const validatedData = validateAssistantData(formData);
+
     await withSupabase(async (supabase) => {
       const { error } = await supabase
         .from("profiles")
@@ -281,7 +282,7 @@ export const deleteAssistantAction = async (id: string) => {
       if (error || !data) {
         throw new Error("Error eliminando el auxiliar");
       }
-      return { status: 200, message: "Auxiliar eliminado correctamente" };
+      return { status: 200, message: "Auxiliar eliminado correctamente", id };
     });
   } catch (error: any) {
     console.error("Error deleting assistant", error);

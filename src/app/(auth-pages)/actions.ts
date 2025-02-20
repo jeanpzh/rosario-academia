@@ -225,9 +225,22 @@ export const signOutAction = async () => {
  * @param userId - The user's ID.
  * @returns The user profile data.
  */
-export const getProfile = async (userId: string): Promise<any> => {
+export const getProfile = async (userId?: string): Promise<any> => {
   const supabase = await createClient();
-  const { data: profile } = await supabase.from("profiles").select("*").eq("id", userId);
+  if (userId) {
+    const { data: profile } = await supabase.from("profiles").select("*").eq("id", userId);
+    return profile;
+  }
+  const { data: user, error: userError } = await supabase.auth.getUser();
+  if (userError) throw userError;
+  const { data: profile, error: profileError } = await supabase
+    .from("profiles")
+    .select("*")
+    .eq("id", user.user.id)
+    .single();
+
+  if (profileError) throw profileError;
+
   return profile;
 };
 

@@ -4,54 +4,17 @@ import { useFormContext } from "react-hook-form";
 import { AssistantFormData } from "@/app/dashboard/admin/schemas/assistant-schema";
 import { Button } from "@/components/ui/button";
 import { useModalStore } from "@/lib/stores/useModalStore";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import {
-  assistantSignUpAction,
-  updateAssistantAction,
-} from "@/app/dashboard/actions/assistantActions";
 import { toast } from "sonner";
+import { useAddAssistantQuery } from "@/hooks/use-add-assistant";
+import { useUpdateAssistant } from "@/hooks/use-update-assistant";
 export default function AssistantForm() {
   const { mode, currentItem, entity, setModalOpen, id } = useModalStore();
   const { control, reset, handleSubmit } = useFormContext<AssistantFormData>();
-  const queryClient = useQueryClient();
 
   // For Assistant Sign Up from Table
-  const postMutation = useMutation({
-    mutationFn: async (data: AssistantFormData) => {
-      return assistantSignUpAction(data);
-    },
-    onSuccess: (response) => {
-      if ("status" in response && response.status !== 200) {
-        toast.error("Error", {
-          description: response.message,
-        });
-        return;
-      }
-      // if success, refetch the data
-      queryClient.invalidateQueries({ queryKey: ["assistants"] });
-      // Open Modal
-      setModalOpen("assistant-modal", false);
-      toast.success("Éxito", {
-        description: "El auxiliar administrativo fue registrado con éxito.",
-      });
-    },
-    onError: (error: any) => {
-      toast.error("Error", {
-        description: error.message,
-        duration: 5000,
-      });
-    },
-  });
+  const postMutation = useAddAssistantQuery({ setModalOpen });
   // For PUT request, update Assistant
-  const updateMutation = useMutation({
-    mutationFn: async (data: AssistantFormData) => {
-      return updateAssistantAction(data, id);
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["assistants"] });
-      setModalOpen("assistant-modal", false);
-    },
-  });
+  const updateMutation = useUpdateAssistant({ setModalOpen, id });
 
   const onSubmit = async (data: AssistantFormData) => {
     try {
@@ -137,10 +100,10 @@ export default function AssistantForm() {
         control={control}
         name="email"
         htmlFor="email"
-        disabled={mode === "edit"}
+        readOnly={mode === "edit"}
       />
       <Button type="submit" className="col-span-2">
-        Guardar
+        {mode === "create" ? "Guardar" : "Actualizar"}
       </Button>
     </form>
   );

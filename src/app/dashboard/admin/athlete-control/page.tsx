@@ -4,51 +4,27 @@ import CustomTable from "@/app/dashboard/components/CustomTable";
 import { athleteColumns } from "@/lib/columns/athlete-columns";
 import { levelColors, statusColors } from "@/utils/table";
 import { useModalStore } from "@/lib/stores/useModalStore";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Athlete } from "@/lib/types/AthleteTable";
-import {
-  deleteAthleteAction,
-  getAthletesAction,
-  updateLevelAthleteAction,
-  updateStatusAthleteAction,
-} from "@/app/dashboard/actions/athleteActions";
 import { useState } from "react";
+import { useFetchAthletesQuery } from "@/hooks/use-fetch-athletes";
+import { useDeleteAthleteQuery } from "@/hooks/use-delete-athlete";
+import { useUpdateAthleteStatus } from "@/hooks/use-update-athlete-status";
+import { useUpdateAthleteLevel } from "@/hooks/use-update-athlete-level";
 
 export default function AthletePage() {
   const [isOpen, onOpenChange] = useState(false);
 
   const { setModalOpen, setMode, setCurrentItem, setEntity, setId } = useModalStore();
-  const queryClient = useQueryClient();
 
   // Fetch athletes data from the server with server action
-  const { data: athletes = [], isLoading } = useQuery<Athlete[]>({
-    queryKey: ["athletes"],
-    queryFn: getAthletesAction,
-  });
+  const { data: athletes = [], isLoading } = useFetchAthletesQuery();
 
   // Delete mutation for athletes with server action
-  const deleteMutation = useMutation({
-    mutationFn: deleteAthleteAction,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["athletes"] });
-    },
-  });
+  const deleteMutation = useDeleteAthleteQuery();
   // Update athlete status mutation
-  const updateAthleteStatusMutation = useMutation({
-    mutationFn: ({ id, status }: { id: string; status: "approved" | "rejected" | "pending" }) =>
-      updateStatusAthleteAction(id, status),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["athletes"] });
-    },
-  });
+  const updateAthleteStatusMutation = useUpdateAthleteStatus();
   // Update athlete level mutation
-  const updateAthleteLevelMutation = useMutation({
-    mutationFn: ({ id, level }: { id: string; level: "beginner" | "intermediate" | "advanced" }) =>
-      updateLevelAthleteAction(id, level),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["athletes"] });
-    },
-  });
+  const updateAthleteLevelMutation = useUpdateAthleteLevel();
 
   // Handle edit action for athletes
   const handleEdit = (athlete: Athlete) => {

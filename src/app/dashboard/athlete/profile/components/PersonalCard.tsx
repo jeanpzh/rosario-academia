@@ -9,14 +9,13 @@ import { Button } from "@/components/ui/button";
 import ProfileSectionCard from "@/app/dashboard/athlete/components/ProfileSectionCard";
 import { LevelToSpanish } from "@/app/dashboard/athlete/profile/types";
 import { Scale, Ruler, Camera, Calendar, IndentIcon } from "lucide-react";
-import { useQuery } from "@tanstack/react-query";
-import { getLastAvatarDate } from "@/app/dashboard/actions/athleteActions";
 import CardSkeleton from "@/app/dashboard/components/CardSkeleton";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { useAthleteStore } from "@/lib/stores/useUserStore";
 import { getDaysRemaining } from "@/utils/formats";
 import { Profile } from "@/lib/types/Profile";
+import { useFetchLastAvatarChangeQuery } from "@/hooks/use-fetch-last-avatar-change";
 
 export interface ProfileCardProps {
   userProfile: Profile;
@@ -37,15 +36,7 @@ export function PersonalCard({ userProfile, athlete, isEditing }: ProfileCardPro
     data: lastAvatarChangeData,
     isLoading: lastAvatarChangeLoading,
     error: lastAvatarChangeError,
-  } = useQuery({
-    queryKey: ["last-avatar-change"],
-    queryFn: async () => {
-      const res = await getLastAvatarDate();
-      // Guarda la fecha en el estado global
-      setLastAvatarChange(res.data);
-      return res.data;
-    },
-  });
+  } = useFetchLastAvatarChangeQuery({ setLastAvatarChange });
 
   // lastAvatarChangeData ya es la fecha guardada
 

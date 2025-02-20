@@ -1,42 +1,19 @@
 "use client";
 
-import { useQuery } from "@tanstack/react-query";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Card, CardContent } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
-import { createClient } from "@/utils/supabase/client";
-
-async function getProfile() {
-  const supabase = createClient();
-  const { data: user, error: userError } = await supabase.auth.getUser();
-  if (userError) throw userError;
-  const { data: profile, error: profileError } = await supabase
-    .from("profiles")
-    .select("*")
-    .eq("id", user.user.id)
-    .single();
-
-  if (profileError) throw profileError;
-
-  return profile;
-}
+import { useFetchProfileQuery } from "@/hooks/use-fetch-profile";
 
 export default function Profile() {
-  const {
-    data: profile,
-    isLoading,
-    error,
-  } = useQuery({
-    queryKey: ["profile"],
-    queryFn: getProfile,
-  });
+  const { data: profile, isLoading, error } = useFetchProfileQuery();
 
-  if (isLoading) return <Skeleton className="h-[300px] w-full" />;
+  if (isLoading) return <Skeleton className="h-auto w-full" />;
   if (error) return <div className="text-center text-red-500">Error al cargar el perfil</div>;
 
   if (!profile) {
     return (
-      <Card className="h-auto">
+      <Card className="my-auto h-96">
         <CardContent className="flex items-center space-x-4 pt-6">
           <p className="text-sm text-muted-foreground">No se pudo cargar el perfil</p>
         </CardContent>
@@ -45,7 +22,7 @@ export default function Profile() {
   }
 
   return (
-    <Card className="h-auto">
+    <Card className="my-auto h-96">
       <CardContent className="flex h-auto flex-col items-center space-y-4 pt-6">
         <Avatar className="size-20">
           <AvatarImage
@@ -58,13 +35,15 @@ export default function Profile() {
           </AvatarFallback>
         </Avatar>
         <div className="text-center">
-          <h3 className="text-lg font-semibold">
+          <h3 className="text-xl font-semibold">
             {profile.first_name} {profile.last_name}
           </h3>
           <p className="text-sm text-muted-foreground">{profile.email}</p>
-          <p className="text-sm font-medium text-primary">Rol: {profile.role}</p>
+          <p className="text-lg font-medium text-primary">
+            Rol: {profile.role === "admin" ? "Administrador" : "Auxiliar Administrativo"}
+          </p>
         </div>
-        <div className="w-full space-y-2 text-sm text-muted-foreground">
+        <div className="w-full space-y-2 text-base text-muted-foreground">
           <p>
             Fecha de Nacimiento:{" "}
             {profile.birth_date

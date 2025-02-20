@@ -6,9 +6,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
 import { editFormSchema, TEditForm } from "@/app/dashboard/athlete/schemas/edit-form-schema";
 import EditField from "@/app/dashboard/athlete/components/EditField";
-import { useQuery } from "@tanstack/react-query";
-import { getLastProfileUpdateDate } from "@/app/dashboard/actions/athleteActions";
-import { getDaysRemaining } from "@/utils/formats";
 import { Clock, User, X } from "lucide-react";
 import {
   Dialog,
@@ -20,6 +17,7 @@ import {
 } from "@/components/ui/dialog";
 import CardSkeleton from "@/app/dashboard/components/CardSkeleton";
 import { useAthleteStore } from "@/lib/stores/useUserStore";
+import { useFetchLastProfileUpdateQuery } from "@/hooks/use-fetch-last-profile-update";
 
 interface EditProfileFormProps {
   defaultValues: TEditForm;
@@ -47,16 +45,8 @@ export function EditProfileForm({
   const { athlete, setDaysRemaining } = useAthleteStore();
   const [isConfirmDialogOpen, setIsConfirmDialogOpen] = React.useState(false);
 
-  const { error: lastProfileUpdateError, isLoading: lastProfileUpdateLoading } = useQuery({
-    queryKey: ["last-profile-update"],
-    queryFn: async () => {
-      const res = await getLastProfileUpdateDate();
-      const daysRemaining = getDaysRemaining(res.data);
-      // Actualizamos el estado global con los días restantes
-      setDaysRemaining(daysRemaining);
-      return res.data;
-    },
-  });
+  const { error: lastProfileUpdateError, isLoading: lastProfileUpdateLoading } =
+    useFetchLastProfileUpdateQuery({ setDaysRemaining });
 
   // Leemos el valor de días restantes desde el estado global
   const daysRemaining = athlete?.profile?.days_remaining || 0;

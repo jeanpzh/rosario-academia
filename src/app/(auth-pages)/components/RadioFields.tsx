@@ -1,9 +1,8 @@
 import { Controller, Control } from "react-hook-form";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
-import { getShifts } from "@/app/(auth-pages)/actions";
-import { useQuery } from "@tanstack/react-query";
 import { Badge } from "@/components/ui/badge";
+import { useShiftQuery } from "@/hooks/use-fetch-shifts";
 
 interface RadioFieldProps {
   control: Control<any>;
@@ -18,10 +17,7 @@ interface LevelProps {
 }
 
 export default function RadioFields({ control, name, labelText }: RadioFieldProps) {
-  const { data, isLoading, isError } = useQuery({
-    queryKey: ["shifts"],
-    queryFn: getShifts,
-  });
+  const { data, isLoading, isError } = useShiftQuery();
   if (isLoading) return <div>Cargando opciones...</div>;
   if (isError) return <div>Error al cargar opciones</div>;
 

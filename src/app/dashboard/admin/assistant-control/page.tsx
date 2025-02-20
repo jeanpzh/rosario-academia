@@ -4,13 +4,10 @@ import Header from "@/app/dashboard/components/Header";
 import AssistantManage from "@/app/dashboard/admin/assistant-control/components/AssistantManage";
 import CustomTable from "@/app/dashboard/components/CustomTable";
 import { columns } from "@/lib/columns/assitant-column";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import {
-  deleteAssistantAction,
-  getAssistantsAction,
-} from "@/app/dashboard/actions/assistantActions";
 import { Assistant } from "@/lib/types/AssistantTable";
 import { useModalStore } from "@/lib/stores/useModalStore";
+import { useAssistantQuery } from "@/hooks/use-fetch-assistant-query";
+import { useDeleteAssistant } from "@/hooks/use-delete-assistant-query";
 
 export default function AssistantControlPage() {
   // State for delete Modal
@@ -19,19 +16,10 @@ export default function AssistantControlPage() {
   // Global State for Edit or Create Modal and current item for Assistant
   const { setModalOpen, setMode, setEntity, setCurrentItem, setId } = useModalStore();
 
-  const queryClient = useQueryClient();
   // Fetch Assistants
-  const { data: assistants = [], isLoading } = useQuery<Assistant[]>({
-    queryKey: ["assistants"],
-    queryFn: getAssistantsAction,
-  });
+  const { data: assistants = [], isLoading } = useAssistantQuery();
   // Delete assistant mutation
-  const deleteMutation = useMutation({
-    mutationFn: deleteAssistantAction,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["assistants"] });
-    },
-  });
+  const deleteMutation = useDeleteAssistant();
   // Handle Assistant Edit
   const handleEdit = (item: Assistant) => {
     setEntity("assistant");

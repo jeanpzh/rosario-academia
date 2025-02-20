@@ -9,20 +9,12 @@ import { CarnetCard } from "@/app/dashboard/athlete/components/CarnetCard";
 import { useAthleteStore } from "@/lib/stores/useUserStore";
 import DashboardSkeleton from "@/app/dashboard/components/DashboardSkeleton";
 import { getNextFormattedDate } from "@/utils/formats";
-import { getPaymentDate } from "@/app/dashboard/actions/athleteActions";
-import { useQuery } from "@tanstack/react-query";
 import { useMemo } from "react";
+import { useFetchPaymentDateQuery } from "@/hooks/use-fetch-payment-date";
 
 export default function DashboardPage() {
   const { athlete } = useAthleteStore();
-  const {
-    data: responseData,
-    error,
-    isLoading,
-  } = useQuery({
-    queryKey: ["paymentDate"],
-    queryFn: getPaymentDate,
-  });
+  const { data: responseData, error, isLoading } = useFetchPaymentDateQuery();
   const availableDate = useMemo(() => {
     if (!responseData?.data) return null;
     try {

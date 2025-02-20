@@ -1,16 +1,14 @@
 "use client";
 
-import { Suspense } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import Link from "next/link";
 import { AthleteDistribution } from "@/app/dashboard/components/athletes/AthleteDistribution";
 import Profile from "@/app/dashboard/components/Profile";
-import { useQuery } from "@tanstack/react-query";
-import { getAthletesCount } from "@/app/dashboard/actions/athleteActions";
-import { getAssistantCount } from "@/app/dashboard/actions/assistantActions";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Users, UserCog } from "lucide-react";
 import type React from "react";
+import { useCountAthletesQuery } from "@/hooks/use-fetch-count-athletes-count";
+import { useCountAssistantQuery } from "@/hooks/use-fetch-assistant-count";
 
 function ControlCard({
   title,
@@ -19,6 +17,7 @@ function ControlCard({
   buttonText,
   count,
   icon: Icon,
+  loading,
 }: {
   title: string;
   description: string;
@@ -26,9 +25,13 @@ function ControlCard({
   buttonText: string;
   count: number;
   icon: React.ElementType;
+  loading: boolean;
 }) {
+  if (loading) {
+    return <Skeleton className="h-56" />;
+  }
   return (
-    <Card className="flex flex-col">
+    <Card className="flex h-56 flex-col">
       <CardHeader>
         <div className="flex items-center justify-between">
           <CardTitle className="text-xl">{title}</CardTitle>
@@ -52,16 +55,9 @@ function ControlCard({
 }
 
 export default function DashboardPage() {
-  const { data: athletesCount = 0, isLoading: isLoadingAthletes } = useQuery({
-    queryKey: ["athletesCount"],
-    queryFn: getAthletesCount,
-  });
+  const { data: athletesCount = 0, isLoading: isLoadingAthletes } = useCountAthletesQuery();
 
-  const { data: assistantsCount = 0, isLoading: isLoadingAssistants } = useQuery({
-    queryKey: ["assistantsCount"],
-    queryFn: getAssistantCount,
-  });
-
+  const { data: assistantsCount = 0, isLoading: isLoadingAssistants } = useCountAssistantQuery();
   return (
     <div className="container mx-auto space-y-6 p-6">
       <h1 className="text-3xl font-bold">Dashboard</h1>
@@ -72,37 +68,31 @@ export default function DashboardPage() {
             <CardTitle>Distribución de Atletas</CardTitle>
           </CardHeader>
           <CardContent className="pt-4">
-            <Suspense fallback={<Skeleton className="h-[300px] w-full" />}>
-              <AthleteDistribution />
-            </Suspense>
+            <AthleteDistribution />
           </CardContent>
         </Card>
-        <Suspense fallback={<Skeleton className="h-[300px] w-full" />}>
-          <Profile />
-        </Suspense>
+        <Profile />
       </div>
 
       <div className="grid gap-6 md:grid-cols-2">
-        <Suspense fallback={<Skeleton className="h-[200px] w-full" />}>
-          <ControlCard
-            title="Control de Atletas"
-            description="Accede al control completo de atletas para gestionar perfiles, niveles y estados."
-            href="/dashboard/athletes"
-            buttonText="Ir a Control de Atletas"
-            count={isLoadingAthletes ? 0 : athletesCount}
-            icon={Users}
-          />
-        </Suspense>
-        <Suspense fallback={<Skeleton className="h-[200px] w-full" />}>
-          <ControlCard
-            title="Control de Auxiliares"
-            description="Gestiona los perfiles y permisos de los auxiliares administrativos."
-            href="/dashboard/assistants"
-            buttonText="Ir a Control de Auxiliares"
-            count={isLoadingAssistants ? 0 : assistantsCount}
-            icon={UserCog}
-          />
-        </Suspense>
+        <ControlCard
+          title="Control de Atletas"
+          description="Accede al control completo de atletas para gestionar perfiles, niveles y estados."
+          href="/dashboard/athletes"
+          buttonText="Ir a Control de Atletas"
+          count={athletesCount}
+          icon={Users}
+          loading={isLoadingAthletes}
+        />
+        <ControlCard
+          title="Control de Auxiliares"
+          description="Gestiona los perfiles y permisos de los auxiliares administrativos."
+          href="/dashboard/admin/assistant-control"
+          buttonText="Ir a Control de Auxiliares"
+          count={assistantsCount}
+          icon={UserCog}
+          loading={isLoadingAssistants}
+        />
       </div>
     </div>
   );

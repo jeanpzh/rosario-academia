@@ -7,11 +7,11 @@ import { useAthleteStore } from "@/lib/stores/useUserStore";
 import { HoverBorderGradient } from "@/components/hover-border-gradient";
 import { formatDate, getNextFormattedDate } from "@/utils/formats";
 import { useHandlePrint } from "@/hooks/use-handle-print";
-import { useMutation, useQuery } from "@tanstack/react-query";
-import { generateVerificationCode, getPaymentDate } from "@/app/dashboard/actions/athleteActions";
 import LoadingPage from "@/components/LoadingPage";
 import AthleteDetails from "@/app/dashboard/athlete/carnet/components/athlete-details";
 import AthleteVerification from "@/app/dashboard/athlete/carnet/components/athlete-verification";
+import { useFetchPaymentDateQuery } from "@/hooks/use-fetch-payment-date";
+import { useGenerateVerificationId } from "@/hooks/use-generate-verification";
 
 const AthleteCard = () => {
   const [verificationId, setVerificationId] = useState<string | null>(null);
@@ -26,14 +26,7 @@ const AthleteCard = () => {
   const handlePrintClick = useCallback(() => handlePrint(), [handlePrint]);
 
   // GET payment DATE
-  const {
-    data: responseData,
-    error,
-    isLoading,
-  } = useQuery({
-    queryKey: ["paymentDate"],
-    queryFn: getPaymentDate,
-  });
+  const { data: responseData, error, isLoading } = useFetchPaymentDateQuery();
   const availableDate = useMemo(() => {
     if (!responseData?.data) return null;
     try {
@@ -45,13 +38,7 @@ const AthleteCard = () => {
   }, [responseData]);
 
   // For generate the verification ID
-  const mutationGenerate = useMutation({
-    mutationKey: ["generateVerificationId"],
-    mutationFn: generateVerificationCode,
-    onSuccess: (data) => {
-      if (data.status === 200) setVerificationId(data.data);
-    },
-  });
+  const mutationGenerate = useGenerateVerificationId({ setVerificationId });
   const { mutate } = mutationGenerate;
 
   useEffect(() => {

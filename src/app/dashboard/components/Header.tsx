@@ -1,4 +1,5 @@
 import { Avatar } from "@/components/ui/avatar";
+import { DEFAULT_IMAGE } from "@/utils/utils";
 import Image from "next/image";
 import React from "react";
 
@@ -9,7 +10,7 @@ export default function Header({ title }: { title: string }) {
       <Avatar>
         <Image
           className="rounded-full"
-          src="https://res.cloudinary.com/dlzlfasou/image/upload/v1736358072/avatar-40-03_dkeufx.jpg"
+          src={DEFAULT_IMAGE}
           alt="Maria Garcia"
           width={40}
           height={40}

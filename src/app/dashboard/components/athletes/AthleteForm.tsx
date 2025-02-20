@@ -5,30 +5,14 @@ import TextField from "@/app/(auth-pages)/components/TextField";
 import { Button } from "@/components/ui/button";
 import { useModalStore } from "@/lib/stores/useModalStore";
 import type { AthleteFormData } from "@/app/dashboard/schemas/athlete-schema";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { updateAthleteAction } from "@/app/dashboard/actions/athleteActions";
 import { useEffect } from "react";
+import { useUpdateAthleteMutation } from "@/hooks/use-update-athlete";
 
 export default function AthleteForm() {
   const { currentItem, setModalOpen, id } = useModalStore();
-  const {
-    control,
-    reset,
-    handleSubmit,
-    formState: { errors },
-  } = useFormContext<AthleteFormData>();
-  const queryClient = useQueryClient();
+  const { control, reset, handleSubmit } = useFormContext<AthleteFormData>();
 
-  const updateMutation = useMutation({
-    mutationFn: async (data: AthleteFormData) => {
-      return updateAthleteAction(data, id);
-    },
-    onSuccess: (data) => {
-      console.log(data);
-      queryClient.invalidateQueries({ queryKey: ["athletes"] });
-      setModalOpen("athlete-modal", false);
-    },
-  });
+  const updateMutation = useUpdateAthleteMutation({ setModalOpen, id });
 
   const onSubmit = async (data: AthleteFormData) => {
     try {
@@ -37,7 +21,6 @@ export default function AthleteForm() {
       console.log({ error });
     }
   };
-  console.log(errors);
   useEffect(() => {
     const athlete = currentItem as AthleteFormData;
     reset({
