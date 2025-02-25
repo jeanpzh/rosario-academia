@@ -26,10 +26,12 @@ export function useAddAssistantQuery({ setModalOpen }: { setModalOpen: any }) {
     },
     onSuccess: (newData) => {
       // Solo se cierra el modal si la operación fue exitosa
-      queryClient.setQueryData(["assistants"], (oldData: any[] = []) => {
+      /* queryClient.setQueryData(["assistants"], (oldData: any[] = []) => {
         console.log(newData, oldData);
         return [...oldData, newData];
-      });
+      }); */
+      queryClient.invalidateQueries({ queryKey: ["assistants"] });
+
       setModalOpen("assistant-modal", false);
     },
     onError: (error: any) => {
