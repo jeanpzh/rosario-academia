@@ -9,10 +9,10 @@ import { useEffect } from "react";
 import { useUpdateAthleteMutation } from "@/hooks/use-update-athlete";
 
 export default function AthleteForm() {
-  const { currentItem, setModalOpen, id } = useModalStore();
+  const { currentItem, setModalOpen } = useModalStore();
   const { control, reset, handleSubmit } = useFormContext<AthleteFormData>();
-
-  const updateMutation = useUpdateAthleteMutation({ setModalOpen, id });
+  console.log(currentItem);
+  const updateMutation = useUpdateAthleteMutation({ setModalOpen, id: currentItem?.id });
 
   const onSubmit = async (data: AthleteFormData) => {
     try {

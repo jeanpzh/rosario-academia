@@ -12,25 +12,9 @@ import {
 import { Button } from "@/components/ui/button";
 import { Trash2 } from "lucide-react";
 
-export function DeleteAlert({
-  isOpen,
-  onOpenChange,
-  onDeleteMutation,
-}: {
-  isOpen: boolean;
-  onOpenChange: (open: boolean) => void;
-  onDeleteMutation: () => void;
-}) {
-  const handleMutation = () => {
-    try {
-      onDeleteMutation();
-      onOpenChange(false);
-    } catch (error) {
-      console.log({ error });
-    }
-  };
+export function DeleteAlert({ onDeleteMutation }: { onDeleteMutation: () => void }) {
   return (
-    <AlertDialog open={isOpen} onOpenChange={onOpenChange}>
+    <AlertDialog>
       <AlertDialogTrigger asChild>
         <Button variant="ghost">
           <Trash2 className="size-4" />
@@ -45,7 +29,7 @@ export function DeleteAlert({
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel>Cancelar</AlertDialogCancel>
-          <AlertDialogAction onClick={handleMutation}>Continuar</AlertDialogAction>
+          <AlertDialogAction onClick={onDeleteMutation}>Continuar</AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>

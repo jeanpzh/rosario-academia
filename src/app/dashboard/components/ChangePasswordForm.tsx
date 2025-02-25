@@ -12,6 +12,7 @@ import {
 import PasswordInput from "@/components/password-input";
 import VerifyPassword from "@/app/(auth-pages)/components/VerifyPassword";
 import { toast } from "sonner";
+import Link from "next/link";
 
 export function ChangePasswordForm() {
   const { handleSubmit, reset, control, watch } = useForm<ChangePasswordFormData>({
@@ -48,7 +49,7 @@ export function ChangePasswordForm() {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+    <form onSubmit={handleSubmit(onSubmit)} className="space-y-2">
       <PasswordInput
         label="Contraseña Actual"
         control={control}
@@ -56,6 +57,11 @@ export function ChangePasswordForm() {
         name="currentPassword"
         htmlFor="currentPassword"
       />
+      <Link href="/forgot-password">
+        <Button variant={"link"} className="text-blue-500">
+          ¿Olvidaste tu contraseña?
+        </Button>
+      </Link>
       <PasswordInput
         label="Nueva Contraseña"
         control={control}

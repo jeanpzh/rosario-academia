@@ -97,27 +97,31 @@ export async function updateAthleteAction(formData: unknown, id: string) {
   if (!validated.success) {
     return { error: "Datos ingresados incorrectos" };
   }
-  const supabase = await getServiceClient();
-  const { data, error } = await supabase
-    .from("profiles")
-    .update({
-      first_name: validated.data.first_name,
-      paternal_last_name: validated.data.paternal_last_name,
-      maternal_last_name: validated.data.maternal_last_name,
-      birth_date: validated.data.birth_date,
-      dni: validated.data.dni,
-      phone: validated.data.phone,
-      email: validated.data.email,
-      avatar_url: validated.data.avatar_url,
-      last_profile_update: new Date(),
-      last_avatar_change: new Date(),
-    })
-    .eq("id", id);
+  try {
+    const supabase = await getServiceClient();
+    const { data, error } = await supabase
+      .from("profiles")
+      .update({
+        first_name: validated.data.first_name,
+        paternal_last_name: validated.data.paternal_last_name,
+        maternal_last_name: validated.data.maternal_last_name,
+        birth_date: validated.data.birth_date,
+        dni: validated.data.dni,
+        phone: validated.data.phone,
+        email: validated.data.email,
+        avatar_url: validated.data.avatar_url,
+        last_profile_update: new Date(),
+        last_avatar_change: new Date(),
+      })
+      .eq("id", id);
 
-  if (error) {
-    throw new Error("Error al actualizar deportista");
+    if (error) {
+      throw new Error("Error al actualizar perfil");
+    }
+    return data;
+  } catch (error) {
+    console.log(error);
   }
-  return data;
 }
 
 /**

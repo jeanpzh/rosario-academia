@@ -5,15 +5,12 @@ import { athleteColumns } from "@/lib/columns/athlete-columns";
 import { levelColors, statusColors } from "@/utils/table";
 import { useModalStore } from "@/lib/stores/useModalStore";
 import { Athlete } from "@/lib/types/AthleteTable";
-import { useState } from "react";
 import { useFetchAthletesQuery } from "@/hooks/use-fetch-athletes";
 import { useDeleteAthleteQuery } from "@/hooks/use-delete-athlete";
 import { useUpdateAthleteStatus } from "@/hooks/use-update-athlete-status";
 import { useUpdateAthleteLevel } from "@/hooks/use-update-athlete-level";
 
 export default function AthletePage() {
-  const [isOpen, onOpenChange] = useState(false);
-
   const { setModalOpen, setMode, setCurrentItem, setEntity, setId } = useModalStore();
 
   // Fetch athletes data from the server with server action
@@ -36,8 +33,8 @@ export default function AthletePage() {
     setModalOpen("athlete-modal", true);
   };
   // Handle delete action for athletes
-  const handleDelete = (id: string) => {
-    deleteMutation.mutate(id);
+  const handleDelete = (athlete: Athlete) => {
+    deleteMutation.mutate(athlete.id);
   };
   return (
     <div className="dark:bg-dark-surface flex flex-col gap-4 bg-background p-4">
@@ -50,8 +47,6 @@ export default function AthletePage() {
           updateAthleteStatusMutation,
           levelColors,
           statusColors,
-          isOpen,
-          () => onOpenChange(!isOpen),
         )}
         data={athletes}
         isLoading={isLoading}

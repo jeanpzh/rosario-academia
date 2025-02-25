@@ -13,16 +13,15 @@ import { Badge } from "@/components/ui/badge";
 import { Athlete } from "@/lib/types/AthleteTable";
 import AthleteManage from "@/app/dashboard/components/athletes/AthleteManage";
 import { DeleteAlert } from "@/app/dashboard/components/DeleteAlert";
+import { LevelToSpanish } from "@/app/dashboard/athlete/profile/types";
 
 export const athleteColumns = (
   handleEdit: (athlete: Athlete) => void,
-  handleDelete: (id: string) => void,
+  handleDelete: (athlete: Athlete) => void,
   updateAthleteLevelMutation: any,
   updateAthleteStatusMutation: any,
   levelColors: Record<string, string>,
   statusColors: Record<string, string>,
-  isOpen: boolean,
-  onOpenChange: () => void,
 ): ColumnDef<Athlete>[] => {
   return [
     {
@@ -89,7 +88,7 @@ export const athleteColumns = (
           <SelectTrigger className="w-[120px]">
             <SelectValue>
               <Badge className={`${levelColors[row.original.level]} text-white`}>
-                {row.original.level}
+                {LevelToSpanish[row.original.level as keyof typeof LevelToSpanish]}
               </Badge>
             </SelectValue>
           </SelectTrigger>
@@ -130,12 +129,12 @@ export const athleteColumns = (
       id: "actions",
       cell: ({ row }) => (
         <div className="flex justify-end gap-2">
-          <AthleteManage onClick={() => handleEdit(row.original)} modalId="athlete-modal" />
-          <DeleteAlert
-            isOpen={isOpen}
-            onOpenChange={() => onOpenChange()}
-            onDeleteMutation={() => handleDelete(row.original.id)}
+          <AthleteManage
+            onClick={() => {
+              handleEdit(row.original);
+            }}
           />
+          <DeleteAlert onDeleteMutation={() => handleDelete(row.original)} />
         </div>
       ),
     },
