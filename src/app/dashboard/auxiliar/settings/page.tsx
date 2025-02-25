@@ -1,4 +1,3 @@
-import { Suspense } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ChangePasswordForm } from "@/app/dashboard/components/ChangePasswordForm";
 
@@ -11,9 +10,7 @@ export default function ConfiguracionPage() {
           <CardTitle>Cambiar Contraseña</CardTitle>
         </CardHeader>
         <CardContent>
-          <Suspense fallback={<div>Cargando...</div>}>
-            <ChangePasswordForm />
-          </Suspense>
+          <ChangePasswordForm />
         </CardContent>
       </Card>
     </div>

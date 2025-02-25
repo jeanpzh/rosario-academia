@@ -12,13 +12,22 @@ import {
 import PasswordInput from "@/components/password-input";
 import VerifyPassword from "@/app/(auth-pages)/components/VerifyPassword";
 import { toast } from "sonner";
-import Link from "next/link";
+import { sendPasswordResetEmail } from "@/app/(auth-pages)/actions";
+import { useFetchProfileQuery } from "@/hooks/use-fetch-profile";
+import LoadingPage from "@/components/LoadingPage";
 
 export function ChangePasswordForm() {
+  const {
+    data: profile,
+    isLoading: isLoadingProfile,
+    error: profileError,
+  } = useFetchProfileQuery();
+
   const { handleSubmit, reset, control, watch } = useForm<ChangePasswordFormData>({
     resolver: zodResolver(changePasswordFormData),
   });
   const [isLoading, setIsLoading] = useState(false);
+  const [isResetting, setIsResetting] = useState(false);
 
   const onSubmit = async (data: ChangePasswordFormData) => {
     setIsLoading(true);
@@ -47,6 +56,44 @@ export function ChangePasswordForm() {
       setIsLoading(false);
     }
   };
+  const handleForgotPassword = async () => {
+    console.log("Clicking forgot password button");
+    console.log("Profile email:", profile?.email);
+
+    if (!profile?.email) {
+      toast.error("Error", {
+        description: "No se encontró el correo electrónico",
+        duration: 5000,
+      });
+      return;
+    }
+
+    setIsResetting(true);
+    try {
+      const { success, message } = await sendPasswordResetEmail(profile.email);
+      if (success) {
+        toast.success("Éxito", {
+          description: message,
+          duration: 5000,
+        });
+      } else {
+        toast.error("Error", {
+          description: message,
+          duration: 5000,
+        });
+      }
+    } catch (error) {
+      console.error(error);
+      toast.error("Error", {
+        description: "Hubo un problema al enviar el correo. Por favor, intenta de nuevo.",
+        duration: 5000,
+      });
+    } finally {
+      setIsResetting(false);
+    }
+  };
+  if (isLoadingProfile) return <LoadingPage />;
+  if (profileError) return <p>Error al cargar la información</p>;
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-2">
@@ -57,11 +104,14 @@ export function ChangePasswordForm() {
         name="currentPassword"
         htmlFor="currentPassword"
       />
-      <Link href="/forgot-password">
-        <Button variant={"link"} className="text-blue-500">
-          ¿Olvidaste tu contraseña?
-        </Button>
-      </Link>
+      <Button
+        variant={"link"}
+        className="text-blue-500"
+        onClick={handleForgotPassword}
+        disabled={isResetting || !profile?.email}
+      >
+        {isResetting ? "Enviando solicitud..." : "¿Olvidaste tu contraseña?"}
+      </Button>
       <PasswordInput
         label="Nueva Contraseña"
         control={control}

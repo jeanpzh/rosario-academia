@@ -177,6 +177,35 @@ export const forgotPasswordAction = async (formData: FormData) => {
   );
 };
 
+// ...existing code...
+
+/**
+ * Sends a password reset email directly from the change password form.
+ *
+ * @param email - The user's email address
+ * @returns Object with success status and message
+ */
+export const sendPasswordResetEmail = async (email: string) => {
+  const supabase = await createClient();
+  const origin = (await headers()).get("origin");
+
+  const { error: resetError } = await supabase.auth.resetPasswordForEmail(email, {
+    redirectTo: `${origin}/auth/callback?redirect_to=/protected/reset-password`,
+  });
+
+  if (resetError) {
+    return {
+      success: false,
+      message: "No se pudo enviar el correo de restablecimiento",
+    };
+  }
+
+  return {
+    success: true,
+    message: "Se ha enviado un enlace de restablecimiento a tu correo",
+  };
+};
+
 /**
  * Resets the user's password.
  *

@@ -18,7 +18,7 @@ import {
   CheckCircle2,
 } from "lucide-react";
 import Link from "next/link";
-import type React from "react"; // Added import for React
+import type React from "react";
 
 function QuickActionCard({
   icon: Icon,
