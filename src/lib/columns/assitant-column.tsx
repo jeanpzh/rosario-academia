@@ -9,8 +9,6 @@ import { DEFAULT_IMAGE } from "@/utils/utils";
 export const columns = (
   handleEdit: (assistant: Assistant) => void,
   handleDelete: (id: string) => void,
-  isOpen: boolean,
-  onOpenChange: () => void,
 ): ColumnDef<Assistant>[] => {
   return [
     {
@@ -91,11 +89,7 @@ export const columns = (
           <Button variant="ghost" size="icon" onClick={() => handleEdit(row.original)}>
             <Pencil className="size-4" />
           </Button>
-          <DeleteAlert
-            isOpen={isOpen}
-            onOpenChange={() => onOpenChange()}
-            onDeleteMutation={() => handleDelete(row.original.id)}
-          />
+          <DeleteAlert onDeleteMutation={() => handleDelete(row.original.id)} />
         </div>
       ),
     },

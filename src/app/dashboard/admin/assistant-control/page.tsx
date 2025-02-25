@@ -1,5 +1,4 @@
 "use client";
-import React, { useState } from "react";
 import Header from "@/app/dashboard/components/Header";
 import AssistantManage from "@/app/dashboard/admin/assistant-control/components/AssistantManage";
 import CustomTable from "@/app/dashboard/components/CustomTable";
@@ -11,7 +10,6 @@ import { useDeleteAssistant } from "@/hooks/use-delete-assistant-query";
 
 export default function AssistantControlPage() {
   // State for delete Modal
-  const [isOpen, setIsOpen] = useState(false);
 
   // Global State for Edit or Create Modal and current item for Assistant
   const { setModalOpen, setMode, setEntity, setCurrentItem, setId } = useModalStore();
@@ -39,7 +37,7 @@ export default function AssistantControlPage() {
       <Header title="Control de Auxiliares" />
       <AssistantManage modalId="assistant-modal" />
       <CustomTable
-        columns={columns(handleEdit, handleDelete, isOpen, () => setIsOpen(!isOpen))}
+        columns={columns(handleEdit, handleDelete)}
         data={assistants}
         isLoading={isLoading}
       />
