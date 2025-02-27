@@ -24,19 +24,12 @@ export function useAddAssistantQuery({ setModalOpen }: { setModalOpen: any }) {
       );
       return response.unwrap();
     },
-    onSuccess: (newData) => {
-      // Solo se cierra el modal si la operación fue exitosa
-      /* queryClient.setQueryData(["assistants"], (oldData: any[] = []) => {
-        console.log(newData, oldData);
-        return [...oldData, newData];
-      }); */
+    onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["assistants"] });
-
       setModalOpen("assistant-modal", false);
     },
     onError: (error: any) => {
       console.error(error);
-      // En caso de error, el modal permanece abierto para corregir la información
     },
   });
 }

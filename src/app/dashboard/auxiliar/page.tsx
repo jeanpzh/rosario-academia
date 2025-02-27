@@ -1,21 +1,18 @@
 "use client";
 
-import { Suspense } from "react";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { AthleteDistribution } from "@/app/dashboard/components/athletes/AthleteDistribution";
 import Profile from "@/app/dashboard/components/Profile";
-import { Skeleton } from "@/components/ui/skeleton";
 import {
   BookOpen,
   GraduationCap,
-  Calendar,
-  ClipboardList,
   Users,
   Bell,
   FileText,
   HelpCircle,
   Lightbulb,
   CheckCircle2,
+  Settings,
 } from "lucide-react";
 import Link from "next/link";
 import type React from "react";
@@ -90,9 +87,7 @@ export default function AuxiliarDashboardPage() {
             <CardDescription>Información y estado actual</CardDescription>
           </CardHeader>
           <CardContent>
-            <Suspense fallback={<Skeleton className="h-[200px]" />}>
-              <Profile />
-            </Suspense>
+            <Profile />
           </CardContent>
         </Card>
         <Card>
@@ -101,9 +96,7 @@ export default function AuxiliarDashboardPage() {
             <CardDescription>Vista general por niveles</CardDescription>
           </CardHeader>
           <CardContent>
-            <Suspense fallback={<Skeleton className="h-[200px]" />}>
-              <AthleteDistribution />
-            </Suspense>
+            <AthleteDistribution />
           </CardContent>
         </Card>
       </div>
@@ -111,24 +104,18 @@ export default function AuxiliarDashboardPage() {
       {/* Quick Actions Section */}
       <div className="space-y-6">
         <h2 className="text-2xl font-semibold">Acciones Rápidas</h2>
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="grid w-full gap-4 sm:grid-cols-2 lg:grid-cols-2">
           <QuickActionCard
             icon={Users}
             title="Gestionar Deportistas"
             description="Registra, actualiza y gestiona perfiles de deportistas"
-            href="/auxiliar-dashboard/athletes"
+            href="/dashboard/auxiliar/athlete-control"
           />
           <QuickActionCard
-            icon={Calendar}
-            title="Calendario de Eventos"
-            description="Consulta próximos eventos y competencias"
-            href="/auxiliar-dashboard/calendar"
-          />
-          <QuickActionCard
-            icon={ClipboardList}
-            title="Registrar Asistencia"
-            description="Marca la asistencia de los deportistas"
-            href="/auxiliar-dashboard/attendance"
+            icon={Settings}
+            title="Configuración de Cuenta"
+            description="Actualiza tu contraseña"
+            href="/dashboard/auxiliar/settings"
           />
         </div>
       </div>

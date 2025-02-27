@@ -87,7 +87,7 @@ export const athleteColumns = (
         >
           <SelectTrigger className="w-[120px]">
             <SelectValue>
-              <Badge className={`${levelColors[row.original.level]} text-white`}>
+              <Badge className={`${levelColors[row.original.level]} text-black dark:text-white`}>
                 {LevelToSpanish[row.original.level as keyof typeof LevelToSpanish]}
               </Badge>
             </SelectValue>
@@ -112,7 +112,7 @@ export const athleteColumns = (
         >
           <SelectTrigger className="w-[120px]">
             <SelectValue>
-              <Badge className={`${statusColors[row.original.status]} text-white`}>
+              <Badge className={`${statusColors[row.original.status]} text-black dark:text-white`}>
                 {row.original.status}
               </Badge>
             </SelectValue>

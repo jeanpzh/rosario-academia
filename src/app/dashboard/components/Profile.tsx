@@ -8,7 +8,7 @@ import { useFetchProfileQuery } from "@/hooks/use-fetch-profile";
 export default function Profile() {
   const { data: profile, isLoading, error } = useFetchProfileQuery();
 
-  if (isLoading) return <Skeleton className="h-auto w-full" />;
+  if (isLoading) return <Skeleton className="h-96 w-full" />;
   if (error) return <div className="text-center text-red-500">Error al cargar el perfil</div>;
 
   if (!profile) {

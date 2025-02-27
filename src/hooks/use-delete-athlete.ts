@@ -6,17 +6,15 @@ export function useDeleteAthleteQuery() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: deleteAthleteAction,
-    onSuccess: () => {
-      toast.success("Exito", {
-        description: "Deportista eliminado correctamente",
+    mutationFn: async (athleteId: string) => {
+      return toast.promise(deleteAthleteAction(athleteId), {
+        loading: "Eliminando deportista...",
+        success: "Deportista eliminado correctamente",
+        error: "Error al eliminar deportista",
       });
-      queryClient.invalidateQueries({ queryKey: ["athletes"] });
     },
-    onError: (error) => {
-      toast.error("Error", {
-        description: error.message,
-      });
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["athletes"] });
     },
   });
 }
