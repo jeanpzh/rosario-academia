@@ -33,7 +33,6 @@ export async function middleware(request: NextRequest) {
     }
     // Redirect to respective dashboard if the user presses "/dashboard" in the URL
     if (request.nextUrl.pathname === "/dashboard") {
-      console.log("Redirecting to specific dashboard based on user role");
       if (userRole === "admin") {
         return NextResponse.redirect(new URL("/dashboard/admin", request.url));
       } else if (userRole === "deportista") {

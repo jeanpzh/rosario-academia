@@ -3,8 +3,8 @@
 import { createClient, getServiceClient } from "@/utils/supabase/server";
 import { assistantFormSchema } from "@/app/dashboard/admin/schemas/assistant-schema";
 import { encodedRedirect } from "@/utils/utils";
-import { Resend } from "resend";
 import crypto from "crypto";
+import { sendEmail } from "./reutilizableActions";
 
 /**
  * Generate a random password.
@@ -147,40 +147,6 @@ const createEmployeeRecord = async (userId: string) =>
   });
 
 /**
- * Send an email with the assistant's credentials using Resend.
- *
- * @param recipientEmail - The email address to send to.
- * @param firstName - The first name of the assistant.
- * @param defaultPassword - The default password generated.
- * @throws An error if sending the email fails.
- */
-const sendAssistantEmail = async (
-  recipientEmail: string,
-  firstName: string,
-  defaultPassword: string,
-) => {
-  const resend = new Resend(process.env.RESEND_API_KEY as string);
-  try {
-    await resend.emails.send({
-      from: "Tu Servicio <no-reply@fisib22.com>",
-      to: recipientEmail,
-      subject: "Cuenta de Auxiliar Administrativo - Credenciales de Acceso",
-      html: `<p>Hola ${firstName},</p>
-             <p>Se ha creado tu cuenta como auxiliar administrativo.</p>
-             <p>Estas son tus credenciales:</p>
-             <ul>
-               <li><strong>Email:</strong> ${recipientEmail}</li>
-               <li><strong>Contraseña:</strong> ${defaultPassword}</li>
-             </ul>
-             <p>Cambia tu contraseña en el primer inicio de sesión.</p>`,
-    });
-  } catch (sendError) {
-    console.error("Error enviando el email:", sendError);
-    throw new Error("Error enviando email");
-  }
-};
-
-/**
  * Action for assistant sign-up.
  *
  * This function handles the entire sign-up process:
@@ -227,7 +193,7 @@ export const assistantSignUpAction = async (formData: unknown) => {
     ]);
 
     // Send an email with the credentials to the assistant
-    await sendAssistantEmail(validatedData.email, validatedData.first_name, defaultPassword);
+    await sendEmail(validatedData.email, validatedData.first_name, defaultPassword);
 
     return validatedData;
   } catch (error: any) {

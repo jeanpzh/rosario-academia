@@ -40,7 +40,6 @@ export const signUpAction = async (formData: unknown) => {
     };
   }
 
-  // Determine the role: if "level" is provided, the user is a deportista.
   const options = {
     emailRedirectTo: `${origin}/auth/callback`,
     data: {

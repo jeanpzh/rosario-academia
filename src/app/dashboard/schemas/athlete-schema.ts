@@ -8,7 +8,14 @@ export const athleteFormSchema = z.object({
   dni: z.string().min(1, "El DNI es requerido"),
   phone: z.string().min(1, "El teléfono es requerido"),
   email: z.string().email("Correo electrónico inválido").nullable().optional(),
-  avatar_url: z.string().url("URL de avatar inválida").nullable().optional(),
+  avatar_url: z.union([
+    z.string().url("Debe ser una URL válida").optional(),
+    z.string().length(0).optional(),
+    z.instanceof(Blob, { message: "Debe ser un blob válido" }).optional(),
+    z.null(),
+    z.undefined(),
+  ]),
+  level: z.enum(["beginner", "intermediate", "advanced"]),
 });
 
 export type AthleteFormData = z.infer<typeof athleteFormSchema>;

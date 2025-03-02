@@ -1,9 +1,14 @@
 "use server";
 
 import { createClient, getServiceClient } from "@/utils/supabase/server";
-import { athleteFormSchema } from "@/app/dashboard/schemas/athlete-schema";
+import { AthleteFormData, athleteFormSchema } from "@/app/dashboard/schemas/athlete-schema";
 import { v4 as uuidv4 } from "uuid";
 import { getProfile } from "@/app/(auth-pages)/actions";
+import crypto from "crypto";
+import { saveAvatar } from "../athlete/profile/actions";
+import { PaymentMethod } from "@/lib/types/PaymentMethod";
+import { Athlete } from "@/lib/types/AthleteTable";
+import { sendEmail } from "./reutilizableActions";
 
 /**
  * Retrieves the current user from Supabase.
@@ -37,6 +42,15 @@ export async function getEnrollmentAction(userId: string) {
   return data;
 }
 
+export async function getPaymentMethods() {
+  const supabase = await getServiceClient();
+  const { data, error } = await supabase.from("payment_methods").select("*");
+  if (error) {
+    throw new Error("Error al obtener métodos de pago");
+  }
+  return data;
+}
+
 /**
  * Retrieves the payments made by the athlete.
  * @returns Payments data for the athlete.
@@ -51,6 +65,22 @@ export async function getPaymentsAction(userId: string) {
   }
   return data;
 }
+/**
+ * Retrieves the payments made by the athlete with the payment method name.
+ * @returns   Payments data for the athlete with the payment method name.
+ * @throws  Error if the payments cannot be retrieved.
+ */
+
+export async function getPaymentsWithMethods(userId: string): Promise<any[]> {
+  const payments = await getPaymentsAction(userId);
+  const paymentMethods = await getPaymentMethods();
+  return payments.map((payment: Payment) => {
+    const method = paymentMethods.find(
+      (paymentMethod: Payment) => paymentMethod.payment_method_id === payment.payment_method_id,
+    );
+    return { ...payment, payment_method: method?.method_name };
+  });
+}
 
 /**
  * Retrieves the athlete's subscription details.
@@ -63,9 +93,11 @@ export async function getSubscription(userId: string) {
     .from("subscriptions")
     .select("*")
     .eq("athlete_id", userId)
+    .order("created_at", { ascending: false })
+    .limit(1)
     .maybeSingle();
   if (error) {
-    console.error(error);
+    console.log(error);
     throw new Error("Error al obtener suscripción de deportista");
   }
   return data;
@@ -268,7 +300,9 @@ export async function getPaymentDate() {
     .from("subscriptions")
     .select("start_date")
     .eq("athlete_id", athleteId)
-    .single();
+    .order("start_date", { ascending: false })
+    .limit(1)
+    .maybeSingle();
   if (error) {
     return { status: 500, data: null };
   }
@@ -334,4 +368,151 @@ export async function getAllPaymentData() {
   ]);
 
   return { user, payments, profile, enrollment, subscriptionData };
+}
+
+/**
+ *  Creates a new athlete profile with the provided form data.
+ *  @param data - The new data to create the profile.
+ *  @returns The new profile data.
+ * @throws Error if the profile creation fails.
+ */
+
+const generateRandomPassword = (bytes = 16): string => crypto.randomBytes(bytes).toString("hex");
+
+export const addAthlete = async (data: AthleteFormData, file: Blob | null) => {
+  if (!file) {
+    return { error: "No se proporcionó la imagen del avatar" };
+  }
+
+  const validated = athleteFormSchema.safeParse(data);
+  if (!validated.success) return { error: "Datos ingresados incorrectos" };
+
+  const supabase = await getServiceClient();
+  const password = generateRandomPassword();
+
+  const options = {
+    data: {
+      first_name: validated.data.first_name,
+      paternal_last_name: validated.data.paternal_last_name,
+      maternal_last_name: validated.data.maternal_last_name,
+      birth_date: validated.data.birth_date,
+      dni: validated.data.dni,
+      level: validated.data.level,
+      role: "deportista",
+      avatar_url: null,
+      phone: validated.data.phone,
+    },
+  };
+
+  const { data: signupData, error: signupError } = await supabase.auth.signUp({
+    email: validated.data.email as string,
+    password: password,
+  });
+
+  if (signupError || !signupData) {
+    return { error: "Error al registrar deportista" };
+  }
+  await sendEmail(validated.data.email as string, validated.data.first_name, password);
+
+  const { error: rpcError } = await supabase.rpc("process_new_user", {
+    p_id: signupData.user?.id,
+    p_raw_user_meta_data: options.data,
+  });
+  if (rpcError) {
+    return { error: "Error al registrar deportista" };
+  }
+  await saveAvatar(file, signupData.user?.id);
+  return { status: 200, message: "Deportista registrado correctamente", data: signupData.user };
+};
+
+export async function fetchPaymentMethods(): Promise<PaymentMethod[]> {
+  const supabase = await createClient();
+  const { data, error } = await supabase.from("payment_methods").select("*");
+
+  if (error) throw error;
+  return data as PaymentMethod[];
+}
+
+export async function createPaymentRecord(athleteId: string, formData: Payment) {
+  const supabase = await createClient();
+
+  // Crear registro de suscripción
+  const { data: subscription, error: subscriptionError } = await supabase
+    .from("subscriptions")
+    .insert({
+      athlete_id: athleteId,
+      start_date: formData.subscription_start_date,
+      end_date: formData.subscription_end_date,
+      status: "active",
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString(),
+    })
+    .select()
+    .single();
+
+  if (subscriptionError) throw subscriptionError;
+
+  // Crear registro de pago vinculado a la suscripción
+  const { data: payment, error: paymentError } = await supabase
+    .from("payments")
+    .insert({
+      athlete_id: athleteId,
+      amount: formData.amount,
+      payment_date: formData.payment_date,
+      payment_method_id: formData.payment_method_id,
+      transaction_reference: formData.transaction_reference,
+      subscription_id: subscription.id,
+    })
+    .select()
+    .single();
+
+  if (paymentError) throw paymentError;
+
+  // Actualizar el estado de la solicitud de inscripción
+  const { error: updateError } = await supabase
+    .from("enrollment_requests")
+    .update({ status: "approved" })
+    .eq("athlete_id", athleteId);
+
+  if (updateError) throw updateError;
+
+  return { payment, subscription };
+}
+export async function getAthleteById(athleteId: string): Promise<Athlete> {
+  const supabase = await createClient();
+  const { data, error } = await supabase.from("profiles").select("*").eq("id", athleteId).single();
+
+  if (error) throw error;
+  return data;
+}
+/* 
+
+
+*/
+export async function getAthletesWithPayments(): Promise<any[] | null> {
+  const supabase = await createClient();
+
+  const { data: athletes, error } = await supabase.from("athletes").select(
+    `
+      athlete_id,
+      profiles (
+        first_name,
+        paternal_last_name,
+        maternal_last_name,
+        avatar_url
+      ),
+      payments (
+        amount,
+        payment_date,
+        payment_methods (
+          method_name
+        )
+      )
+    `,
+  );
+  if (error || !athletes) {
+    console.error(error);
+    return null;
+  }
+  return athletes;
 }

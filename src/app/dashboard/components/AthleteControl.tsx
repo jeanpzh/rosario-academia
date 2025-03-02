@@ -14,6 +14,7 @@ import { FormProvider, useForm } from "react-hook-form";
 import AthleteForm from "@/app/dashboard/components/athletes/AthleteForm";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { AthleteFormData, athleteFormSchema } from "@/app/dashboard/schemas/athlete-schema";
+import AddAthlete from "../admin/athlete-control/components/add-athlete";
 
 export default function AthleteControl() {
   const { setModalOpen, setMode, setCurrentItem, setEntity, modalOpen } = useModalStore();
@@ -47,6 +48,7 @@ export default function AthleteControl() {
   return (
     <div className="dark:bg-dark-surface flex flex-col gap-4 bg-background p-4">
       <Header title="Control de Deportistas" />
+      <AddAthlete />
       <CustomTable
         columns={athleteColumns(
           handleEdit,
