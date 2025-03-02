@@ -25,8 +25,8 @@ import {
 } from "@/components/ui/form";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Calendar } from "@/components/ui/calendar";
-import type { PaymentFormData, PaymentMethod } from "@/lib/types/h";
 import { toast } from "sonner";
+import { PaymentMethod } from "@/lib/types/PaymentMethod";
 
 const formSchema = z.object({
   amount: z.coerce.number().positive("El monto debe ser mayor a 0"),
@@ -39,12 +39,12 @@ const formSchema = z.object({
 
 interface PaymentFormProps {
   paymentMethods: PaymentMethod[] | undefined;
-  onSubmit: (data: PaymentFormData) => Promise<void>;
+  onSubmit: (data: Payment) => Promise<void>;
   isPending: boolean;
 }
 
 export function PaymentForm({ paymentMethods, onSubmit, isPending }: PaymentFormProps) {
-  const form = useForm<PaymentFormData>({
+  const form = useForm<Payment>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       amount: 0,
@@ -56,7 +56,7 @@ export function PaymentForm({ paymentMethods, onSubmit, isPending }: PaymentForm
     },
   });
 
-  const handleSubmit = async (data: PaymentFormData) => {
+  const handleSubmit = async (data: Payment) => {
     try {
       await onSubmit(data);
     } catch (error) {

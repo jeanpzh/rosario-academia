@@ -2,7 +2,6 @@
 
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
-import type { PaymentFormData } from "@/lib/types/h";
 import {
   createPaymentRecord,
   fetchPaymentMethods,
@@ -30,7 +29,7 @@ export function usePaymentCreation(athleteId: string) {
 
   // Crear el registro de pago y suscripción mediante acción de servidor
   const createPaymentMutation = useMutation({
-    mutationFn: async (formData: PaymentFormData) => {
+    mutationFn: async (formData: Payment) => {
       return createPaymentRecord(athleteId, formData);
     },
     onSuccess: () => {
@@ -40,7 +39,7 @@ export function usePaymentCreation(athleteId: string) {
   });
 
   // Función para crear pago con notificaciones toast
-  const createPayment = async (formData: PaymentFormData) => {
+  const createPayment = async (formData: Payment) => {
     return toast.promise(createPaymentMutation.mutateAsync(formData), {
       loading: "Creando registro de pago...",
       success: "¡Pago registrado exitosamente!",
