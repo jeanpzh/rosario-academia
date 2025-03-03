@@ -1,33 +1,27 @@
 import { create } from "zustand";
 
+export type ModalType =
+  | "CREATE_ATHLETE"
+  | "EDIT_ATHLETE"
+  | "CREATE_ASISTENTE"
+  | "EDIT_ASISTENTE"
+  | "CREATE_PAYMENT"
+  | null;
+
 interface ModalState {
-  modalOpen: boolean;
-  modalId: string | null;
-  entity: "assistant" | "athlete" | null;
-  mode: "create" | "edit";
-  currentItem: any | null;
-  id: string;
-  setModalOpen: (modalId: string, open: boolean) => void;
-  setEntity: (entity: "assistant" | "athlete" | null) => void;
-  setMode: (mode: "create" | "edit") => void;
-  setCurrentItem: (item: any) => void;
-  setId: (id: string) => void;
+  isOpen: boolean;
+  modalType: ModalType;
+  modalProps?: Record<string, any>;
+  openModal: (modalType: ModalType, modalProps?: Record<string, any>) => void;
+  setOpenModal: (modalType: ModalType, modalProps?: Record<string, any>) => void;
+  closeModal: () => void;
 }
 
 export const useModalStore = create<ModalState>((set) => ({
-  modalOpen: false,
-  modalId: null,
-  entity: null,
-  mode: "create",
-  currentItem: null,
-  id: "",
-  setModalOpen: (modalId, open) =>
-    set(() => ({
-      modalOpen: open,
-      modalId: open ? modalId : null,
-    })),
-  setEntity: (entity) => set({ entity }),
-  setMode: (mode) => set({ mode }),
-  setCurrentItem: (item) => set({ currentItem: item }),
-  setId: (id) => set({ id }),
+  isOpen: false,
+  modalType: null,
+  modalProps: {},
+  openModal: (modalType, modalProps = {}) => set({ isOpen: true, modalType, modalProps }),
+  closeModal: () => set({ isOpen: false, modalType: null, modalProps: {} }),
+  setOpenModal: (modalType, modalProps = {}) => set({ isOpen: true, modalType, modalProps }),
 }));

@@ -1,9 +1,9 @@
-import { Suspense, type ReactNode } from "react";
+import { type ReactNode } from "react";
 import { DashboardSidebar } from "@/components/layout/dashboard/dashboard-sidebar";
 import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
 import links from "@/utils/links/auxiliar-links";
-import LoadingPage from "@/components/LoadingPage";
+import ModalRoot from "../components/RootModal";
 
 interface DashboardLayoutProps {
   children: ReactNode;
@@ -26,11 +26,12 @@ export default async function DashboardLayout({ children }: DashboardLayoutProps
   if (profile?.role !== "auxiliar_administrativo") return redirect("/dashboard");
 
   return (
-    <div className="flex min-h-screen w-full bg-background max-md:flex max-md:flex-col">
-      <Suspense fallback={<LoadingPage />}>
-        <DashboardSidebar user={profile} links={links} />
-      </Suspense>
-      <main className="mx-auto max-w-7xl flex-1 overflow-y-auto p-4">{children}</main>
+    <div className="flex min-h-screen w-full bg-background  max-md:flex max-md:flex-col">
+      <DashboardSidebar user={profile} links={links} />
+      <main className="mx-auto max-w-7xl flex-1 overflow-y-auto p-4">
+        {children}
+        <ModalRoot />
+      </main>
     </div>
   );
 }

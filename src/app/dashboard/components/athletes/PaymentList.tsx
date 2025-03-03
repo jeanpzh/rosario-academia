@@ -37,7 +37,13 @@ export function PaymentsList({ athletes }: PaymentsListProps) {
   });
 
   const handleRouteToAthletePayments = (athleteId: string) => {
-    router.push(`/dashboard/auxiliar/athlete-control/payments/${athleteId}`);
+    // Get the current path to determine if we're in admin or auxiliar section
+    const currentPath = window.location.pathname;
+    const isAdmin = currentPath.includes("/admin/");
+
+    // Construct the path based on whether we're in admin or auxiliar section
+    const basePath = isAdmin ? "/dashboard/admin" : "/dashboard/auxiliar";
+    router.push(`${basePath}/athlete-control/payments/${athleteId}`);
   };
 
   return (

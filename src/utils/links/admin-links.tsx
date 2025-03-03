@@ -16,5 +16,15 @@ const links = [
     href: "/dashboard/admin/athlete-control",
     icon: <IconId className="size-5 shrink-0 text-neutral-700 dark:text-neutral-200" />,
   },
+  {
+    label: "Control de Pagos",
+    href: "/dashboard/admin/athlete-control/payments",
+    icon: <IconId className="size-5 shrink-0 text-neutral-700 dark:text-neutral-200" />,
+  },
+  {
+    label: "Configuración",
+    href: "/dashboard/admin/settings",
+    icon: <IconId className="size-5 shrink-0 text-neutral-700 dark:text-neutral-200" />,
+  },
 ];
 export default links;

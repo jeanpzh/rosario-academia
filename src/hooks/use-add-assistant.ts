@@ -1,9 +1,11 @@
 import { assistantSignUpAction } from "@/app/dashboard/actions/assistantActions";
 import { AssistantFormData } from "@/app/dashboard/admin/schemas/assistant-schema";
+import { useModalStore } from "@/lib/stores/useModalStore";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 
-export function useAddAssistantQuery({ setModalOpen }: { setModalOpen: any }) {
+export function useAddAssistantQuery() {
+  const { closeModal } = useModalStore();
   const queryClient = useQueryClient();
 
   return useMutation({
@@ -26,7 +28,7 @@ export function useAddAssistantQuery({ setModalOpen }: { setModalOpen: any }) {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["assistants"] });
-      setModalOpen("assistant-modal", false);
+      closeModal();
     },
     onError: (error: any) => {
       console.error(error);

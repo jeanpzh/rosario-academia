@@ -6,7 +6,6 @@ import { Athlete } from "@/lib/types/AthleteTable";
 import { DEFAULT_IMAGE } from "@/utils/utils";
 import { Button } from "@/components/ui/button";
 import { ArrowLeftIcon } from "lucide-react";
-import Link from "next/link";
 import { HoverPaymentModal } from "./PaymentButton";
 
 interface AthleteHeaderProps {
@@ -20,16 +19,14 @@ export function AthleteHeader({ athlete }: AthleteHeaderProps) {
   const handlePaymentSuccess = () => {
     router.refresh();
   };
+  const handleGoBack = () => {
+    router.back();
+  };
   return (
     <Card className="flex max-h-56 min-w-full flex-col p-2 ">
-      <Link
-        href="/dashboard/auxiliar/athlete-control/payments"
-        className="flex w-full items-center"
-      >
-        <Button size={"icon"} variant={"ghost"}>
-          <ArrowLeftIcon />
-        </Button>
-      </Link>
+      <Button size={"icon"} variant={"ghost"} onClick={handleGoBack}>
+        <ArrowLeftIcon />
+      </Button>
       <CardContent className="flex w-full items-center justify-between space-x-4 p-6">
         <div className="flex items-center space-x-4">
           <Avatar className="size-16">

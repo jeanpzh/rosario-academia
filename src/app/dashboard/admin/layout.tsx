@@ -3,6 +3,7 @@ import { DashboardSidebar } from "@/components/layout/dashboard/dashboard-sideba
 import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
 import links from "@/utils/links/admin-links";
+import ModalRoot from "../components/RootModal";
 
 interface DashboardLayoutProps {
   children: ReactNode;
@@ -28,7 +29,10 @@ export default async function DashboardLayout({ children }: DashboardLayoutProps
   return (
     <div className="flex min-h-screen w-full max-md:flex max-md:flex-col">
       <DashboardSidebar user={user.user_metadata} links={links} />
-      <main className="mx-auto max-w-7xl flex-1 overflow-y-auto p-6">{children}</main>
+      <main className="mx-auto max-w-7xl flex-1 overflow-y-auto p-6">
+        {children}
+        <ModalRoot />
+      </main>
     </div>
   );
 }

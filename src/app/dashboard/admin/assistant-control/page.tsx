@@ -4,28 +4,24 @@ import AssistantManage from "@/app/dashboard/admin/assistant-control/components/
 import CustomTable from "@/app/dashboard/components/CustomTable";
 import { columns } from "@/lib/columns/assitant-column";
 import { Assistant } from "@/lib/types/AssistantTable";
-import { useModalStore } from "@/lib/stores/useModalStore";
 import { useAssistantQuery } from "@/hooks/use-fetch-assistant-query";
 import { useDeleteAssistant } from "@/hooks/use-delete-assistant-query";
+import { useModalStore } from "@/lib/stores/useModalStore";
+import { useAssistantStore } from "@/lib/stores/useAssistantStore";
 
 export default function AssistantControlPage() {
-  // State for delete Modal
-
   // Global State for Edit or Create Modal and current item for Assistant
-  const { setModalOpen, setMode, setEntity, setCurrentItem, setId } = useModalStore();
-
+  const { setOpenModal } = useModalStore();
+  const { setCurrentItem: setAssistant } = useAssistantStore();
   // Fetch Assistants
   const { data: assistants = [], isLoading } = useAssistantQuery();
   // Delete assistant mutation
   const deleteMutation = useDeleteAssistant();
   // Handle Assistant Edit
   const handleEdit = (item: Assistant) => {
-    setEntity("assistant");
-    setModalOpen("assistant-modal", true);
-    setMode("edit");
     item.birth_date = new Date(item.birth_date).toISOString().split("T")[0];
-    setCurrentItem(item);
-    setId(item.id);
+    setAssistant(item);
+    setOpenModal("EDIT_ASISTENTE");
   };
   // Handle Assistant Delete
   const handleDelete = (id: string) => {

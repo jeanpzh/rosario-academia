@@ -1,16 +1,20 @@
 import { updateAssistantAction } from "@/app/dashboard/actions/assistantActions";
 import { AssistantFormData } from "@/app/dashboard/admin/schemas/assistant-schema";
+import { useAssistantStore } from "@/lib/stores/useAssistantStore";
+import { useModalStore } from "@/lib/stores/useModalStore";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 
-export function useUpdateAssistant({ setModalOpen, id }: { setModalOpen: any; id: string }) {
+export function useUpdateAssistant() {
+  const { closeModal } = useModalStore();
+  const { currentItem } = useAssistantStore();
   const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: async (data: AssistantFormData) => {
       const res = toast.promise(
         (async () => {
-          const response = await updateAssistantAction(data, id);
+          const response = await updateAssistantAction(data, currentItem.id);
           if ("status" in response && response.status !== 200) {
             throw new Error(response?.message || "Error al actualizar el auxiliar");
           }
@@ -27,10 +31,10 @@ export function useUpdateAssistant({ setModalOpen, id }: { setModalOpen: any; id
     onSuccess: (updatedAssistant) => {
       queryClient.setQueryData(["assistants"], (oldData: any[] = []) => {
         return oldData.map((assistant) =>
-          assistant.id === id ? { ...assistant, ...updatedAssistant } : assistant,
+          assistant.id === currentItem.id ? { ...assistant, ...updatedAssistant } : assistant,
         );
       });
-      setModalOpen("assistant-modal", false);
+      closeModal();
     },
     onError: (error: any) => {
       console.error(error);

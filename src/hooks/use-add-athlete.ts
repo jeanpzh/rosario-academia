@@ -1,10 +1,15 @@
 import { addAthlete } from "@/app/dashboard/actions/athleteActions";
 import { AthleteFormData } from "@/app/dashboard/schemas/athlete-schema";
+import { useAthleteModalStore } from "@/lib/stores/useAthleteStore";
+import { useModalStore } from "@/lib/stores/useModalStore";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 
-export const useAddAthleteMutation = ({ setModalOpen }: { setModalOpen: any }) => {
+export const useAddAthleteMutation = () => {
+  const { closeModal, setOpenModal } = useModalStore();
+  const { setCurrentItem } = useAthleteModalStore();
+
   const { push } = useRouter();
   const queryClient = useQueryClient();
   return useMutation({
@@ -14,24 +19,30 @@ export const useAddAthleteMutation = ({ setModalOpen }: { setModalOpen: any }) =
     },
     onSuccess: (user) => {
       queryClient.invalidateQueries({ queryKey: ["athletes"] });
-      setModalOpen("athlete-modal", false);
-      // title -> Deportista registrado con exito
-      // description -> ¿El deportista hizo algun pago?
-      // action -> Si, No
-      // action -> Si -> redirigir a la pagina de pagos
-      // action -> No ->cerrar
+      closeModal();
+      setCurrentItem(user.data);
+      setOpenModal("CREATE_PAYMENT");
       toast.success("Deportista registrado con éxito", {
         description: "¿El deportista hizo algún pago?",
         action: {
           label: "Si",
           onClick: () => {
-            push(`/dashboard/auxiliar/athlete-control/payments/${user.data?.id}`);
+            // Get the current path to determine if we're in admin or auxiliar section
+            const currentPath = window.location.pathname;
+            const isAdmin = currentPath.includes("/admin/");
+
+            // Construct the path based on whether we're in admin or auxiliar section
+            const basePath = isAdmin ? "/dashboard/admin" : "/dashboard/auxiliar";
+            push(`${basePath}/athlete-control/payments/${user.data?.id}`);
           },
         },
       });
     },
+
     onError: (error) => {
-      console.error(error);
+      if (error instanceof Error) {
+        toast.error(error.message);
+      }
     },
   });
 };
