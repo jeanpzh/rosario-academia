@@ -19,10 +19,11 @@ export default function AthleteForm({ mode }: { mode: "create" | "edit" | undefi
     resolver: zodResolver(athleteFormSchema),
   });
   const avatarUrl = watch("avatar_url");
+
   const updateMutation = useUpdateAthleteMutation();
 
   const addMutation = useAddAthleteMutation();
-
+  let isLoading = updateMutation.isPending || addMutation.isPending;
   const [avatarPreview, setAvatarPreview] = useState<string | null>(null);
   const [avatarFile, setAvatarFile] = useState<Blob | null>(null);
 
@@ -189,7 +190,10 @@ export default function AthleteForm({ mode }: { mode: "create" | "edit" | undefi
             disabled={mode === "edit"}
           />
           <div className="flex justify-end md:col-span-2">
-            <Button type="submit">{mode === "create" ? "Guardar" : "Actualizar"}</Button>
+            <Button type="submit">
+              {/* MODE AND LOADING */}
+              {isLoading ? "Guardando..." : mode === "create" ? "Guardar" : "Actualizar"}
+            </Button>
           </div>
         </form>
       </div>
