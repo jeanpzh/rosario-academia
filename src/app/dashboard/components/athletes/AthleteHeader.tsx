@@ -2,12 +2,12 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Card, CardContent } from "@/components/ui/card";
 import { useRouter } from "next/navigation";
-import { HoverPaymentModal } from "./PaymentButton";
 import { Athlete } from "@/lib/types/AthleteTable";
 import { DEFAULT_IMAGE } from "@/utils/utils";
 import { Button } from "@/components/ui/button";
 import { ArrowLeftIcon } from "lucide-react";
 import Link from "next/link";
+import { HoverPaymentModal } from "./PaymentButton";
 
 interface AthleteHeaderProps {
   athlete: Athlete;
