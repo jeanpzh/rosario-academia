@@ -38,7 +38,12 @@ export function PaymentModal() {
 
   const handleNavigateToPayments = () => {
     if (currentItem) {
-      router.push(`/dashboard/auxiliar/athlete-control/payments/${currentItem.id}`);
+      const currentPath = window.location.pathname;
+      const isAdmin = currentPath.includes("/admin/");
+
+      // Construct the path based on whether we're in admin or auxiliar section
+      const basePath = isAdmin ? "/dashboard/admin" : "/dashboard/auxiliar";
+      router.push(`${basePath}/athlete-control/payments/${currentItem.id}`);
     }
     closeModal();
   };
