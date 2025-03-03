@@ -20,14 +20,14 @@ export const getNextFormattedDate = (dateString: string): string => {
   });
 };
 
-export function getDaysRemaining(lastChange: string | null) {
+export function getDaysRemaining(lastChange: string | null, period = 30) {
   if (!lastChange) return 0;
   const lastChangeDate = new Date(lastChange as string);
   const today = new Date();
   const daysSince = Math.floor(
     (today.getTime() - lastChangeDate.getTime()) / (1000 * 60 * 60 * 24),
   );
-  const daysRemaining = 30 - daysSince;
+  const daysRemaining = period - daysSince;
   return daysRemaining > 0 ? daysRemaining : 0;
 }
 

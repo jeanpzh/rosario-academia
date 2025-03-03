@@ -1,5 +1,5 @@
 import { IconBrandTabler, IconId } from "@tabler/icons-react";
-import { Settings } from "lucide-react";
+import { CreditCard, Settings } from "lucide-react";
 import React from "react";
 const links = [
   {
@@ -12,6 +12,11 @@ const links = [
     label: "Control Deportistas",
     href: "/dashboard/auxiliar/athlete-control",
     icon: <IconId className="size-5 shrink-0 text-neutral-700 dark:text-neutral-200" />,
+  },
+  {
+    label: "Control de Pagos",
+    href: "/dashboard/auxiliar/athlete-control/payments",
+    icon: <CreditCard className="size-5 shrink-0 text-neutral-700 dark:text-neutral-200" />,
   },
   {
     label: "Configuración",

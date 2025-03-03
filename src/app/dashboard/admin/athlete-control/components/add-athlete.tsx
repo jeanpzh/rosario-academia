@@ -40,8 +40,8 @@ export default function AddAthlete() {
             Nuevo Deportista
           </HoverBorderGradient>
         </DialogTrigger>
-        <DialogContent className="max-h-[80vh] overflow-y-auto sm:max-w-[700px]">
-          <DialogHeader className="sticky top-0 z-10 bg-background">
+        <DialogContent className="max-h-screen overflow-y-auto sm:max-w-[700px]">
+          <DialogHeader className="z-100 sticky top-0 bg-background">
             <DialogTitle>Nuevo Deportista</DialogTitle>
           </DialogHeader>
           <div className="overflow-y-auto pb-4">

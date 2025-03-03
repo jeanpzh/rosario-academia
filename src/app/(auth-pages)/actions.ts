@@ -176,8 +176,6 @@ export const forgotPasswordAction = async (formData: FormData) => {
   );
 };
 
-// ...existing code...
-
 /**
  * Sends a password reset email directly from the change password form.
  *

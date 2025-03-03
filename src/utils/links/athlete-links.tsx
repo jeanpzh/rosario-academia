@@ -1,5 +1,5 @@
 import { IconBrandTabler, IconId, IconUserBolt } from "@tabler/icons-react";
-import { Calendar, DollarSignIcon } from "lucide-react";
+import { Calendar, DollarSignIcon, Settings } from "lucide-react";
 import React from "react";
 
 export const linksApproved = [
@@ -27,6 +27,11 @@ export const linksApproved = [
     label: "Carnet",
     href: "/dashboard/athlete/carnet",
     icon: <IconId className="size-5 shrink-0 text-neutral-700 dark:text-neutral-200" />,
+  },
+  {
+    label: "Configuración",
+    href: "/dashboard/athlete/settings",
+    icon: <Settings className="size-5 shrink-0 text-neutral-700 dark:text-neutral-200" />,
   },
 ];
 

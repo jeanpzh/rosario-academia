@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
-import { changePassword } from "@/app/dashboard/actions/assistantActions";
+import { changePassword } from "@/app/dashboard/actions/reutilizableActions";
 import {
   changePasswordFormData,
   ChangePasswordFormData,
@@ -96,41 +96,48 @@ export function ChangePasswordForm() {
   if (profileError) return <p>Error al cargar la información</p>;
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-2">
-      <PasswordInput
-        label="Contraseña Actual"
-        control={control}
-        id="currentPassword"
-        name="currentPassword"
-        htmlFor="currentPassword"
-      />
-      <Button
-        variant={"link"}
-        className="text-blue-500"
-        onClick={handleForgotPassword}
-        disabled={isResetting || !profile?.email}
-      >
-        {isResetting ? "Enviando solicitud..." : "¿Olvidaste tu contraseña?"}
-      </Button>
-      <PasswordInput
-        label="Nueva Contraseña"
-        control={control}
-        id="newPassword"
-        name="newPassword"
-        htmlFor="newPassword"
-      />
-      <VerifyPassword password={watch("newPassword", "")} />
-      <PasswordInput
-        label="Confirmar Contraseña"
-        control={control}
-        id="confirmPassword"
-        name="confirmPassword"
-        htmlFor="confirmPassword"
-      />
+    <div className="space-y-6">
+      <h1 className="text-2xl font-semibold">Cambiar Contraseña</h1>
+      <p className="text-muted-foreground">
+        Asegúrate de que tu nueva contraseña sea segura y única.
+      </p>
+      <hr />
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-2">
+        <PasswordInput
+          label="Contraseña Actual"
+          control={control}
+          id="currentPassword"
+          name="currentPassword"
+          htmlFor="currentPassword"
+        />
+        <Button
+          variant={"link"}
+          className="text-blue-500"
+          onClick={handleForgotPassword}
+          disabled={isResetting || !profile?.email}
+        >
+          {isResetting ? "Enviando solicitud..." : "¿Olvidaste tu contraseña?"}
+        </Button>
+        <PasswordInput
+          label="Nueva Contraseña"
+          control={control}
+          id="newPassword"
+          name="newPassword"
+          htmlFor="newPassword"
+        />
+        <VerifyPassword password={watch("newPassword", "")} />
+        <PasswordInput
+          label="Confirmar Contraseña"
+          control={control}
+          id="confirmPassword"
+          name="confirmPassword"
+          htmlFor="confirmPassword"
+        />
 
-      <Button type="submit" disabled={isLoading}>
-        {isLoading ? "Actualizando..." : "Actualizar Contraseña"}
-      </Button>
-    </form>
+        <Button type="submit" disabled={isLoading}>
+          {isLoading ? "Actualizando..." : "Actualizar Contraseña"}
+        </Button>
+      </form>
+    </div>
   );
 }

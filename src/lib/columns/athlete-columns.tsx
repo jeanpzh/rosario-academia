@@ -1,7 +1,7 @@
 import { ColumnDef } from "@tanstack/react-table";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
-import { ArrowUpDown } from "lucide-react";
+import { ArrowUpDown, Pencil } from "lucide-react";
 import {
   Select,
   SelectTrigger,
@@ -11,7 +11,6 @@ import {
 } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
 import { Athlete } from "@/lib/types/AthleteTable";
-import AthleteManage from "@/app/dashboard/components/athletes/AthleteManage";
 import { DeleteAlert } from "@/app/dashboard/components/DeleteAlert";
 import { LevelToSpanish } from "@/app/dashboard/athlete/profile/types";
 
@@ -129,11 +128,13 @@ export const athleteColumns = (
       id: "actions",
       cell: ({ row }) => (
         <div className="flex justify-end gap-2">
-          <AthleteManage
-            onClick={() => {
-              handleEdit(row.original);
-            }}
-          />
+          <Button
+            onClick={() => handleEdit(row.original)}
+            className="flex items-center"
+            variant="ghost"
+          >
+            <Pencil className="size-4" />
+          </Button>
           <DeleteAlert onDeleteMutation={() => handleDelete(row.original)} />
         </div>
       ),

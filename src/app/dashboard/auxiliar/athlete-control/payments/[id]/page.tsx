@@ -1,8 +1,8 @@
-import { AthleteHeader } from "../components/AthleteHeader";
-import { PaymentHistory } from "../components/PaymentHistory";
+import { AthleteHeader } from "../../../../components/AthleteHeader";
+import { PaymentHistory } from "../../../../components/PaymentHistory";
 import { getAthleteById, getPaymentsWithMethods } from "@/app/dashboard/actions/athleteActions";
 
-export default async function PaymentsPage({ params }: { params: Promise<{ id: string }> }) {
+export default async function PaymentsByIdPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
   const athlete = await getAthleteById(id);
   const payments = await getPaymentsWithMethods(id);

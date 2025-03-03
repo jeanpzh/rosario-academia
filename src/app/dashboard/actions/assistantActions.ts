@@ -1,6 +1,6 @@
 "use server";
 
-import { createClient, getServiceClient } from "@/utils/supabase/server";
+import { getServiceClient } from "@/utils/supabase/server";
 import { assistantFormSchema } from "@/app/dashboard/admin/schemas/assistant-schema";
 import { encodedRedirect } from "@/utils/utils";
 import crypto from "crypto";
@@ -193,7 +193,12 @@ export const assistantSignUpAction = async (formData: unknown) => {
     ]);
 
     // Send an email with the credentials to the assistant
-    await sendEmail(validatedData.email, validatedData.first_name, defaultPassword);
+    await sendEmail(
+      validatedData.email,
+      validatedData.first_name,
+      defaultPassword,
+      "auxiliar administrativo",
+    );
 
     return validatedData;
   } catch (error: any) {
@@ -294,56 +299,5 @@ export const getAssistantCount = async () => {
   } catch (error) {
     console.error("Error in getAssistantCount", error);
     return 0;
-  }
-};
-
-/**
- * Action for changing an assistant's password.
- *
- * This function verifies the current password, updates to the new password,
- * and then reauthenticates the user with the new password.
- *
- * @param currentPassword - The current password.
- * @param newPassword - The new password to set.
- * @returns An object indicating whether the password change was successful.
- */
-export const changePassword = async (currentPassword: string, newPassword: string) => {
-  try {
-    const client = await getServiceClient();
-    const supaAdmin = await createClient();
-    const { data: session, error: sessionError } = await supaAdmin.auth.getUser();
-
-    if (sessionError || !session?.user?.email) {
-      return { success: false, message: "No se encontró una sesión activa" };
-    }
-
-    const { error: signInError } = await supaAdmin.auth.signInWithPassword({
-      email: session.user.email,
-      password: currentPassword,
-    });
-
-    if (signInError) {
-      return { success: false, message: "Contraseña actual incorrecta" };
-    }
-
-    const { error: updateError } = await client.auth.admin.updateUserById(session.user.id, {
-      password: newPassword,
-    });
-    if (updateError) {
-      return { success: false, message: "Error actualizando la contraseña" };
-    }
-
-    const { error: reauthError } = await supaAdmin.auth.signInWithPassword({
-      email: session.user.email,
-      password: newPassword,
-    });
-    if (reauthError) {
-      return { success: false, message: "Error reautenticando" };
-    }
-
-    return { success: true, message: "Contraseña actualizada correctamente" };
-  } catch (error) {
-    console.error(error);
-    return { success: false, message: "Error interno del servidor" };
   }
 };

@@ -1,14 +1,9 @@
 import React from "react";
-import { cn } from "@/lib/utils";
-
-interface LoadingPageProps {
-  className?: string;
-}
-
-export default function LoadingPage({ className = "dark:bg-[#181818]" }: LoadingPageProps) {
+import VolleyballLoader from "./loader";
+export default function LoadingPage() {
   return (
-    <div className={cn("flex h-screen items-center justify-center", className)}>
-      <div className="size-16 animate-spin rounded-full border-y-2 border-primary"></div>
+    <div className={"flex h-screen items-center justify-center"}>
+      <VolleyballLoader size="medium" />
     </div>
   );
 }

@@ -35,7 +35,7 @@ export default function AssistantControlPage() {
   return (
     <div className="dark:bg-dark-surface flex flex-col gap-4 bg-background p-4">
       <Header title="Control de Auxiliares" />
-      <AssistantManage modalId="assistant-modal" />
+      <AssistantManage />
       <CustomTable
         columns={columns(handleEdit, handleDelete)}
         data={assistants}

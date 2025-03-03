@@ -158,7 +158,6 @@ export function PaymentForm({ paymentMethods, onSubmit, isPending }: PaymentForm
                     mode="single"
                     selected={field.value ? new Date(field.value) : undefined}
                     onSelect={(date) => field.onChange(date?.toISOString() ?? "")}
-                    initialFocus
                   />
                 </PopoverContent>
               </Popover>

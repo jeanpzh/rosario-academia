@@ -1,5 +1,5 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { ChangePasswordForm } from "@/app/dashboard/components/ChangePasswordForm";
+import { ChangePasswordForm } from "@/components/ChangePasswordForm";
 
 export default function ConfiguracionPage() {
   return (

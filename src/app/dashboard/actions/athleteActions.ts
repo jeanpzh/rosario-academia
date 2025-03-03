@@ -412,7 +412,12 @@ export const addAthlete = async (data: AthleteFormData, file: Blob | null) => {
   if (signupError || !signupData) {
     return { error: "Error al registrar deportista" };
   }
-  await sendEmail(validated.data.email as string, validated.data.first_name, password);
+  await sendEmail(
+    validated.data.email as string,
+    validated.data.first_name,
+    password,
+    "deportista",
+  );
 
   const { error: rpcError } = await supabase.rpc("process_new_user", {
     p_id: signupData.user?.id,

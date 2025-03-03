@@ -28,7 +28,7 @@ export default async function DashboardLayout({ children }: DashboardLayoutProps
   return (
     <div className="flex min-h-screen w-full max-md:flex max-md:flex-col">
       <DashboardSidebar user={user.user_metadata} links={links} />
-      <main className="h-full flex-1 overflow-y-auto">{children}</main>
+      <main className="mx-auto max-w-7xl flex-1 overflow-y-auto p-6">{children}</main>
     </div>
   );
 }

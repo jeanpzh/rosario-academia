@@ -18,12 +18,8 @@ import { useModalStore } from "@/lib/stores/useModalStore";
 import AssistantForm from "@/app/dashboard/admin/assistant-control/components/AssistantForm";
 import { HoverBorderGradient } from "@/components/hover-border-gradient";
 
-interface AssistantManageProps {
-  modalId: string;
-}
-
-export default function AssistantManage({ modalId }: AssistantManageProps) {
-  const { modalOpen, setModalOpen, setMode } = useModalStore();
+export default function AssistantManage() {
+  const { modalOpen, setModalOpen, setMode, mode, modalId } = useModalStore();
   // For form provider and resolver
   const methods = useForm<AssistantFormData>({
     resolver: zodResolver(assistantFormSchema),
@@ -32,7 +28,10 @@ export default function AssistantManage({ modalId }: AssistantManageProps) {
 
   return (
     <div className="mb-4 flex items-center justify-between bg-background p-4 shadow-sm">
-      <Dialog open={modalOpen} onOpenChange={(open) => setModalOpen(modalId, open)}>
+      <Dialog
+        open={mode === "create" && modalId === "assistant-modal" && modalOpen}
+        onOpenChange={(open) => setModalOpen("assistant-modal", open)}
+      >
         <DialogTrigger asChild>
           <HoverBorderGradient onClick={handleAddAssistant} className="flex items-center">
             <Plus className="mr-2 size-4" />

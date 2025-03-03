@@ -5,6 +5,9 @@ import { useRouter } from "next/navigation";
 import { HoverPaymentModal } from "./PaymentButton";
 import { Athlete } from "@/lib/types/AthleteTable";
 import { DEFAULT_IMAGE } from "@/utils/utils";
+import { Button } from "@/components/ui/button";
+import { ArrowLeftIcon } from "lucide-react";
+import Link from "next/link";
 
 interface AthleteHeaderProps {
   athlete: Athlete;
@@ -17,25 +20,32 @@ export function AthleteHeader({ athlete }: AthleteHeaderProps) {
   const handlePaymentSuccess = () => {
     router.refresh();
   };
-
   return (
-    <Card className="flex items-center justify-between">
-      <CardContent className="flex items-center space-x-4 p-6">
-        <Avatar className="size-16">
-          <AvatarImage src={athlete.avatar_url || DEFAULT_IMAGE} />
-          <AvatarFallback className="bg-primary text-primary-foreground">
-            {athlete.first_name[0]}
-            {athlete.paternal_last_name[0]}
-          </AvatarFallback>
-        </Avatar>
-        <div>
-          <h2 className="text-2xl font-bold">{fullName}</h2>
-          <p className="text-muted-foreground">Historial de Pagos</p>
+    <Card className="flex max-h-56 min-w-full flex-col p-2 ">
+      <Link
+        href="/dashboard/auxiliar/athlete-control/payments"
+        className="flex w-full items-center"
+      >
+        <Button size={"icon"} variant={"ghost"}>
+          <ArrowLeftIcon />
+        </Button>
+      </Link>
+      <CardContent className="flex w-full items-center justify-between space-x-4 p-6">
+        <div className="flex items-center space-x-4">
+          <Avatar className="size-16">
+            <AvatarImage src={athlete.avatar_url || DEFAULT_IMAGE} />
+            <AvatarFallback className="bg-primary text-primary-foreground">
+              {athlete.first_name[0]}
+              {athlete.paternal_last_name[0]}
+            </AvatarFallback>
+          </Avatar>
+          <div>
+            <h2 className="text-2xl font-bold">{fullName}</h2>
+            <p className="text-muted-foreground">Historial de Pagos</p>
+          </div>
         </div>
-      </CardContent>
-      <div className="p-4">
         <HoverPaymentModal athleteId={athlete.id} onSuccess={handlePaymentSuccess} />
-      </div>
+      </CardContent>
     </Card>
   );
 }
