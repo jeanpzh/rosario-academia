@@ -1,5 +1,5 @@
 import { getAthletesWithPayments } from "@/app/dashboard/actions/athleteActions";
-import { PaymentsList } from "./components/PaymentList";
+import { PaymentsList } from "@/app/dashboard/components/athletes/PaymentList";
 
 export default async function PaymentsPage() {
   const athletes = await getAthletesWithPayments();
