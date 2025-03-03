@@ -15,6 +15,7 @@ import { toast } from "sonner";
 import { sendPasswordResetEmail } from "@/app/(auth-pages)/actions";
 import { useFetchProfileQuery } from "@/hooks/use-fetch-profile";
 import LoadingPage from "@/components/LoadingPage";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "./ui/card";
 
 export function ChangePasswordForm() {
   const {
@@ -96,48 +97,51 @@ export function ChangePasswordForm() {
   if (profileError) return <p>Error al cargar la información</p>;
 
   return (
-    <div className="space-y-6">
-      <h1 className="text-2xl font-semibold">Cambiar Contraseña</h1>
-      <p className="text-muted-foreground">
-        Asegúrate de que tu nueva contraseña sea segura y única.
-      </p>
-      <hr />
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-2">
-        <PasswordInput
-          label="Contraseña Actual"
-          control={control}
-          id="currentPassword"
-          name="currentPassword"
-          htmlFor="currentPassword"
-        />
-        <Button
-          variant={"link"}
-          className="text-blue-500"
-          onClick={handleForgotPassword}
-          disabled={isResetting || !profile?.email}
-        >
-          {isResetting ? "Enviando solicitud..." : "¿Olvidaste tu contraseña?"}
-        </Button>
-        <PasswordInput
-          label="Nueva Contraseña"
-          control={control}
-          id="newPassword"
-          name="newPassword"
-          htmlFor="newPassword"
-        />
-        <VerifyPassword password={watch("newPassword", "")} />
-        <PasswordInput
-          label="Confirmar Contraseña"
-          control={control}
-          id="confirmPassword"
-          name="confirmPassword"
-          htmlFor="confirmPassword"
-        />
+    <Card className="space-y-2 p-6">
+      <CardHeader>
+        <CardTitle className="text-2xl font-semibold">Cambiar Contraseña</CardTitle>
+        <CardDescription className="text-muted-foreground">
+          Asegúrate de que tu nueva contraseña sea segura y única.
+        </CardDescription>
+      </CardHeader>
+      <CardContent>
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-2">
+          <PasswordInput
+            label="Contraseña Actual"
+            control={control}
+            id="currentPassword"
+            name="currentPassword"
+            htmlFor="currentPassword"
+          />
+          <Button
+            variant={"link"}
+            className="text-blue-500"
+            onClick={handleForgotPassword}
+            disabled={isResetting || !profile?.email}
+          >
+            {isResetting ? "Enviando solicitud..." : "¿Olvidaste tu contraseña?"}
+          </Button>
+          <PasswordInput
+            label="Nueva Contraseña"
+            control={control}
+            id="newPassword"
+            name="newPassword"
+            htmlFor="newPassword"
+          />
+          <VerifyPassword password={watch("newPassword", "")} />
+          <PasswordInput
+            label="Confirmar Contraseña"
+            control={control}
+            id="confirmPassword"
+            name="confirmPassword"
+            htmlFor="confirmPassword"
+          />
 
-        <Button type="submit" disabled={isLoading}>
-          {isLoading ? "Actualizando..." : "Actualizar Contraseña"}
-        </Button>
-      </form>
-    </div>
+          <Button type="submit" disabled={isLoading}>
+            {isLoading ? "Actualizando..." : "Actualizar Contraseña"}
+          </Button>
+        </form>
+      </CardContent>
+    </Card>
   );
 }

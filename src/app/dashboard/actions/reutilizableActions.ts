@@ -1,3 +1,4 @@
+"use server";
 import { getDaysRemaining } from "@/utils/formats";
 import { createClient, getServiceClient } from "@/utils/supabase/server";
 import { Resend } from "resend";
@@ -47,7 +48,7 @@ export const sendEmail = async (
  * @param newPassword - The new password to set.
  * @returns An object indicating whether the password change was successful.
  */
-export const changePassword = async (currentPassword: string, newPassword: string) => {
+export async function changePassword(currentPassword: string, newPassword: string) {
   try {
     const client = await getServiceClient();
     const supaAdmin = await createClient();
@@ -99,10 +100,22 @@ export const changePassword = async (currentPassword: string, newPassword: strin
     if (reauthError) {
       return { success: false, message: "Error reautenticando" };
     }
+    // Update the last password change date
+    const { error: updateProfileError } = await client
+      .from("profiles")
+      .update({ last_password_change: new Date().toISOString() })
+      .eq("id", session.user.id);
+    if (updateProfileError) {
+      console.log({ updateProfileError });
+      return { success: false, message: "Error actualizando el perfil" };
+    }
 
     return { success: true, message: "Contraseña actualizada correctamente" };
   } catch (error) {
+    if (error instanceof Error) {
+      console.error(error.message);
+    }
     console.error(error);
     return { success: false, message: "Error interno del servidor" };
   }
-};
+}
