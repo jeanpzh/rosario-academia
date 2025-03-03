@@ -54,7 +54,7 @@ export function DashboardSidebar({ links, user }: { links: Links[]; user: any })
           <div>
             <SidebarLink
               link={{
-                label: `${user.first_name}  `,
+                label: `${user.first_name} ${user.paternal_last_name}  `,
                 href: "#",
                 icon: (
                   <Image

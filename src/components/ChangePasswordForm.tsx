@@ -58,9 +58,6 @@ export function ChangePasswordForm() {
     }
   };
   const handleForgotPassword = async () => {
-    console.log("Clicking forgot password button");
-    console.log("Profile email:", profile?.email);
-
     if (!profile?.email) {
       toast.error("Error", {
         description: "No se encontró el correo electrónico",

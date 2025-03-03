@@ -106,7 +106,6 @@ export async function changePassword(currentPassword: string, newPassword: strin
       .update({ last_password_change: new Date().toISOString() })
       .eq("id", session.user.id);
     if (updateProfileError) {
-      console.log({ updateProfileError });
       return { success: false, message: "Error actualizando el perfil" };
     }
 

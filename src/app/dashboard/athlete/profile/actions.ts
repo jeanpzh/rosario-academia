@@ -18,9 +18,8 @@ export const saveAvatar = async (
       if (sessionError) return { status: 500, message: "Error al obtener la sesión" };
       userId = session?.user.id;
     }
-    console.log({ userId });
 
-    const { data, error } = await supabase
+    const { error } = await supabase
       .from("profiles")
       .update({
         avatar_url: res.secure_url,
@@ -32,7 +31,7 @@ export const saveAvatar = async (
       console.log(error);
       return { status: 500, message: "Error al guardar la imagen" };
     }
-    console.log({ data });
+
     return { status: 200, message: "Imagen guardada correctamente", data: res.secure_url };
   } catch (error) {
     console.log(error);

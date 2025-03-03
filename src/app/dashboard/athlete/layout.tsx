@@ -3,6 +3,7 @@ import { DashboardSidebar } from "@/components/layout/dashboard/dashboard-sideba
 import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
 import { linksApproved, linksPending } from "@/utils/links/athlete-links";
+import { getProfile } from "@/app/(auth-pages)/actions";
 
 interface DashboardLayoutProps {
   children: ReactNode;
@@ -25,12 +26,13 @@ export default async function DashboardLayout({ children }: DashboardLayoutProps
     console.log({ error });
     return;
   }
-
+  const userProfile = await getProfile(user.id);
+  if (!userProfile) return redirect("/sign-in");
   const linksByStatus = data[0].status === "approved" ? linksApproved : linksPending;
 
   return (
     <div className="flex min-h-screen w-full max-md:flex max-md:flex-col">
-      <DashboardSidebar links={linksByStatus} user={user.user_metadata} />
+      <DashboardSidebar links={linksByStatus} user={userProfile[0]} />
       <main className="mx-auto max-w-7xl flex-1 overflow-y-auto p-4">{children}</main>
     </div>
   );
