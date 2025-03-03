@@ -87,6 +87,10 @@
     "react-avatar-editor": {
       "react": ">=18.0.0",
       "react-dom": ">=18.0.0"
+    },
+    "react-day-picker" : {
+      "react": ">=18.0.0",
+      "react-dom": ">=18.0.0"
     }
   }
 }
